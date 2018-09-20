@@ -276,147 +276,147 @@ describe('getRoundWinner() - Edge Cases', function() {
 
     should.equal(getRoundWinner(1), null);
 
-    // playerOneMoveOneType = 'rock';
-    // playerOneMoveOneValue = 1;
-    // playerTwoMoveOneType = undefined;
-    // playerTwoMoveOneValue = 99;
+    playerOneMoveOneType = 'rock';
+    playerOneMoveOneValue = 1;
+    playerTwoMoveOneType = undefined;
+    playerTwoMoveOneValue = 99;
 
-    // should.equal(getRoundWinner(1), null);
+    should.equal(getRoundWinner(1), null);
 
-    // playerOneMoveOneType = 'rock';
-    // playerOneMoveOneValue = 1;
-    // playerTwoMoveOneType = 'rock';
-    // playerTwoMoveOneValue = undefined;
+    playerOneMoveOneType = 'rock';
+    playerOneMoveOneValue = 1;
+    playerTwoMoveOneType = 'rock';
+    playerTwoMoveOneValue = undefined;
 
-    // should.equal(getRoundWinner(1), null);
+    should.equal(getRoundWinner(1), null);
 
-    // playerOneMoveTwoType = 'rock';
-    // playerOneMoveTwoValue = 1;
-    // playerTwoMoveTwoType = 'rock';
-    // playerTwoMoveTwoValue = undefined;
+    playerOneMoveTwoType = 'rock';
+    playerOneMoveTwoValue = 1;
+    playerTwoMoveTwoType = 'rock';
+    playerTwoMoveTwoValue = undefined;
 
-    // should.equal(getRoundWinner(2), null);
+    should.equal(getRoundWinner(2), null);
 
-    // playerOneMoveThreeType = 'rock';
-    // playerOneMoveThreeValue = 1;
-    // playerTwoMoveThreeType = 'rock';
-    // playerTwoMoveThreeValue = undefined;
+    playerOneMoveThreeType = 'rock';
+    playerOneMoveThreeValue = 1;
+    playerTwoMoveThreeType = 'rock';
+    playerTwoMoveThreeValue = undefined;
 
-    // should.equal(getRoundWinner(3), null);
+    should.equal(getRoundWinner(3), null);
   });
 });
 
-// describe('getGameWinner() - Main Functionality', function() {
-//   it('a function called getGameWinner should exist', function() {
-//     should.equal(typeof getGameWinner, 'function');
-//   });
+describe('getGameWinner() - Main Functionality', function() {
+  it('a function called getGameWinner should exist', function() {
+    should.equal(typeof getGameWinner, 'function');
+  });
 
-//   it('should declare when player one wins', function() {
-//     playerOneMoveOneType = 'rock';
-//     playerOneMoveOneValue = 53;
-//     playerTwoMoveOneType = 'rock';
-//     playerTwoMoveOneValue = 1;
-//     playerOneMoveTwoType = 'paper';
-//     playerOneMoveTwoValue = 1;
-//     playerTwoMoveTwoType = 'rock';
-//     playerTwoMoveTwoValue = 97;
-//     playerOneMoveThreeType = 'scissors';
-//     playerOneMoveThreeValue = 45;
-//     playerTwoMoveThreeType = 'rock';
-//     playerTwoMoveThreeValue = 1;
+  it('should declare when player one wins', function() {
+    playerOneMoveOneType = 'rock';
+    playerOneMoveOneValue = 53;
+    playerTwoMoveOneType = 'rock';
+    playerTwoMoveOneValue = 1;
+    playerOneMoveTwoType = 'paper';
+    playerOneMoveTwoValue = 1;
+    playerTwoMoveTwoType = 'rock';
+    playerTwoMoveTwoValue = 97;
+    playerOneMoveThreeType = 'scissors';
+    playerOneMoveThreeValue = 45;
+    playerTwoMoveThreeType = 'rock';
+    playerTwoMoveThreeValue = 1;
 
-//     should.equal(getGameWinner(), 'Player One');
-//   });
+    should.equal(getGameWinner(), 'Player One');
+  });
 
-//   it('should declare when player two wins', function() {
-//     playerOneMoveOneType = 'rock';
-//     playerOneMoveOneValue = 1;
-//     playerTwoMoveOneType = 'rock';
-//     playerTwoMoveOneValue = 53;
-//     playerOneMoveTwoType = 'rock';
-//     playerOneMoveTwoValue = 97;
-//     playerTwoMoveTwoType = 'paper';
-//     playerTwoMoveTwoValue = 1;
-//     playerOneMoveThreeType = 'rock';
-//     playerOneMoveThreeValue = 1;
-//     playerTwoMoveThreeType = 'scissors';
-//     playerTwoMoveThreeValue = 45;
+  it('should declare when player two wins', function() {
+    playerOneMoveOneType = 'rock';
+    playerOneMoveOneValue = 1;
+    playerTwoMoveOneType = 'rock';
+    playerTwoMoveOneValue = 53;
+    playerOneMoveTwoType = 'rock';
+    playerOneMoveTwoValue = 97;
+    playerTwoMoveTwoType = 'paper';
+    playerTwoMoveTwoValue = 1;
+    playerOneMoveThreeType = 'rock';
+    playerOneMoveThreeValue = 1;
+    playerTwoMoveThreeType = 'scissors';
+    playerTwoMoveThreeValue = 45;
 
-//     should.equal(getGameWinner(), 'Player Two');
-//   });
+    should.equal(getGameWinner(), 'Player Two');
+  });
 
-//   it('should declare when the game is a tie', function() {
-//     playerOneMoveOneType = 'rock';
-//     playerOneMoveOneValue = 1;
-//     playerTwoMoveOneType = 'rock';
-//     playerTwoMoveOneValue = 48;
-//     playerOneMoveTwoType = 'scissors';
-//     playerOneMoveTwoValue = 48;
-//     playerTwoMoveTwoType = 'paper';
-//     playerTwoMoveTwoValue = 1;
-//     playerOneMoveThreeType = 'rock';
-//     playerOneMoveThreeValue = 50;
-//     playerTwoMoveThreeType = 'rock';
-//     playerTwoMoveThreeValue = 50;
+  it('should declare when the game is a tie', function() {
+    playerOneMoveOneType = 'rock';
+    playerOneMoveOneValue = 1;
+    playerTwoMoveOneType = 'rock';
+    playerTwoMoveOneValue = 48;
+    playerOneMoveTwoType = 'scissors';
+    playerOneMoveTwoValue = 48;
+    playerTwoMoveTwoType = 'paper';
+    playerTwoMoveTwoValue = 1;
+    playerOneMoveThreeType = 'rock';
+    playerOneMoveThreeValue = 50;
+    playerTwoMoveThreeType = 'rock';
+    playerTwoMoveThreeValue = 50;
 
-//     should.equal(getGameWinner(), 'Tie');
-//   });
-// });
+    should.equal(getGameWinner(), 'Tie');
+  });
+});
 
-// describe('getGameWinner() - Main Functionality', function() {
-//   it('should return null if not all values are set', function() {
-//     playerOneMoveOneType = undefined;
-//     playerOneMoveOneValue = 1;
-//     playerTwoMoveOneType = 'rock';
-//     playerTwoMoveOneValue = 48;
-//     playerOneMoveTwoType = 'scissors';
-//     playerOneMoveTwoValue = 48;
-//     playerTwoMoveTwoType = 'paper';
-//     playerTwoMoveTwoValue = 1;
-//     playerOneMoveThreeType = 'rock';
-//     playerOneMoveThreeValue = 50;
-//     playerTwoMoveThreeType = 'rock';
-//     playerTwoMoveThreeValue = 50;
+describe('getGameWinner() - Main Functionality', function() {
+  it('should return null if not all values are set', function() {
+    playerOneMoveOneType = undefined;
+    playerOneMoveOneValue = 1;
+    playerTwoMoveOneType = 'rock';
+    playerTwoMoveOneValue = 48;
+    playerOneMoveTwoType = 'scissors';
+    playerOneMoveTwoValue = 48;
+    playerTwoMoveTwoType = 'paper';
+    playerTwoMoveTwoValue = 1;
+    playerOneMoveThreeType = 'rock';
+    playerOneMoveThreeValue = 50;
+    playerTwoMoveThreeType = 'rock';
+    playerTwoMoveThreeValue = 50;
 
-//     should.equal(getGameWinner(), null);
-//   });
-// });
+    should.equal(getGameWinner(), null);
+  });
+});
 
 
-// describe('BONUS: setComputerMoves()', function() {
-//   const validMoves = ['rock', 'paper', 'scissors'];
+describe('BONUS: setComputerMoves()', function() {
+  const validMoves = ['rock', 'paper', 'scissors'];
 
-//   afterEach(clearMoves);
+  afterEach(clearMoves);
 
-//   it('a function called setComputerMoves should exist', function() {
-//     should.equal(typeof setComputerMoves, 'function');
-//   });
+  it('a function called setComputerMoves should exist', function() {
+    should.equal(typeof setComputerMoves, 'function');
+  });
 
-//   it('should set player two\'s move types to valid move types', function() {
-//     setComputerMoves();
+  it('should set player two\'s move types to valid move types', function() {
+    setComputerMoves();
 
-//     should.equal(validMoves.includes(playerTwoMoveOneType), true);
-//     should.equal(validMoves.includes(playerTwoMoveTwoType), true);
-//     should.equal(validMoves.includes(playerTwoMoveThreeType), true);
-//   });
+    should.equal(validMoves.includes(playerTwoMoveOneType), true);
+    should.equal(validMoves.includes(playerTwoMoveTwoType), true);
+    should.equal(validMoves.includes(playerTwoMoveThreeType), true);
+  });
 
-//   it('should set player two\'s move values to valid move values', function() {
-//     setComputerMoves();
+  it('should set player two\'s move values to valid move values', function() {
+    setComputerMoves();
 
-//     (playerTwoMoveOneValue).should.be.above(0);
-//     (playerTwoMoveOneValue).should.be.below(100);
-//     (playerTwoMoveTwoValue).should.be.above(0);
-//     (playerTwoMoveTwoValue).should.be.below(100);
-//     (playerTwoMoveThreeValue).should.be.above(0);
-//     (playerTwoMoveThreeValue).should.be.below(100);
-//   });
+    (playerTwoMoveOneValue).should.be.above(0);
+    (playerTwoMoveOneValue).should.be.below(100);
+    (playerTwoMoveTwoValue).should.be.above(0);
+    (playerTwoMoveTwoValue).should.be.below(100);
+    (playerTwoMoveThreeValue).should.be.above(0);
+    (playerTwoMoveThreeValue).should.be.below(100);
+  });
 
-//   it('should set player two\'s move values to three values that sum to ninety-nine', function() {
-//     setComputerMoves();
+  it('should set player two\'s move values to three values that sum to ninety-nine', function() {
+    setComputerMoves();
 
-//     should.equal(playerTwoMoveOneValue + playerTwoMoveTwoValue + playerTwoMoveThreeValue, 99);
-//   });
-// });
+    should.equal(playerTwoMoveOneValue + playerTwoMoveTwoValue + playerTwoMoveThreeValue, 99);
+  });
+});
 
 function clearMoves() {
   playerOneMoveOneType = undefined;
