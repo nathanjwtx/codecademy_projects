@@ -7,3 +7,7 @@
 .idea/
 .idea/*
 .eslintrc.json
+Project_2_Beat_Mix/node_modules/*
+Project_2_Beat_Mix/build/*
+Project_2_Beat_Mix/node_modules/
+Project_2_Beat_Mix/build/
