@@ -383,7 +383,7 @@ describe('Preset function - presetHandler.js file', () => {
   });
 
   // Remove the 'x' before 'describe' to run these tests when you want to attempt the bonus!
-  xdescribe('BONUS: getNeighborPads() function', () => {
+  describe('BONUS: getNeighborPads() function', () => {
 
     it('should exist and be a function', () => {
       getNeighborPads;

@@ -26,7 +26,7 @@ const toggleDrum = (type, id) => {
 
 const toggleHelper = (type, id) => {
     return type[id] === false ? true : false;
-}
+};
 
 const clear = (type) => {
     switch (type) {
@@ -43,7 +43,7 @@ const clear = (type) => {
         rideCymbals = Array(16).fill(false);
         break;
     }
-}
+};
 
 const invert = (type) => {
     switch (type) {
@@ -60,11 +60,30 @@ const invert = (type) => {
         for (let i = 0; i < 16; i++) rideCymbals[i] = toggleHelper(rideCymbals, i);
         break;
     }
-}
+};
 
-// toggleDrum("kicks", 3);
-// toggleDrum("kicks", 8);
-// invertDrum("kicks");
-// console.log(kicks);
-// clear("kicks");
-// console.log(kicks);
+const getNeighborPads = (x, y, size) => {
+    if (x < 0 || x >= size || y < 0 || y >= size || size < 0) {
+        return [];
+    }
+    const result = [];
+    for (let i = 0; i < 4; i++) {
+        if (neighborHelper(x, y, size, i) !== undefined) {
+            result.push(neighborHelper(x, y, size, i));
+        }
+    }
+    return result;
+};
+
+const neighborHelper = (x, y, size, pos) => {
+    switch (pos) {
+    case 0:
+        return y + 1 >= size ? undefined : [x, y + 1];
+    case 1:
+        return x + 1 >= size ? undefined : [x + 1, y];
+    case 2:
+        return y - 1 < 0 ? undefined : [x, y - 1];
+    case 3:
+        return x - 1 < 0 ? undefined : [x - 1, y];
+    }
+};
