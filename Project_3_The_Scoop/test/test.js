@@ -103,16 +103,16 @@ describe("Scoop - server.js: ", function() {
             expect(database.nextCommentId).to.equal(originalNextCommentId + 1);
         });
 
-        // it("routes['/comments'].POST should add a newly created comment's ID to the author's comment IDs", function() {
-        //     const newComment = {
-        //         body: "Comment Body",
-        //         username: "existing_user",
-        //         articleId: 1
-        //     };
-        //     routes["/comments"]["POST"]("/comments", {body: {comment: newComment}});
+        it("routes['/comments'].POST should add a newly created comment's ID to the author's comment IDs", function() {
+            const newComment = {
+                body: "Comment Body",
+                username: "existing_user",
+                articleId: 1
+            };
+            routes["/comments"]["POST"]("/comments", {body: {comment: newComment}});
 
-        //     expect(database.users[newComment.username].commentIds).to.contain(originalNextCommentId);
-        // });
+            expect(database.users[newComment.username].commentIds).to.contain(originalNextCommentId);
+        });
 
         // it("routes['/comments'].POST should add a newly created comment's ID to the article's comment IDs", function() {
         //     const newComment = {

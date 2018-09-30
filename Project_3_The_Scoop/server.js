@@ -44,8 +44,7 @@ const routes = {
 };
 
 function createComment(url, request) {
-    const requestArticle = request; // && request.body.article;
-    // console.log(requestArticle);
+    const requestArticle = request.body && request.body.comment;
     const response = {};
     if (requestArticle) {
         const newComment = {
@@ -58,17 +57,18 @@ function createComment(url, request) {
         //     body: requestArticle.body,
         //     username: requestArticle.username,
         // }
-        database.comments[1] = {}
-        database.comments[1].id = 1;
-        database.comments[1].username = "existing_user";
-        database.comments[1].body = "Comment Body";
+        let newC = database.comments[database.nextCommentId];
+        database.comments[database.nextCommentId] = {};
+        database.comments[database.nextCommentId].id = 1;
+        database.comments[database.nextCommentId].username = requestArticle.username;
+        database.comments[database.nextCommentId].body = requestArticle.body;
         // let newC = {[database.nextCommentId] : newComment};
         // database.comments = {...database.comments, ...newC};
         // console.log(database);
-        // database.users[comment.username].commentIds.push(comment.id);
-        response.body = {comment : newComment};
+        database.users[requestArticle.username].commentIds.push(database.nextCommentId.id);
+        // response.body = {comment : newComment};
         database.nextCommentId++;
-        console.log(response);
+        // console.log(database);
         response.status = 201;
     } else {
         response.status = 400;

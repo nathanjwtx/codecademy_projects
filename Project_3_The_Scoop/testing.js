@@ -16,10 +16,13 @@ function createComment(request) {
         //     username: requestArticle.username,
         //     id: requestArticle.articleId,
         // };
-        database.comments[database.nextCommentId] = {}
-        database.comments[database.nextCommentId].id = requestArticle.articleId;
-        database.comments[database.nextCommentId].username = requestArticle.username;
-        database.comments[database.nextCommentId].body = requestArticle.body;
+        let newC = database.comments[database.nextCommentId];
+        newC = {};
+        newC.username = "existing_user";
+        database.comments[database.nextCommentId] = {};
+        database.comments[database.nextCommentId].id = 1;
+        // database.comments[database.nextCommentId].username = "existing_user";
+        database.comments[database.nextCommentId].body = "Comment Body";
         // let newC = {[database.nextCommentId] : newComment};
         // database.comments = {...database.comments, ...newC};
         // console.log(database);
