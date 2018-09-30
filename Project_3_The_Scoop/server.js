@@ -59,18 +59,19 @@ function createComment(url, request) {
         // }
         let newC = database.comments[database.nextCommentId];
         database.comments[database.nextCommentId] = {};
-        database.comments[database.nextCommentId].id = 1;
+        database.comments[database.nextCommentId].id = requestArticle.articleId;
         database.comments[database.nextCommentId].username = requestArticle.username;
         database.comments[database.nextCommentId].body = requestArticle.body;
         // let newC = {[database.nextCommentId] : newComment};
         // database.comments = {...database.comments, ...newC};
         // console.log(database);
-        if (database.users[newComment.username].commentIds[0] === undefined) {
-            database.users[newComment.username].commentIds[0] = database.nextCommentId;
+        if (database.users[requestArticle.username].commentIds[0] === undefined) {
+            database.users[requestArticle.username].commentIds[0] = database.nextCommentId;
         } else {
-            database.users[newComment.username].commentIds[0].push(database.nextCommentId);
+            database.users[requestArticle.username].commentIds[0].push(database.nextCommentId);
         }
-        console.log(database.users["existing_user"]);
+        database.articles[requestArticle.articleId].commentIds.push(database.nextCommentId);
+        console.log(database.articles[requestArticle.articleId]);
         // response.body = {comment : newComment};
         database.nextCommentId++;
         // console.log(database);
