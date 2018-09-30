@@ -50,7 +50,10 @@ function createComment(url, request) {
         const newComment = {
             body: requestArticle.body,
             username: requestArticle.username,
-            id: requestArticle.articleId,
+            id: database.nextCommentId,
+            articleId: requestArticle.articleId,
+            upvotedBy: [],
+            downvotedBy: []
         };
         // const database.comments[database.nextCommentId] = {
         //     id: requestArticle.articleId,
@@ -71,8 +74,8 @@ function createComment(url, request) {
             database.users[requestArticle.username].commentIds[0].push(database.nextCommentId);
         }
         database.articles[requestArticle.articleId].commentIds.push(database.nextCommentId);
-        console.log(database.articles[requestArticle.articleId]);
-        // response.body = {comment : newComment};
+        console.log(newComment);
+        response.body = {comment : newComment};
         database.nextCommentId++;
         // console.log(database);
         response.status = 201;

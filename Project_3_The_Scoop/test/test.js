@@ -125,23 +125,23 @@ describe("Scoop - server.js: ", function() {
             expect(database.articles[newComment.articleId].commentIds).to.contain(originalNextCommentId);
         });
 
-        // it("routes['/comments'].POST should return a 201 response containing a newly-created comment", function() {
-        //     const newComment = {
-        //         body: "Comment Body",
-        //         username: "existing_user",
-        //         articleId: 1
-        //     };
-        //     const response = routes["/comments"]["POST"]("/comments", {body: {comment: newComment}});
+        it("routes['/comments'].POST should return a 201 response containing a newly-created comment", function() {
+            const newComment = {
+                body: "Comment Body",
+                username: "existing_user",
+                articleId: 1
+            };
+            const response = routes["/comments"]["POST"]("/comments", {body: {comment: newComment}});
 
-        //     expect(response).to.exist;
-        //     expect(response.status).to.equal(201);
-        //     expect(response.body.comment.id).to.equal(originalNextCommentId);
-        //     expect(response.body.comment.body).to.eql(newComment.body);
-        //     expect(response.body.comment.username).to.eql(newComment.username);
-        //     expect(response.body.comment.articleId).to.eql(newComment.articleId);
-        //     expect(response.body.comment.upvotedBy).to.eql([]);
-        //     expect(response.body.comment.downvotedBy).to.eql([]);
-        // });
+            expect(response).to.exist;
+            expect(response.status).to.equal(201);
+            expect(response.body.comment.id).to.equal(originalNextCommentId);
+            expect(response.body.comment.body).to.eql(newComment.body);
+            expect(response.body.comment.username).to.eql(newComment.username);
+            expect(response.body.comment.articleId).to.eql(newComment.articleId);
+            expect(response.body.comment.upvotedBy).to.eql([]);
+            expect(response.body.comment.downvotedBy).to.eql([]);
+        });
 
         // it("routes['/comments'].POST should return a 400 response if a required field is not supplied", function() {
         //     const newComment = {
