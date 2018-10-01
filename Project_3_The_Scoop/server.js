@@ -95,8 +95,10 @@ function updateComment(url, request) {
         database.comments[commentRequest.comment.id].body = commentRequest.comment.body;
         // response.body = {comment: commentRequest};
         response.status = 200;
+    } else if (!commentRequest) {
+        response.status = 400;
     } else {
-        response.status = 404;
+        response.status = 404
     }
     // console.log(database);
     return response;
