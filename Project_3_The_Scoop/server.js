@@ -84,17 +84,19 @@ function createComment(url, request) {
 
 function updateComment(url, request) {
     const commentRequest = request.body;
-    // console.log(commentRequest.comment);
+    console.log(url.split("/").pop());
+    // console.log(commentRequest.comment.id);
     const response = {};
-    if (commentRequest) {
+    if (commentRequest && commentRequest.comment.id <= database.nextCommentId && commentRequest.comment.body &&
+        url.split("/").pop() <= database.nextCommentId) {
         const updatedComment = {
             body: commentRequest.comment.body
         };
         database.comments[commentRequest.comment.id].body = commentRequest.comment.body;
         // response.body = {comment: commentRequest};
-        response.status = 201;
+        response.status = 200;
     } else {
-        response.status = 400;
+        response.status = 404;
     }
     // console.log(database);
     return response;
