@@ -33,7 +33,7 @@ const routes = {
         "POST": createComment
     },
     "/comments/:id": {
-
+        "PUT": updateComment
     },
     "/comments/:id/upvote": {
 
@@ -45,7 +45,6 @@ const routes = {
 
 function createComment(url, request) {
     const requestArticle = request.body && request.body.comment;
-    // console.log(requestArticle);
     const response = {};
     if (requestArticle && requestArticle.body && requestArticle.username &&
         database.users[requestArticle.username] && requestArticle.articleId
@@ -76,7 +75,23 @@ function createComment(url, request) {
         database.comments[database.nextCommentId] = newComment;
         response.body = {comment : newComment};
         database.nextCommentId++;
-        // console.log(database);
+        response.status = 201;
+    } else {
+        response.status = 400;
+    }
+    return response;
+}
+
+function updateComment(url, request) {
+    const commentRequest = request.body;
+    // console.log(commentRequest.comment);
+    const response = {};
+    if (commentRequest) {
+        const updatedComment = {
+            body: commentRequest.comment.body
+        };
+        database.comments[commentRequest.comment.id].body = commentRequest.comment.body;
+        // response.body = {comment: commentRequest};
         response.status = 201;
     } else {
         response.status = 400;
