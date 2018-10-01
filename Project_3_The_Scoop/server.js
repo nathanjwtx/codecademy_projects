@@ -48,7 +48,8 @@ function createComment(url, request) {
     // console.log(requestArticle);
     const response = {};
     if (requestArticle && requestArticle.body && requestArticle.username &&
-        database.users[requestArticle.username] && requestArticle.articleId) {
+        database.users[requestArticle.username] && requestArticle.articleId
+        && requestArticle.articleId <= database.nextArticleId) {
         const newComment = {
             body: requestArticle.body,
             username: requestArticle.username,
