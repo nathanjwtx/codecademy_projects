@@ -45,7 +45,7 @@ const routes = {
 
 function createComment(url, request) {
     const requestArticle = request.body && request.body.comment;
-    console.log(requestArticle);
+    // console.log(requestArticle);
     const response = {};
     if (requestArticle && requestArticle.body && requestArticle.username &&
         database.users[requestArticle.username] && requestArticle.articleId) {
@@ -66,12 +66,13 @@ function createComment(url, request) {
         // database.comments[database.nextCommentId].id = requestArticle.articleId;
         // database.comments[database.nextCommentId].username = requestArticle.username;
         // database.comments[database.nextCommentId].body = requestArticle.body;
-        // if (database.users[requestArticle.username].commentIds[0] === undefined) {
-        //     database.users[requestArticle.username].commentIds[0] = database.nextCommentId;
-        // } else {
-        //     database.users[requestArticle.username].commentIds[0].push(database.nextCommentId);
-        // }
-        // database.articles[requestArticle.articleId].commentIds.push(database.nextCommentId);
+        if (database.users[requestArticle.username].commentIds[0] === undefined) {
+            database.users[requestArticle.username].commentIds[0] = database.nextCommentId;
+        } else {
+            database.users[requestArticle.username].commentIds[0].push(database.nextCommentId);
+        }
+        database.articles[requestArticle.articleId].commentIds.push(database.nextCommentId);
+        database.comments[database.nextCommentId] = newComment;
         response.body = {comment : newComment};
         database.nextCommentId++;
         // console.log(database);
