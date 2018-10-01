@@ -84,10 +84,11 @@ function createComment(url, request) {
 
 function updateComment(url, request) {
     const commentRequest = request.body;
-    console.log(url.split("/").pop());
-    // console.log(commentRequest.comment.id);
+    // console.log(commentRequest);
     const response = {};
-    if (commentRequest && commentRequest.comment.id <= database.nextCommentId && commentRequest.comment.body &&
+    if (!commentRequest || Object.keys(commentRequest).length === 0) {
+        response.status = 400;
+    } else if (commentRequest && commentRequest.comment.id <= database.nextCommentId && commentRequest.comment.body &&
         url.split("/").pop() <= database.nextCommentId) {
         const updatedComment = {
             body: commentRequest.comment.body
@@ -95,10 +96,10 @@ function updateComment(url, request) {
         database.comments[commentRequest.comment.id].body = commentRequest.comment.body;
         // response.body = {comment: commentRequest};
         response.status = 200;
-    } else if (!commentRequest) {
-        response.status = 400;
+    // } else if (!commentRequest) {
+    //     response.status = 400;
     } else {
-        response.status = 404
+        response.status = 404;
     }
     // console.log(database);
     return response;
