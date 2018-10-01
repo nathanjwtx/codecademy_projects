@@ -45,8 +45,10 @@ const routes = {
 
 function createComment(url, request) {
     const requestArticle = request.body && request.body.comment;
+    console.log(requestArticle);
     const response = {};
-    if (requestArticle) {
+    if (requestArticle && requestArticle.body && requestArticle.username &&
+        database.users[requestArticle.username] && requestArticle.articleId) {
         const newComment = {
             body: requestArticle.body,
             username: requestArticle.username,
@@ -60,21 +62,16 @@ function createComment(url, request) {
         //     body: requestArticle.body,
         //     username: requestArticle.username,
         // }
-        let newC = database.comments[database.nextCommentId];
-        database.comments[database.nextCommentId] = {};
-        database.comments[database.nextCommentId].id = requestArticle.articleId;
-        database.comments[database.nextCommentId].username = requestArticle.username;
-        database.comments[database.nextCommentId].body = requestArticle.body;
-        // let newC = {[database.nextCommentId] : newComment};
-        // database.comments = {...database.comments, ...newC};
-        // console.log(database);
-        if (database.users[requestArticle.username].commentIds[0] === undefined) {
-            database.users[requestArticle.username].commentIds[0] = database.nextCommentId;
-        } else {
-            database.users[requestArticle.username].commentIds[0].push(database.nextCommentId);
-        }
-        database.articles[requestArticle.articleId].commentIds.push(database.nextCommentId);
-        console.log(newComment);
+        // database.comments[database.nextCommentId] = {};
+        // database.comments[database.nextCommentId].id = requestArticle.articleId;
+        // database.comments[database.nextCommentId].username = requestArticle.username;
+        // database.comments[database.nextCommentId].body = requestArticle.body;
+        // if (database.users[requestArticle.username].commentIds[0] === undefined) {
+        //     database.users[requestArticle.username].commentIds[0] = database.nextCommentId;
+        // } else {
+        //     database.users[requestArticle.username].commentIds[0].push(database.nextCommentId);
+        // }
+        // database.articles[requestArticle.articleId].commentIds.push(database.nextCommentId);
         response.body = {comment : newComment};
         database.nextCommentId++;
         // console.log(database);
