@@ -112,9 +112,12 @@ function deleteComment(url, request) {
     if (url) {
         let id = Number(url.split("/").pop());
         let user = database.comments[id].username;
-        let pos = database.users[user].commentIds.findIndex(i => i === id);
+        let commentPos = database.users[user].commentIds.findIndex(i => i === id);
+        let articleId = database.comments[id].articleId;
+        let articlePos = database.articles[articleId].commentIds.findIndex(i => i === id);
         database.comments[id] = null;
-        database.users[user].commentIds.splice(pos, 1);
+        database.users[user].commentIds.splice(commentPos, 1);
+        database.articles[articleId].commentIds.splice(articlePos, 1);
         // console.log(database.users[user].commentIds);
         // database.users.articleIds.slice(id, 1);
         // console.log(database);
