@@ -86,7 +86,7 @@ function updateComment(url, request) {
         };
         database.comments[commentRequest.comment.id].body = commentRequest.comment.body;
         response.status = 200;
-/     response.status = 400;
+        response.status = 400;
     } else {
         response.status = 404;
     }
@@ -386,6 +386,14 @@ function downvote(item, username) {
         item.downvotedBy.push(username);
     }
     return item;
+}
+
+function saveDatabase() {
+
+}
+
+function loadDatabase() {
+
 }
 
 // Write all code above this line.
