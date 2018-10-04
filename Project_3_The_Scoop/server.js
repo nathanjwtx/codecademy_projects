@@ -135,6 +135,7 @@ function upvoteComment(url, request) {
     // console.log(request);
     const commentRequest = request.body;
     const response = {};
+    let comments = database.comments;
     let id;
     if (url) {
         id = url.split("/")[url.split("/").findIndex(i => i === "comments") + 1];
@@ -143,10 +144,18 @@ function upvoteComment(url, request) {
         return response;
     }
     if (request &&
-        database.comments[id].upvotedBy.findIndex(i => i ===commentRequest.username) === -1) {
-        database.comments[id].upvotedBy.push(commentRequest.username);
-        console.log(database.comments[id].upvotedBy);
+        comments[id].upvotedBy.findIndex(i => i === commentRequest.username) === -1) {
+        comments[id].upvotedBy.push(commentRequest.username);
+        // find if upvoting user previously downvoted
+        let pos = comments[id].downvotedBy.findIndex(i => i === commentRequest.username);
+        if (pos > -1) {
+            comments[id].downvotedBy.splice(pos, 1);
+        }
+        response.status = 200;
+        response.body = {};
+        response.body.comment = comments[id];
     }
+    return response;
 }
 
 function getUser(url, request) {
