@@ -132,17 +132,20 @@ function deleteComment(url, request) {
 }
 
 function upvoteComment(url, request) {
-    // console.log(request);
     const commentRequest = request.body;
     const response = {};
     let comments = database.comments;
     let id;
-    // console.log(Object.keys(database.users));
-    if (!url || Object.keys(database.users).includes(commentRequest.username) === false) {
+    if (!commentRequest || !url || Object.keys(database.users).includes(commentRequest.username) === false) {
         response.status = 400;
         return response;
     }
     id = url.split("/")[url.split("/").findIndex(i => i === "comments") + 1];
+    // check existence of comment id
+    if (id > Object.keys(comments).length) {
+        response.status = 400;
+        return response;
+    }
     if (request &&
         comments[id].upvotedBy.findIndex(i => i === commentRequest.username) === -1) {
         comments[id].upvotedBy.push(commentRequest.username);
