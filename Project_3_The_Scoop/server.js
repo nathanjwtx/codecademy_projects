@@ -133,6 +133,7 @@ function deleteComment(url, request) {
 
 function upvoteComment(url, request) {
     // console.log(request);
+    const commentRequest = request.body;
     const response = {};
     let id;
     if (url) {
@@ -141,8 +142,9 @@ function upvoteComment(url, request) {
         response.status = 400;
         return response;
     }
-    if (request) {
-        database.comments[id].upvotedBy.push(request.body.username);
+    if (request &&
+        database.comments[id].upvotedBy.findIndex(i => i ===commentRequest.username) === -1) {
+        database.comments[id].upvotedBy.push(commentRequest.username);
         console.log(database.comments[id].upvotedBy);
     }
 }
