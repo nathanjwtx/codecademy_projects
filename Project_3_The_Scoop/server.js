@@ -37,7 +37,7 @@ const routes = {
         "DELETE": deleteComment
     },
     "/comments/:id/upvote": {
-
+        "PUT": upvoteComment
     },
     "/comments/:id/downvote": {
 
@@ -129,6 +129,22 @@ function deleteComment(url, request) {
         response.status = 404;
     }
     return response;
+}
+
+function upvoteComment(url, request) {
+    // console.log(request);
+    const response = {};
+    let id;
+    if (url) {
+        id = url.split("/")[url.split("/").findIndex(i => i === "comments") + 1];
+    } else {
+        response.status = 400;
+        return response;
+    }
+    if (request) {
+        database.comments[id].upvotedBy.push(request.body.username);
+        console.log(database.comments[id].upvotedBy);
+    }
 }
 
 function getUser(url, request) {
