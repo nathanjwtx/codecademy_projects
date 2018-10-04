@@ -58,15 +58,6 @@ function createComment(url, request) {
             upvotedBy: [],
             downvotedBy: []
         };
-        // const database.comments[database.nextCommentId] = {
-        //     id: requestArticle.articleId,
-        //     body: requestArticle.body,
-        //     username: requestArticle.username,
-        // }
-        // database.comments[database.nextCommentId] = {};
-        // database.comments[database.nextCommentId].id = requestArticle.articleId;
-        // database.comments[database.nextCommentId].username = requestArticle.username;
-        // database.comments[database.nextCommentId].body = requestArticle.body;
         if (database.users[requestArticle.username].commentIds[0] === undefined) {
             database.users[requestArticle.username].commentIds[0] = database.nextCommentId;
         } else {
@@ -85,7 +76,6 @@ function createComment(url, request) {
 
 function updateComment(url, request) {
     const commentRequest = request.body;
-    // console.log(commentRequest);
     const response = {};
     if (!commentRequest || Object.keys(commentRequest).length === 0) {
         response.status = 400;
@@ -95,14 +85,11 @@ function updateComment(url, request) {
             body: commentRequest.comment.body
         };
         database.comments[commentRequest.comment.id].body = commentRequest.comment.body;
-        // response.body = {comment: commentRequest};
         response.status = 200;
-    // } else if (!commentRequest) {
-    //     response.status = 400;
+/     response.status = 400;
     } else {
         response.status = 404;
     }
-    // console.log(database);
     return response;
 }
 
