@@ -40,7 +40,7 @@ const routes = {
         "PUT": upvoteComment
     },
     "/comments/:id/downvote": {
-
+        "PUT": downvoteComment
     }
 };
 
@@ -153,6 +153,35 @@ function upvoteComment(url, request) {
         let pos = comments[id].downvotedBy.findIndex(i => i === commentRequest.username);
         if (pos > -1) {
             comments[id].downvotedBy.splice(pos, 1);
+        }
+        response.status = 200;
+        response.body = {};
+        response.body.comment = comments[id];
+    }
+    return response;
+}
+
+function downvoteComment(url, request) {
+    const commentRequest = request.body;
+    const response = {};
+    let comments = database.comments;
+    let id;
+    if (!commentRequest || !url || 
+        Object.keys(database.users).includes(commentRequest.username) === false) {
+        response.status = 400;
+        return response;
+    }
+    id = url.split("/")[url.split("/").findIndex(i => i === "comments") + 1];
+    if (id > Object.keys(comments).length) {
+        response.status = 400;
+        return response;
+    }
+    if (request &&
+        comments[id].downvotedBy.findIndex(i => i === commentRequest.username) === -1) {
+        comments[id].downvotedBy.push(commentRequest.username);
+        let pos = comments[id].upvotedBy.findIndex(i => i === commentRequest.username);
+        if (pos > -1) {
+            comments[id].upvotedBy.splice(pos, 1);
         }
         response.status = 200;
         response.body = {};
