@@ -137,12 +137,12 @@ function upvoteComment(url, request) {
     const response = {};
     let comments = database.comments;
     let id;
-    if (url) {
-        id = url.split("/")[url.split("/").findIndex(i => i === "comments") + 1];
-    } else {
+    // console.log(Object.keys(database.users));
+    if (!url || Object.keys(database.users).includes(commentRequest.username) === false) {
         response.status = 400;
         return response;
     }
+    id = url.split("/")[url.split("/").findIndex(i => i === "comments") + 1];
     if (request &&
         comments[id].upvotedBy.findIndex(i => i === commentRequest.username) === -1) {
         comments[id].upvotedBy.push(commentRequest.username);
