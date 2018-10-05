@@ -44,6 +44,8 @@ const routes = {
     }
 };
 
+// START OF MY CODE
+
 function createComment(url, request) {
     const requestArticle = request.body && request.body.comment;
     const response = {};
@@ -176,6 +178,29 @@ function downvoteComment(url, request) {
     }
     return response;
 }
+
+const useYAML = require("js-yaml");
+const fs = require("fs");
+
+function saveDatabase() {
+    let savedData = useYAML.safeDump(database);
+    fs.writeFileSync("database", savedData);
+}
+
+function loadDatabase() {
+    let savedData;
+    if (fs.existsSync("database")) {
+        console.log("loading");
+        savedData = fs.readFileSync("database", (err, data) => {
+            err ? console.log(err) : data;
+        });
+    } else {
+        console.log("Error");
+    }
+    return useYAML.safeLoad(savedData);
+}
+
+// END OF MY CODE
 
 function getUser(url, request) {
     const username = url.split("/").filter(segment => segment)[1];
@@ -386,14 +411,6 @@ function downvote(item, username) {
         item.downvotedBy.push(username);
     }
     return item;
-}
-
-function saveDatabase() {
-
-}
-
-function loadDatabase() {
-
 }
 
 // Write all code above this line.
