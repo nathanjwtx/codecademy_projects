@@ -54,6 +54,15 @@ app.put("/api/minions/:minonId", (req, res, next) => {
     }
 });
 
+app.post("/api/minions", (req, res, next) => {
+    const minions = db.getAllFromDatabase("minions");
+    if (typeof(req.body.name) === "string"  && typeof(req.body.title) === "string" && typeof(req.body.weaknesses) === "string"
+        && typeof(req.body.salary) === "number") {
+            res.status(201).send({"name": req.body.name, "id": minions.length + 1, "salary": req.body.salary, 
+                "weaknesses": req.body.weaknesses, "title": req.body.title});
+        }
+});
+
 // Mount your existing apiRouter below at the '/api' path.
 const apiRouter = require("./server/api");
 
