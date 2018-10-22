@@ -10,6 +10,18 @@ module.exports = app;
 */
 const PORT = process.env.PORT || 4001;
 
+// find the index based on id
+function getIndex(myObject, Id) {
+    let index;
+    for (let i = 0; i < myObject.length; i++) {
+        if (myObject[i].id === Id) {
+            index = i;
+            break;
+        }
+    }
+    return index;
+}
+
 // Add middleware for handling CORS requests from index.html
 
 
@@ -20,15 +32,9 @@ app.get("/api/minions", (req, res, next) => {
 
 app.get("/api/minions/:minionId", (req, res, next) => {
     const minions = db.getAllFromDatabase("minions");
-    let index;
-    for (let i = 0; i < minions.length; i++) {
-        if (minions[i].id === req.params.minionId) {
-            index = i;
-            break;
-        }
-    }
-    if (index !== undefined) {
-        res.status(200).send(minions[index]);
+    const idIndex = getIndex(minions, req.params.minionId);
+    if (idIndex !== undefined) {
+        res.status(200).send(minions[idIndex]);
     } else {
         res.status(404).send();
     }
