@@ -87,65 +87,96 @@ describe("/api/minions routes", function() {
 
     // });
 
-    describe("PUT /api/minions/:minionId", function() {
+    // describe("PUT /api/minions/:minionId", function() {
     
-        it("updates the correct minion and returns it", function() {
-            let initialMinion;
-            let updatedMinionInfo;
-            return request(app)
-                .get("/api/minions/1")
-                .then((response) => {
-                    initialMinion = response.body;
-                })
-                .then(() => {
-                    updatedMinionInfo = Object.assign({}, initialMinion, {name: "Test"});
-                    return request(app)
-                        .put("/api/minions/1")
-                        .send(updatedMinionInfo);
-                })
-                .then((response) => {
-                    expect(response.body).to.be.deep.equal(updatedMinionInfo);
-                });
-        });
+    //     it("updates the correct minion and returns it", function() {
+    //         let initialMinion;
+    //         let updatedMinionInfo;
+    //         return request(app)
+    //             .get("/api/minions/1")
+    //             .then((response) => {
+    //                 initialMinion = response.body;
+    //             })
+    //             .then(() => {
+    //                 updatedMinionInfo = Object.assign({}, initialMinion, {name: "Test"});
+    //                 return request(app)
+    //                     .put("/api/minions/1")
+    //                     .send(updatedMinionInfo);
+    //             })
+    //             .then((response) => {
+    //                 expect(response.body).to.be.deep.equal(updatedMinionInfo);
+    //             });
+    //     });
 
-        it("updates the correct minion and persists to the database", function() {
-            let initialMinion;
-            let updatedMinionInfo;
-            return request(app)
-                .get("/api/minions/1")
-                .then((response) => {
-                    initialMinion = response.body;
-                })
-                .then(() => {
-                    updatedMinionInfo = Object.assign({}, initialMinion, {name: "Persistence Test"});
-                    return request(app)
-                        .put("/api/minions/1")
-                        .send(updatedMinionInfo);
-                })
-                .then(() => {
-                    return request(app)
-                        .get("/api/minions/1");
-                })
-                .then((response) => response.body)
-                .then(minionFromDatabase => {
-                    expect(minionFromDatabase.name).to.equal("Persistence Test");
-                });
-        });
+    //     it("updates the correct minion and persists to the database", function() {
+    //         let initialMinion;
+    //         let updatedMinionInfo;
+    //         return request(app)
+    //             .get("/api/minions/1")
+    //             .then((response) => {
+    //                 initialMinion = response.body;
+    //             })
+    //             .then(() => {
+    //                 updatedMinionInfo = Object.assign({}, initialMinion, {name: "Persistence Test"});
+    //                 return request(app)
+    //                     .put("/api/minions/1")
+    //                     .send(updatedMinionInfo);
+    //             })
+    //             .then(() => {
+    //                 return request(app)
+    //                     .get("/api/minions/1");
+    //             })
+    //             .then((response) => response.body)
+    //             .then(minionFromDatabase => {
+    //                 expect(minionFromDatabase.name).to.equal("Persistence Test");
+    //             });
+    //     });
 
-        it("called with a non-numeric ID returns a 404 error", function() {
-            return request(app)
-                .put("/api/minions/notAnId")
-                .expect(404);
-        });
+    //     it("called with a non-numeric ID returns a 404 error", function() {
+    //         return request(app)
+    //             .put("/api/minions/notAnId")
+    //             .expect(404);
+    //     });
 
-        it("called with an invalid ID returns a 404 error", function() {
-            return request(app)
-                .put("/api/minions/450")
-                .expect(404);
-        });
+    //     it("called with an invalid ID returns a 404 error", function() {
+    //         return request(app)
+    //             .put("/api/minions/450")
+    //             .expect(404);
+    //     });
 
-        it("called with an invalid ID does not change the database array", function() {
+    //     it("called with an invalid ID does not change the database array", function() {
+    //         let initialMinionsArray;
+    //         return request(app)
+    //             .get("/api/minions")
+    //             .then((response) => {
+    //                 initialMinionsArray = response.body;
+    //             })
+    //             .then(() => {
+    //                 return request(app)
+    //                     .put("/api/minions/notAnId")
+    //                     .send({key: "value"});
+    //             })
+    //             .then(() => {
+    //                 return request(app).get("/api/minions");
+    //             })
+    //             .then((afterPutResponse) => {
+    //                 let postRequestMinionsArray = afterPutResponse.body;
+    //                 expect(initialMinionsArray).to.be.deep.equal(postRequestMinionsArray);
+    //             });
+    //     });
+
+    // });
+
+    describe("POST /api/minions", function() {
+
+        it("should add a new minion if all supplied information is correct", function() {
             let initialMinionsArray;
+            let newMinionObject = {
+                name: "Test",
+                title: "",
+                salary: 0,
+                weaknesses: "",
+            };
             return request(app)
                 .get("/api/minions")
                 .then((response) => {
@@ -153,49 +184,18 @@ describe("/api/minions routes", function() {
                 })
                 .then(() => {
                     return request(app)
-                        .put("/api/minions/notAnId")
-                        .send({key: "value"});
+                        .post("/api/minions")
+                        .send(newMinionObject)
+                        .expect(201);
                 })
-                .then(() => {
-                    return request(app).get("/api/minions");
-                })
-                .then((afterPutResponse) => {
-                    let postRequestMinionsArray = afterPutResponse.body;
-                    expect(initialMinionsArray).to.be.deep.equal(postRequestMinionsArray);
+                .then((response) => response.body)
+                .then((createdMinion) => {
+                    newMinionObject.id = createdMinion.id;
+                    expect(newMinionObject).to.be.deep.equal(createdMinion);
                 });
         });
 
     });
-
-    // describe('POST /api/minions', function() {
-
-    //   it('should add a new minion if all supplied information is correct', function() {
-    //     let initialMinionsArray;
-    //     let newMinionObject = {
-    //       name: 'Test',
-    //       title: '',
-    //       salary: 0,
-    //       weaknesses: '',
-    //     }
-    //     return request(app)
-    //       .get('/api/minions')
-    //       .then((response) => {
-    //         initialMinionsArray = response.body;
-    //       })
-    //       .then(() => {
-    //         return request(app)
-    //           .post('/api/minions')
-    //           .send(newMinionObject)
-    //           .expect(201);
-    //       })
-    //       .then((response) => response.body)
-    //       .then((createdMinion) => {
-    //         newMinionObject.id = createdMinion.id;
-    //         expect(newMinionObject).to.be.deep.equal(createdMinion);
-    //       });
-    //   });
-
-    // });
 
     // describe('DELETE /api/minions', function() {
     

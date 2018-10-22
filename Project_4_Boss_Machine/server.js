@@ -1,5 +1,6 @@
-const express = require('express');
+const express = require("express");
 const app = express();
+const bodyparser = require("body-parser");
 
 const db = require("./server/db");
 
@@ -22,6 +23,8 @@ function getIndex(myObject, Id) {
     return index;
 }
 
+app.use(bodyparser.json());
+
 // Add middleware for handling CORS requests from index.html
 
 
@@ -40,16 +43,26 @@ app.get("/api/minions/:minionId", (req, res, next) => {
     }
 });
 
+app.put("/api/minions/:minonId", (req, res, next) => {
+    const id = req.body.id;
+    const minions = db.getAllFromDatabase("minions");
+    const idIndex = getIndex(minions, id);
+    if (idIndex !== undefined) {
+        res.status(200).send(db.updateInstanceInDatabase("minions", req.body));
+    } else {
+        res.status(404).send();
+    }
+});
 
 // Mount your existing apiRouter below at the '/api' path.
-const apiRouter = require('./server/api');
+const apiRouter = require("./server/api");
 
 
 // This conditional is here for testing purposes:
 if (!module.parent) { 
-  // Add your code to start the server listening at PORT below:
-  app.listen(PORT, () => {
-    console.log(`Server listening on ${PORT}`);
+    // Add your code to start the server listening at PORT below:
+    app.listen(PORT, () => {
+        console.log(`Server listening on ${PORT}`);
     });
 }
 
