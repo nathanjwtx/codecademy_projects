@@ -29,7 +29,7 @@ app.use(bodyparser.json());
 
 
 // Add middware for parsing request bodies here:
-const Types = ["minions", "ideas"];
+const Types = ["minions", "ideas", "meetings"];
 let type;
 
 app.param(["type", "typeId"], (req, res, next, id) => {
@@ -68,8 +68,8 @@ app.get("/api/:type/:typeId", (req, res, next) => {
 
 app.put("/api/:type/:typeId", (req, res, next) => {
     const id = req.body.id;
-    const minions = db.getAllFromDatabase(req.type);
-    const idIndex = getIndex(minions, id);
+    const typeDb = db.getAllFromDatabase(req.type);
+    const idIndex = getIndex(typeDb, id);
     if (idIndex !== undefined) {
         res.status(200).send(db.updateInstanceInDatabase(req.type, req.body));
     } else {
@@ -77,13 +77,27 @@ app.put("/api/:type/:typeId", (req, res, next) => {
     }
 });
 
-app.post("/api/minions", (req, res, next) => {
-    const minions = db.getAllFromDatabase("minions");
-    if (typeof(req.body.name) === "string"  && typeof(req.body.title) === "string" && typeof(req.body.weaknesses) === "string"
+app.post("/api/:type", (req, res, next) => {
+    const typeDb = db.getAllFromDatabase(req.type);
+    const newObj = {};
+    if (req.type === "minions" && typeof(req.body.name) === "string"  && 
+        typeof(req.body.title) === "string" && typeof(req.body.weaknesses) === "string"
         && typeof(req.body.salary) === "number") {
-            res.status(201).send({"name": req.body.name, "id": minions.length + 1, "salary": req.body.salary, 
-                "weaknesses": req.body.weaknesses, "title": req.body.title});
-        }
+        newObj.name = req.body.name;
+        newObj.id = typeDb.length + 1;
+        newObj.salary = req.body.salary;
+        newObj.weaknesses = req.body.weaknesses;
+        newObj.title = req.body.title;
+    } else if (req.type === "ideas" && typeof(req.body.name) === "string" &&
+        typeof(req.body.description) === "string" && typeof(req.body.numWeeks) === "number"
+        && typeof(req.body.weeklyRevenue) === "number") {
+        newObj.name = req.body.name;
+        newObj.description = req.body.description;
+        newObj.numWeeks = req.body.numWeeks;
+        newObj.weeklyRevenue = req.body.weeklyRevenue;
+        newObj.id = typeDb.length + 1;
+    }
+    res.status(201).send(newObj);
 });
 
 // app.delete("/api/minions", (req, res, next) => {
