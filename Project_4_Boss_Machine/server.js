@@ -88,6 +88,7 @@ app.post("/api/:type", (req, res, next) => {
         newObj.salary = req.body.salary;
         newObj.weaknesses = req.body.weaknesses;
         newObj.title = req.body.title;
+        res.status(201).send(newObj);
     } else if (req.type === "ideas" && typeof(req.body.name) === "string" &&
         typeof(req.body.description) === "string" && typeof(req.body.numWeeks) === "number"
         && typeof(req.body.weeklyRevenue) === "number") {
@@ -96,14 +97,17 @@ app.post("/api/:type", (req, res, next) => {
         newObj.numWeeks = req.body.numWeeks;
         newObj.weeklyRevenue = req.body.weeklyRevenue;
         newObj.id = typeDb.length + 1;
+        res.status(201).send(newObj);
+    } else if (req.type === "meetings") {
+        const meeting = db.createMeeting();
+        db.addToDatabase(req.type, meeting);
+        res.status(201).send(meeting);
     }
-    res.status(201).send(newObj);
 });
 
 app.delete("/api/:type/:typeId", (req, res, next) => {
     const typeDb = db.getAllFromDatabase(req.type);
     const idIndex = getIndex(typeDb, req.typeId);
-    console.log("index", req.typeId);
     if (idIndex > -1) {
         db.deleteFromDatabasebyId(req.type, req.typeId);
         res.status(204).send();

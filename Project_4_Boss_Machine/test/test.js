@@ -610,51 +610,51 @@ describe("/api/meetings routes", function() {
   
     });
   
-    //   describe('POST /api/meetings', function() {
+    describe("POST /api/meetings", function() {
   
-    //     it('should create a new meetings and return it', function() {
-    //       return request(app)
-    //         .post('/api/meetings')
-    //         .expect(201)
-    //         .then((response) => response.body)
-    //         .then((createdMeeting) => {
-    //           expect(createdMeeting).to.have.ownProperty('time');
-    //           expect(createdMeeting).to.have.ownProperty('date');
-    //           expect(createdMeeting).to.have.ownProperty('day');
-    //           expect(createdMeeting).to.have.ownProperty('note');
-    //         });
-    //     });
+        it("should create a new meetings and return it", function() {
+            return request(app)
+                .post("/api/meetings")
+                .expect(201)
+                .then((response) => response.body)
+                .then((createdMeeting) => {
+                    expect(createdMeeting).to.have.ownProperty("time");
+                    expect(createdMeeting).to.have.ownProperty("date");
+                    expect(createdMeeting).to.have.ownProperty("day");
+                    expect(createdMeeting).to.have.ownProperty("note");
+                });
+        });
   
-    //     it('should persist the created meeting to the database', function() {
-    //       let initialMeetingsArray;
-    //       let newlyCreatedMeeting;
-    //       return request(app)
-    //         .get('/api/meetings')
-    //         .then((response) => {
-    //           initialMeetingsArray = response.body;
-    //         })
-    //         .then(() => {
-    //           return request(app)
-    //             .post('/api/meetings')
-    //             .expect(201);
-    //         })
-    //         .then((response) => response.body)
-    //         .then((createdMeeting) => {
-    //           newlyCreatedMeeting = createdMeeting;
-    //           return request(app)
-    //             .get('/api/meetings')
-    //         })
-    //         .then((response) => response.body)
-    //         .then((newMeetingsArray) => {
-    //           expect(newMeetingsArray.length).to.equal(initialMeetingsArray.length + 1);
-    //           let createdMeetingFound = newMeetingsArray.some((meeting) => {
-    //             return meeting.id === newlyCreatedMeeting.id;
-    //           });
-    //           expect(createdMeetingFound).to.be.true;
-    //         });
-    //     });
+        it("should persist the created meeting to the database", function() {
+            let initialMeetingsArray;
+            let newlyCreatedMeeting;
+            return request(app)
+                .get("/api/meetings")
+                .then((response) => {
+                    initialMeetingsArray = response.body;
+                })
+                .then(() => {
+                    return request(app)
+                        .post("/api/meetings")
+                        .expect(201);
+                })
+                .then((response) => response.body)
+                .then((createdMeeting) => {
+                    newlyCreatedMeeting = createdMeeting;
+                    return request(app)
+                        .get("/api/meetings");
+                })
+                .then((response) => response.body)
+                .then((newMeetingsArray) => {
+                    expect(newMeetingsArray.length).to.equal(initialMeetingsArray.length + 1);
+                    let createdMeetingFound = newMeetingsArray.some((meeting) => {
+                        return meeting.id === newlyCreatedMeeting.id;
+                    });
+                    expect(createdMeetingFound).to.be.true;
+                });
+        });
   
-    //   });
+    });
   
     //   describe('DELETE /api/meetings route', function() {
   
