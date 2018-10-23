@@ -6,48 +6,48 @@ const app = require("../server");
 describe("/api/minions routes", function() {
     let fakeDb = require("../server/db.js");
 
-    // describe("GET /api/minions", function() {
+    describe("GET /api/minions", function() {
 
-    //     it("returns an array", function() {
-    //         return request(app)
-    //             .get("/api/minions")
-    //             .expect(200)
-    //             .then((response) => {
-    //                 expect(response.body).to.be.an.instanceOf(Array);
-    //             });
-    //     });
+        it("returns an array", function() {
+            return request(app)
+                .get("/api/minions")
+                .expect(200)
+                .then((response) => {
+                    expect(response.body).to.be.an.instanceOf(Array);
+                });
+        });
 
-    //     it("returns an array of all minions", function() {
-    //         return request(app)
-    //             .get("/api/minions")
-    //             .expect(200)
-    //             .then((response) => {
-    //                 let length = fakeDb.getAllFromDatabase("minions").length;
-    //                 expect(response.body.length).to.be.equal(length);
-    //                 response.body.forEach((minion) => {
-    //                     expect(minion).to.have.ownProperty("id");
-    //                     expect(minion).to.have.ownProperty("name");
-    //                     expect(minion).to.have.ownProperty("title");
-    //                     expect(minion).to.have.ownProperty("weaknesses");
-    //                     expect(minion).to.have.ownProperty("salary");
-    //                 });
-    //             });
-    //     });
+        it("returns an array of all minions", function() {
+            return request(app)
+                .get("/api/minions")
+                .expect(200)
+                .then((response) => {
+                    let length = fakeDb.getAllFromDatabase("minions").length;
+                    expect(response.body.length).to.be.equal(length);
+                    response.body.forEach((minion) => {
+                        expect(minion).to.have.ownProperty("id");
+                        expect(minion).to.have.ownProperty("name");
+                        expect(minion).to.have.ownProperty("title");
+                        expect(minion).to.have.ownProperty("weaknesses");
+                        expect(minion).to.have.ownProperty("salary");
+                    });
+                });
+        });
 
-    // });
+    });
 
-    // describe("GET /minions/:minionId", function() {
+    describe("GET /minions/:minionId", function() {
   
-    //     it("returns a single minion object", function() {
-    //         return request(app)
-    //             .get("/api/minions/1")
-    //             .expect(200)
-    //             .then((response) => {
-    //                 const minion = response.body;
-    //                 expect(minion).to.be.an.instanceOf(Object);
-    //                 expect(minion).to.not.be.an.instanceOf(Array);
-    //             });
-    //     });
+        it("returns a single minion object", function() {
+            return request(app)
+                .get("/api/minions/1")
+                .expect(200)
+                .then((response) => {
+                    const minion = response.body;
+                    expect(minion).to.be.an.instanceOf(Object);
+                    expect(minion).to.not.be.an.instanceOf(Array);
+                });
+        });
   
     //     it("returns a full minion object", function() {
     //         return request(app)
@@ -85,7 +85,7 @@ describe("/api/minions routes", function() {
     //             .expect(404);
     //     });
 
-    // });
+    });
 
     // describe("PUT /api/minions/:minionId", function() {
     
@@ -167,35 +167,35 @@ describe("/api/minions routes", function() {
 
     // });
 
-    describe("POST /api/minions", function() {
+    // describe("POST /api/minions", function() {
 
-        it("should add a new minion if all supplied information is correct", function() {
-            let initialMinionsArray;
-            let newMinionObject = {
-                name: "Test",
-                title: "",
-                salary: 0,
-                weaknesses: "",
-            };
-            return request(app)
-                .get("/api/minions")
-                .then((response) => {
-                    initialMinionsArray = response.body;
-                })
-                .then(() => {
-                    return request(app)
-                        .post("/api/minions")
-                        .send(newMinionObject)
-                        .expect(201);
-                })
-                .then((response) => response.body)
-                .then((createdMinion) => {
-                    newMinionObject.id = createdMinion.id;
-                    expect(newMinionObject).to.be.deep.equal(createdMinion);
-                });
-        });
+    //     it("should add a new minion if all supplied information is correct", function() {
+    //         let initialMinionsArray;
+    //         let newMinionObject = {
+    //             name: "Test",
+    //             title: "",
+    //             salary: 0,
+    //             weaknesses: "",
+    //         };
+    //         return request(app)
+    //             .get("/api/minions")
+    //             .then((response) => {
+    //                 initialMinionsArray = response.body;
+    //             })
+    //             .then(() => {
+    //                 return request(app)
+    //                     .post("/api/minions")
+    //                     .send(newMinionObject)
+    //                     .expect(201);
+    //             })
+    //             .then((response) => response.body)
+    //             .then((createdMinion) => {
+    //                 newMinionObject.id = createdMinion.id;
+    //                 expect(newMinionObject).to.be.deep.equal(createdMinion);
+    //             });
+    //     });
 
-    });
+    // });
 
     // describe('DELETE /api/minions', function() {
     
@@ -240,51 +240,51 @@ describe("/api/minions routes", function() {
 
 });
 
-// describe('/api/ideas routes', function() {
-//   let fakeDb = require('../server/db.js');
+describe('/api/ideas routes', function() {
+  let fakeDb = require('../server/db.js');
 
-//   describe('GET /api/ideas', function() {
+  describe('GET /api/ideas', function() {
 
-//     it('returns an array', function() {
-//       return request(app)
-//         .get('/api/ideas')
-//         .expect(200)
-//         .then((response) => {
-//           expect(response.body).to.be.an.instanceOf(Array);
-//         });
-//     });
+    it('returns an array', function() {
+      return request(app)
+        .get('/api/ideas')
+        .expect(200)
+        .then((response) => {
+          expect(response.body).to.be.an.instanceOf(Array);
+        });
+    });
 
-//     it('returns an array of all ideas', function() {
-//       return request(app)
-//         .get('/api/ideas')
-//         .expect(200)
-//         .then((response) => {
-//           let length = fakeDb.getAllFromDatabase('ideas').length;
-//           expect(response.body.length).to.be.equal(length);
-//           response.body.forEach((idea) => {
-//             expect(idea).to.have.ownProperty('id');
-//             expect(idea).to.have.ownProperty('name');
-//             expect(idea).to.have.ownProperty('description');
-//             expect(idea).to.have.ownProperty('weeklyRevenue');
-//             expect(idea).to.have.ownProperty('numWeeks');
-//           });
-//         });
-//     });
+    it('returns an array of all ideas', function() {
+      return request(app)
+        .get('/api/ideas')
+        .expect(200)
+        .then((response) => {
+          let length = fakeDb.getAllFromDatabase('ideas').length;
+          expect(response.body.length).to.be.equal(length);
+          response.body.forEach((idea) => {
+            expect(idea).to.have.ownProperty('id');
+            expect(idea).to.have.ownProperty('name');
+            expect(idea).to.have.ownProperty('description');
+            expect(idea).to.have.ownProperty('weeklyRevenue');
+            expect(idea).to.have.ownProperty('numWeeks');
+          });
+        });
+    });
 
-//   });
+  });
 
-//   describe('GET /ideas/:ideaId', function() {
+  describe('GET /ideas/:ideaId', function() {
 
-//     it('returns a single idea object', function() {
-//       return request(app)
-//         .get(`/api/ideas/1`)
-//         .expect(200)
-//         .then(response => response.body)
-//         .then((idea) => {
-//           expect(idea).to.be.an.instanceOf(Object);
-//           expect(idea).to.not.be.an.instanceOf(Array);
-//         });
-//     });
+    it('returns a single idea object', function() {
+      return request(app)
+        .get(`/api/ideas/1`)
+        .expect(200)
+        .then(response => response.body)
+        .then((idea) => {
+          expect(idea).to.be.an.instanceOf(Object);
+          expect(idea).to.not.be.an.instanceOf(Array);
+        });
+    });
 
 //     it('returns a full idea object with correct properties', function() {
 //       return request(app)
@@ -322,7 +322,7 @@ describe("/api/minions routes", function() {
 //         .expect(404);
 //     });
 
-//   });
+  });
 
 //   describe('PUT /api/ideas/:ideaId', function() {
 
@@ -475,7 +475,7 @@ describe("/api/minions routes", function() {
 
 //   });
 
-// });
+});
 
 // describe('checkMillionDollarIdea middleware', function() {
 

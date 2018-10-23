@@ -29,21 +29,44 @@ app.use(bodyparser.json());
 
 
 // Add middware for parsing request bodies here:
-app.get("/api/minions", (req, res, next) => {
-    res.status(200).send(db.getAllFromDatabase("minions"));
+const Types = ["minions", "ideas"];
+let type;
+
+app.param(["type", "typeId"], (req, res, next, id) => {
+    // console.log("Param:", id);
+    const path = req.path.split("/");
+    // console.log(path);
+    const typeIndex = Types.indexOf(id);
+    if (typeIndex > -1) {
+        req.type = id;
+        // type = req.path;
+    }
+    if (path[3]) {
+        req.typeId = path[3];
+    }
+    next();
 });
 
-app.get("/api/minions/:minionId", (req, res, next) => {
-    const minions = db.getAllFromDatabase("minions");
-    const idIndex = getIndex(minions, req.params.minionId);
+app.get("/api/:type", (req, res, next) => {
+    // console.log(Types[req.type]);
+    res.status(200).send(db.getAllFromDatabase(req.type));
+});
+
+
+app.get("/api/:type/:typeId", (req, res, next) => {
+    // console.log(req.path.split("/"));
+    // console.log(req.typeId);
+    const types = db.getAllFromDatabase(req.type);
+    const idIndex = getIndex(types, req.typeId);
+    // console.log(types);
     if (idIndex !== undefined) {
-        res.status(200).send(minions[idIndex]);
+        res.status(200).send(types[idIndex]);
     } else {
         res.status(404).send();
     }
 });
 
-app.put("/api/minions/:minonId", (req, res, next) => {
+app.put("/api/minions/:minionId", (req, res, next) => {
     const id = req.body.id;
     const minions = db.getAllFromDatabase("minions");
     const idIndex = getIndex(minions, id);
@@ -62,6 +85,10 @@ app.post("/api/minions", (req, res, next) => {
                 "weaknesses": req.body.weaknesses, "title": req.body.title});
         }
 });
+
+// app.delete("/api/minions", (req, res, next) => {
+
+// });
 
 // Mount your existing apiRouter below at the '/api' path.
 const apiRouter = require("./server/api");

@@ -1,0 +1,15 @@
+app.param("type", (req, res, next, id) => {
+    // console.log("Param:", id);
+    const typeIndex = Types.indexOf(id);
+    if (typeIndex > -1) {
+        req.type = typeIndex;
+        type = Types[req.type];
+    }
+    console.log("Type", type);
+    next();
+});
+
+app.get("/api/:type", (req, res, next) => {
+    console.log(Types[req.type]);
+    res.status(200).send(db.getAllFromDatabase(Types[req.type]));
+});
