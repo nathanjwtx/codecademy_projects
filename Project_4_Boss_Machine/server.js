@@ -66,12 +66,12 @@ app.get("/api/:type/:typeId", (req, res, next) => {
     }
 });
 
-app.put("/api/minions/:minionId", (req, res, next) => {
+app.put("/api/:type/:typeId", (req, res, next) => {
     const id = req.body.id;
-    const minions = db.getAllFromDatabase("minions");
+    const minions = db.getAllFromDatabase(req.type);
     const idIndex = getIndex(minions, id);
     if (idIndex !== undefined) {
-        res.status(200).send(db.updateInstanceInDatabase("minions", req.body));
+        res.status(200).send(db.updateInstanceInDatabase(req.type, req.body));
     } else {
         res.status(404).send();
     }
