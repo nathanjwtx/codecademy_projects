@@ -197,46 +197,46 @@ describe("/api/minions routes", function() {
 
     });
 
-    // describe('DELETE /api/minions', function() {
+    describe("DELETE /api/minions", function() {
     
-    //   it('deletes the correct minion by id', function() {
-    //     let initialMinionsArray;
-    //     return request(app)
-    //       .get('/api/minions')
-    //       .then((response) => {
-    //         initialMinionsArray = response.body;
-    //       })
-    //       .then(() => {
-    //         return request(app)
-    //           .delete('/api/minions/1')
-    //           .expect(204);
-    //       })
-    //       .then(() => {
-    //         return request(app)
-    //           .get('/api/minions');
-    //       })
-    //       .then((response) => response.body)
-    //       .then((afterDeleteMinionsArray) => {
-    //         expect(afterDeleteMinionsArray).to.not.be.deep.equal(initialMinionsArray);
-    //         let shouldBeDeletedMinion = afterDeleteMinionsArray.find(el => el.id === '1');
-    //         expect(shouldBeDeletedMinion).to.be.undefined;
-    //       });
+        it("deletes the correct minion by id", function() {
+            let initialMinionsArray;
+            return request(app)
+                .get("/api/minions")
+                .then((response) => {
+                    initialMinionsArray = response.body;
+                })
+                .then(() => {
+                    return request(app)
+                        .delete("/api/minions/1")
+                        .expect(204);
+                })
+                .then(() => {
+                    return request(app)
+                        .get("/api/minions");
+                })
+                .then((response) => response.body)
+                .then((afterDeleteMinionsArray) => {
+                    expect(afterDeleteMinionsArray).to.not.be.deep.equal(initialMinionsArray);
+                    let shouldBeDeletedMinion = afterDeleteMinionsArray.find(el => el.id === "1");
+                    expect(shouldBeDeletedMinion).to.be.undefined;
+                });
 
-    //   });
+        });
 
-    //   it('called with a non-numeric ID returns a 404 error', function() {
-    //     return request(app)
-    //       .delete('/api/minions/notAnId')
-    //       .expect(404);
-    //   });
+        it("called with a non-numeric ID returns a 404 error", function() {
+            return request(app)
+                .delete("/api/minions/notAnId")
+                .expect(404);
+        });
 
-    //   it('called with an invalid ID returns a 404 error', function() {
-    //     return request(app)
-    //       .delete('/api/minions/450')
-    //       .expect(404);
-    //   });
+        it("called with an invalid ID returns a 404 error", function() {
+            return request(app)
+                .delete("/api/minions/450")
+                .expect(404);
+        });
 
-    // });
+    });
 
 });
 
@@ -435,45 +435,45 @@ describe("/api/ideas routes", function() {
 
     });
 
-    //   describe('DELETE /api/ideas', function() {
+    describe("DELETE /api/ideas", function() {
     
-    //     it('deletes the correct minion by id', function() {
-    //       let initialIdeasArray;
-    //       return request(app)
-    //         .get('/api/ideas')
-    //         .then((response) => {
-    //           initialIdeasArray = response.body;
-    //         })
-    //         .then(() => {
-    //           return request(app)
-    //             .delete('/api/ideas/1')
-    //             .expect(204);
-    //         })
-    //         .then(() => {
-    //           return request(app)
-    //             .get('/api/ideas');
-    //         })
-    //         .then((response) => response.body)
-    //         .then((afterDeleteIdeasArray) => {
-    //           expect(afterDeleteIdeasArray).to.not.be.deep.equal(initialIdeasArray);
-    //           let shouldBeDeletedIdea = afterDeleteIdeasArray.find(el => el.id === '1');
-    //           expect(shouldBeDeletedIdea).to.be.undefined;
-    //         });
-    //     });
+        it("deletes the correct minion by id", function() {
+            let initialIdeasArray;
+            return request(app)
+                .get("/api/ideas")
+                .then((response) => {
+                    initialIdeasArray = response.body;
+                })
+                .then(() => {
+                    return request(app)
+                        .delete("/api/ideas/1")
+                        .expect(204);
+                })
+                .then(() => {
+                    return request(app)
+                        .get("/api/ideas");
+                })
+                .then((response) => response.body)
+                .then((afterDeleteIdeasArray) => {
+                    expect(afterDeleteIdeasArray).to.not.be.deep.equal(initialIdeasArray);
+                    let shouldBeDeletedIdea = afterDeleteIdeasArray.find(el => el.id === "1");
+                    expect(shouldBeDeletedIdea).to.be.undefined;
+                });
+        });
 
-    //     it('called with a non-numeric ID returns a 404 error', function() {
-    //       return request(app)
-    //         .delete('/api/ideas/notAnId')
-    //         .expect(404);
-    //     });
+        it("called with a non-numeric ID returns a 404 error", function() {
+            return request(app)
+                .delete("/api/ideas/notAnId")
+                .expect(404);
+        });
   
-    //     it('called with an invalid ID returns a 404 error', function() {
-    //       return request(app)
-    //         .delete('/api/ideas/450')
-    //         .expect(404);
-    //     });
+        it("called with an invalid ID returns a 404 error", function() {
+            return request(app)
+                .delete("/api/ideas/450")
+                .expect(404);
+        });
 
-    //   });
+    });
 
 });
 

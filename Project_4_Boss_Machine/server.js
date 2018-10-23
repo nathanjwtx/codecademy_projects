@@ -100,9 +100,18 @@ app.post("/api/:type", (req, res, next) => {
     res.status(201).send(newObj);
 });
 
-// app.delete("/api/minions", (req, res, next) => {
-
-// });
+app.delete("/api/:type/:typeId", (req, res, next) => {
+    const typeDb = db.getAllFromDatabase(req.type);
+    const idIndex = getIndex(typeDb, req.typeId);
+    console.log("index", req.typeId);
+    if (idIndex > -1) {
+        db.deleteFromDatabasebyId(req.type, req.typeId);
+        res.status(204).send();
+    } else {
+        res.status(404).send();
+    }
+    res.status(404).send();
+});
 
 // Mount your existing apiRouter below at the '/api' path.
 const apiRouter = require("./server/api");
