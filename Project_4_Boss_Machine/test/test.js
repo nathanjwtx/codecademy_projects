@@ -656,33 +656,33 @@ describe("/api/meetings routes", function() {
   
     });
   
-    //   describe('DELETE /api/meetings route', function() {
+    describe("DELETE /api/meetings route", function() {
   
-    //     it('deletes all meetings', function() {
-    //       let initialMeetingsArray;
-    //       return request(app)
-    //         .get('/api/meetings')
-    //         .then((response) => {
-    //           initialMeetingsArray = response.body;
-    //         })
-    //         .then(() => {
-    //           return request(app)
-    //             .delete('/api/meetings')
-    //             .expect(204);
-    //         })
-    //         .then(() => {
-    //           return request(app)
-    //             .get('/api/meetings');
-    //         })
-    //         .then((response) => response.body)
-    //         .then((afterDeleteIdeasArray) => {
-    //           expect(afterDeleteIdeasArray).to.be.an.instanceOf(Array);
-    //           expect(afterDeleteIdeasArray).to.have.property('length', 0);
-    //         });
+        it("deletes all meetings", function() {
+            let initialMeetingsArray;
+            return request(app)
+                .get("/api/meetings")
+                .then((response) => {
+                    initialMeetingsArray = response.body;
+                })
+                .then(() => {
+                    return request(app)
+                        .delete("/api/meetings")
+                        .expect(204);
+                })
+                .then(() => {
+                    return request(app)
+                        .get("/api/meetings");
+                })
+                .then((response) => response.body)
+                .then((afterDeleteIdeasArray) => {
+                    expect(afterDeleteIdeasArray).to.be.an.instanceOf(Array);
+                    expect(afterDeleteIdeasArray).to.have.property("length", 0);
+                });
   
-    //     });
+        });
   
-    //   });
+    });
 
 });
 

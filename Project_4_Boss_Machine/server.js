@@ -33,13 +33,10 @@ const Types = ["minions", "ideas", "meetings"];
 let type;
 
 app.param(["type", "typeId"], (req, res, next, id) => {
-    // console.log("Param:", id);
     const path = req.path.split("/");
-    // console.log(path);
     const typeIndex = Types.indexOf(id);
     if (typeIndex > -1) {
         req.type = id;
-        // type = req.path;
     }
     if (path[3]) {
         req.typeId = path[3];
@@ -47,19 +44,12 @@ app.param(["type", "typeId"], (req, res, next, id) => {
     next();
 });
 
-app.get("/api/:type", (req, res, next) => {
-    // console.log(Types[req.type]);
-    res.status(200).send(db.getAllFromDatabase(req.type));
-});
-
-
-app.get("/api/:type/:typeId", (req, res, next) => {
-    // console.log(req.path.split("/"));
-    // console.log(req.typeId);
+app.get("/api/:type/:typeId?", (req, res, next) => {
     const types = db.getAllFromDatabase(req.type);
     const idIndex = getIndex(types, req.typeId);
-    // console.log(types);
-    if (idIndex !== undefined) {
+    if (req.typeId === undefined) {
+        res.status(200).send(db.getAllFromDatabase(req.type));
+    } else if (idIndex !== undefined) {
         res.status(200).send(types[idIndex]);
     } else {
         res.status(404).send();
@@ -105,17 +95,20 @@ app.post("/api/:type", (req, res, next) => {
     }
 });
 
-app.delete("/api/:type/:typeId", (req, res, next) => {
+app.delete("/api/:type/:typeId?", (req, res, next) => {
     const typeDb = db.getAllFromDatabase(req.type);
     const idIndex = getIndex(typeDb, req.typeId);
-    if (idIndex > -1) {
+    if (req.typeId === undefined) {
+        db.deleteAllFromDatabase(req.type);
+        res.status(204).send();
+    } else if (idIndex > -1 && req.typeId) {
         db.deleteFromDatabasebyId(req.type, req.typeId);
         res.status(204).send();
     } else {
         res.status(404).send();
     }
-    res.status(404).send();
 });
+
 
 // Mount your existing apiRouter below at the '/api' path.
 const apiRouter = require("./server/api");
