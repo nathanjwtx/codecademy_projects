@@ -65,7 +65,13 @@ won the most winter medals, along with the number of medals aliased to 'count'.
 */
 
 const mostWinterWins = country => {
-  return;
+    const query = (`select year, count(*)
+        from goldmedal
+        where country = "${country}"
+        and season = "Winter"
+        group by year
+        limit 1;`);
+    return query;
 };
 
 /*
@@ -74,7 +80,13 @@ won the most medals, along with the number of medals aliased to 'count'.
 */
 
 const bestYear = country => {
-  return;
+    const query = (`select year, count(*) as Count
+        from goldmedal
+        where country = "${country}"
+        group by year
+        order by count desc
+        limit 1;`);
+    return query;
 };
 
 /*
@@ -83,7 +95,13 @@ won the most medals, along with the number of medals aliased to 'count'.
 */
 
 const bestDiscipline = country => {
-  return;
+    const query = (`select discipline, count(*) as Count
+        from goldmedal
+        where country = "${country}"
+        group by discipline
+        order by count desc
+        limit 1;`);
+    return query;
 };
 
 /*

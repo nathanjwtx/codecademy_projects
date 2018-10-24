@@ -298,98 +298,98 @@ describe('mostSummerWins', function() {
   });
 });
 
-// describe('mostWinterWins', function() {
-//   it('a function called mostWinterWins exists', function() {
-//     expect(sql.mostWinterWins).to.exist;
-//     expect(typeof sql.mostWinterWins).to.equal('function');
-//   });
+describe('mostWinterWins', function() {
+  it('a function called mostWinterWins exists', function() {
+    expect(sql.mostWinterWins).to.exist;
+    expect(typeof sql.mostWinterWins).to.equal('function');
+  });
 
-//   it('should return a SQL query string that retrieves the year a country won its most winter gold medals', function(done) {
-//     const query = sql.mostWinterWins('Russia');
-//     seededDb.get(query, (error, result) => {
-//       let year = result && result.year;
-//       if (year === 1981) {
-//         done();
-//       } else {
-//         done(new Error(error || `Expected year to be 1980, actual value was ${year}`));
-//       }
-//     });
-//   });
+  it('should return a SQL query string that retrieves the year a country won its most winter gold medals', function(done) {
+    const query = sql.mostWinterWins('Russia');
+    seededDb.get(query, (error, result) => {
+      let year = result && result.year;
+      if (year === 1981) {
+        done();
+      } else {
+        done(new Error(error || `Expected year to be 1980, actual value was ${year}`));
+      }
+    });
+  });
 
-//   it('should return a SQL query string that retrieves the number of gold medals a country won in their best winter', function(done) {
-//     const query = sql.mostSummerWins('Russia');
-//     seededDb.get(query, (error, result) => {
-//       let count = getCount(result);
-//       if (count === 2) {
-//         done();
-//       } else {
-//         done(new Error(error || `Expected count to be 2, actual value was ${count}`));
-//       }
-//     });
-//   });
-// });
+  it('should return a SQL query string that retrieves the number of gold medals a country won in their best winter', function(done) {
+    const query = sql.mostSummerWins('Russia');
+    seededDb.get(query, (error, result) => {
+      let count = getCount(result);
+      if (count === 2) {
+        done();
+      } else {
+        done(new Error(error || `Expected count to be 2, actual value was ${count}`));
+      }
+    });
+  });
+});
 
-// describe('bestYear', function() {
-//   it('a function called bestYear exists', function() {
-//     expect(sql.bestYear).to.exist;
-//     expect(typeof sql.bestYear).to.equal('function');
-//   });
+describe('bestYear', function() {
+  it('a function called bestYear exists', function() {
+    expect(sql.bestYear).to.exist;
+    expect(typeof sql.bestYear).to.equal('function');
+  });
 
-//   it('should return a SQL query string that retrieves the year a country won the most gedals', function(done) {
-//     const query = sql.bestYear('Paraguay');
-//     seededDb.get(query, (error, result) => {
-//       let year = result && result.year;
-//       if (year === 1961) {
-//         done();
-//       } else {
-//         done(new Error(error || `Expected year to be 1961, actual value was ${year}`));
-//       }
-//     });
-//   });
+  it('should return a SQL query string that retrieves the year a country won the most gedals', function(done) {
+    const query = sql.bestYear('Paraguay');
+    seededDb.get(query, (error, result) => {
+      let year = result && result.year;
+      if (year === 1961) {
+        done();
+      } else {
+        done(new Error(error || `Expected year to be 1961, actual value was ${year}`));
+      }
+    });
+  });
 
-//   it('should return a SQL query string that retrieves the number of medals a country won in their best year', function(done) {
-//     const query = sql.bestYear('Paraguay');
-//     seededDb.get(query, (error, result) => {
-//       let count = getCount(result);
-//       if (count === 2) {
-//         done();
-//       } else {
-//         done(new Error(error || `Expected count to be 2, actual value was ${count}`));
-//       }
-//     });
-//   });
-// });
+  it('should return a SQL query string that retrieves the number of medals a country won in their best year', function(done) {
+    const query = sql.bestYear('Paraguay');
+    seededDb.get(query, (error, result) => {
+      let count = getCount(result);
+      if (count === 2) {
+        done();
+      } else {
+        done(new Error(error || `Expected count to be 2, actual value was ${count}`));
+      }
+    });
+  });
+});
 
-// describe('bestDiscipline', function() {
-//   it('a function called bestDiscipline exists', function() {
-//     expect(sql.bestDiscipline).to.exist;
-//     expect(typeof sql.bestDiscipline).to.equal('function');
-//   });
+describe('bestDiscipline', function() {
+  it('a function called bestDiscipline exists', function() {
+    expect(sql.bestDiscipline).to.exist;
+    expect(typeof sql.bestDiscipline).to.equal('function');
+  });
 
-//   it('should return a SQL query string that retrieves the discipline a country has won the most gold medals in', function(done) {
-//     const query = sql.bestDiscipline('United States');
-//     seededDb.get(query, (error, result) => {
-//       let discipline = result && result.discipline;
-//       if (discipline === 'Jumping') {
-//         done();
-//       } else {
-//         done(new Error(error || `Expected discipline to be Jumping, actual value was ${discipline}`));
-//       }
-//     });
-//   });
+  it('should return a SQL query string that retrieves the discipline a country has won the most gold medals in', function(done) {
+    const query = sql.bestDiscipline('United States');
+    seededDb.get(query, (error, result) => {
+      let discipline = result && result.discipline;
+      if (discipline === 'Jumping') {
+        done();
+      } else {
+        done(new Error(error || `Expected discipline to be Jumping, actual value was ${discipline}`));
+      }
+    });
+  });
 
-//   it('should return a SQL query string that retrieves the number of times a country won their best discipline', function(done) {
-//     const query = sql.bestDiscipline('United States');
-//     seededDb.get(query, (error, result) => {
-//       let count = getCount(result);
-//       if (count === 2) {
-//         done();
-//       } else {
-//         done(new Error(error || `Expected count to be 2, actual value was ${count}`));
-//       }
-//     });
-//   });
-// });
+  it('should return a SQL query string that retrieves the number of times a country won their best discipline', function(done) {
+    const query = sql.bestDiscipline('United States');
+    seededDb.get(query, (error, result) => {
+      let count = getCount(result);
+      if (count === 2) {
+        done();
+      } else {
+        done(new Error(error || `Expected count to be 2, actual value was ${count}`));
+      }
+    });
+  });
+});
 
 // describe('bestSport', function() {
 //   it('a function called bestSport exists', function() {
