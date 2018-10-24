@@ -21,231 +21,231 @@ describe("createCountryTable", function() {
         emptyDb.run("DROP TABLE IF EXISTS Country", done);
     });
 
-    //   it('a function called createCountryTable exists', function() {
-    //     expect(sql.createCountryTable).to.exist;
-    //     expect(typeof sql.createCountryTable).to.equal('function');
-    //   });
+    it("a function called createCountryTable exists", function() {
+        expect(sql.createCountryTable).to.exist;
+        expect(typeof sql.createCountryTable).to.equal("function");
+    });
 
-    //   it('should return a SQL query string that creates a table called Country', function(done) {
-    //     const query = sql.createCountryTable();
-    //     emptyDb.run(query, () => {
-    //       emptyDb.get("SELECT name FROM sqlite_master WHERE type='table' AND name='Country'", (error, table) => {
-    //         if (error || !table) {
-    //           done(new Error(error || 'Country table not found'));
-    //         }
-    //         if (table) {
-    //           done();
-    //         }
-    //       });
-    //     });
-    //   });
+    it("should return a SQL query string that creates a table called Country", function(done) {
+        const query = sql.createCountryTable();
+        emptyDb.run(query, () => {
+            emptyDb.get("SELECT name FROM sqlite_master WHERE type='table' AND name='Country'", (error, table) => {
+                if (error || !table) {
+                    done(new Error(error || "Country table not found"));
+                }
+                if (table) {
+                    done();
+                }
+            });
+        });
+    });
 
-    //   it('should return a SQL query string that creates a Country table with name, code, gdp, and population columns', function(done) {
-    //     const query = sql.createCountryTable();
-    //     emptyDb.run(query, () => {
-    //       emptyDb.run("INSERT INTO Country (name, code, gdp, population) VALUES ('Angola', 'ANG', 25021974, 4101.47215182964)", (error) => {
-    //         if (error) {
-    //           done(new Error(error));
-    //         } else {
-    //           done();
-    //         }
-    //       });
-    //     });
-    //   });
+    it("should return a SQL query string that creates a Country table with name, code, gdp, and population columns", function(done) {
+        const query = sql.createCountryTable();
+        emptyDb.run(query, () => {
+            emptyDb.run("INSERT INTO Country (name, code, gdp, population) VALUES ('Angola', 'ANG', 25021974, 4101.47215182964)", (error) => {
+                if (error) {
+                    done(new Error(error));
+                } else {
+                    done();
+                }
+            });
+        });
+    });
 
-    //   it('should return a SQL query string that creates a Country table with a required name column', function(done) {
-    //     const query = sql.createCountryTable();
-    //     emptyDb.run(query, () => {
-    //       emptyDb.run("INSERT INTO Country (code, gdp, population) VALUES ('ANG', 25021974, 4101.47215182964)", (error) => {
-    //         if (error && error.toString().includes('NOT NULL constraint failed')) {
-    //           done();
-    //         } else {
-    //           done(new Error(error));
-    //         }
-    //       });
-    //     });
-    //   });
+    it("should return a SQL query string that creates a Country table with a required name column", function(done) {
+        const query = sql.createCountryTable();
+        emptyDb.run(query, () => {
+            emptyDb.run("INSERT INTO Country (code, gdp, population) VALUES ('ANG', 25021974, 4101.47215182964)", (error) => {
+                if (error && error.toString().includes("NOT NULL constraint failed")) {
+                    done();
+                } else {
+                    done(new Error(error));
+                }
+            });
+        });
+    });
 
-    //   it('should return a SQL query string that creates a Country table with a required code column', function(done) {
-    //     const query = sql.createCountryTable();
-    //     emptyDb.run(query, () => {
-    //       emptyDb.run("INSERT INTO Country (name, gdp, population) VALUES ('Angola', 25021974, 4101.47215182964)", (error) => {
-    //         if (error && error.toString().includes('NOT NULL constraint failed')) {
-    //           done();
-    //         } else {
-    //           done(new Error(error));
-    //         }
-    //       });
-    //     });
-    //   });
+    it("should return a SQL query string that creates a Country table with a required code column", function(done) {
+        const query = sql.createCountryTable();
+        emptyDb.run(query, () => {
+            emptyDb.run("INSERT INTO Country (name, gdp, population) VALUES ('Angola', 25021974, 4101.47215182964)", (error) => {
+                if (error && error.toString().includes("NOT NULL constraint failed")) {
+                    done();
+                } else {
+                    done(new Error(error));
+                }
+            });
+        });
+    });
 
-    //   it('should return a SQL query string that creates a Country table with non-required gdp and population columns', function(done) {
-    //     const query = sql.createCountryTable();
-    //     emptyDb.run(query, () => {
-    //       emptyDb.run("INSERT INTO Country (name, code) VALUES ('Angola', 'ANG')", (error) => {
-    //         if (error) {
-    //           done(new Error(error));
-    //         } else {
-    //           done();
-    //         }
-    //       });
-    //     });
-    //   });
-    // });
+    it("should return a SQL query string that creates a Country table with non-required gdp and population columns", function(done) {
+        const query = sql.createCountryTable();
+        emptyDb.run(query, () => {
+            emptyDb.run("INSERT INTO Country (name, code) VALUES ('Angola', 'ANG')", (error) => {
+                if (error) {
+                    done(new Error(error));
+                } else {
+                    done();
+                }
+            });
+        });
+    });
+});
 
-    // describe('createGoldMedalTable', function() {
-    //   afterEach(function(done) {
-    //     emptyDb.run('DROP TABLE IF EXISTS GoldMedal', done);
-    //   });
+describe("createGoldMedalTable", function() {
+    afterEach(function(done) {
+        emptyDb.run("DROP TABLE IF EXISTS GoldMedal", done);
+    });
 
-    //   it('a function called createGoldMedalTable exists', function() {
-    //     expect(sql.createGoldMedalTable).to.exist;
-    //     expect(typeof sql.createGoldMedalTable).to.equal('function');
-    //   });
+    it("a function called createGoldMedalTable exists", function() {
+        expect(sql.createGoldMedalTable).to.exist;
+        expect(typeof sql.createGoldMedalTable).to.equal("function");
+    });
 
-    //   it('should return a SQL query string that creates a table called GoldMedal', function(done) {
-    //     const query = sql.createGoldMedalTable();
-    //     emptyDb.run(query, () => {
-    //       emptyDb.get("SELECT name FROM sqlite_master WHERE type='table' AND name='GoldMedal'", (error, table) => {
-    //         if (error || !table) {
-    //           done(new Error(error || 'GoldMedal table not found'));
-    //         }
-    //         if (table) {
-    //           done();
-    //         }
-    //       });
-    //     });
-    //   });
+    it("should return a SQL query string that creates a table called GoldMedal", function(done) {
+        const query = sql.createGoldMedalTable();
+        emptyDb.run(query, () => {
+            emptyDb.get("SELECT name FROM sqlite_master WHERE type='table' AND name='GoldMedal'", (error, table) => {
+                if (error || !table) {
+                    done(new Error(error || "GoldMedal table not found"));
+                }
+                if (table) {
+                    done();
+                }
+            });
+        });
+    });
 
-    //   it('should return a SQL query string that creates a GoldMedal table with all necessary columns', function(done) {
-    //     const query = sql.createGoldMedalTable();
-    //     emptyDb.run(query, () => {
-    //       emptyDb.run("INSERT INTO GoldMedal (year, name, event, gender, sport, discipline, city, country, season) VALUES (1991, 'Mike D', '100km', 'Men', 'Running', 'Track', 'Athens', 'Greece', 'Summer')", (error) => {
-    //         if (error) {
-    //           done(new Error(error));
-    //         } else {
-    //           done();
-    //         }
-    //       });
-    //     });
-    //   });
+    it("should return a SQL query string that creates a GoldMedal table with all necessary columns", function(done) {
+        const query = sql.createGoldMedalTable();
+        emptyDb.run(query, () => {
+            emptyDb.run("INSERT INTO GoldMedal (year, name, event, gender, sport, discipline, city, country, season) VALUES (1991, 'Mike D', '100km', 'Men', 'Running', 'Track', 'Athens', 'Greece', 'Summer')", (error) => {
+                if (error) {
+                    done(new Error(error));
+                } else {
+                    done();
+                }
+            });
+        });
+    });
 
-    //   it('should return a SQL query string that creates a Country table with a required year column', function(done) {
-    //     const query = sql.createGoldMedalTable();
-    //     emptyDb.run(query, () => {
-    //       emptyDb.run("INSERT INTO GoldMedal (name, event, gender, sport, discipline, city, country, season) VALUES ('Mike D', '100km', 'Men', 'Running', 'Track', 'Athens', 'Greece', 'Summer')", (error) => {
-    //         if (error && error.toString().includes('NOT NULL constraint failed')) {
-    //           done();
-    //         } else {
-    //           done(new Error(error));
-    //         }
-    //       });
-    //     });
-    //   });
+    it("should return a SQL query string that creates a Country table with a required year column", function(done) {
+        const query = sql.createGoldMedalTable();
+        emptyDb.run(query, () => {
+            emptyDb.run("INSERT INTO GoldMedal (name, event, gender, sport, discipline, city, country, season) VALUES ('Mike D', '100km', 'Men', 'Running', 'Track', 'Athens', 'Greece', 'Summer')", (error) => {
+                if (error && error.toString().includes("NOT NULL constraint failed")) {
+                    done();
+                } else {
+                    done(new Error(error));
+                }
+            });
+        });
+    });
 
-    //   it('should return a SQL query string that creates a Country table with a required name column', function(done) {
-    //     const query = sql.createGoldMedalTable();
-    //     emptyDb.run(query, () => {
-    //       emptyDb.run("INSERT INTO GoldMedal (year, event, gender, sport, discipline, city, country, season) VALUES (1991, '100km', 'Men', 'Running', 'Track', 'Athens', 'Greece', 'Summer')", (error) => {
-    //         if (error && error.toString().includes('NOT NULL constraint failed')) {
-    //           done();
-    //         } else {
-    //           done(new Error(error));
-    //         }
-    //       });
-    //     });
-    //   });
+    it("should return a SQL query string that creates a Country table with a required name column", function(done) {
+        const query = sql.createGoldMedalTable();
+        emptyDb.run(query, () => {
+            emptyDb.run("INSERT INTO GoldMedal (year, event, gender, sport, discipline, city, country, season) VALUES (1991, '100km', 'Men', 'Running', 'Track', 'Athens', 'Greece', 'Summer')", (error) => {
+                if (error && error.toString().includes("NOT NULL constraint failed")) {
+                    done();
+                } else {
+                    done(new Error(error));
+                }
+            });
+        });
+    });
 
-    //   it('should return a SQL query string that creates a Country table with a required event column', function(done) {
-    //     const query = sql.createGoldMedalTable();
-    //     emptyDb.run(query, () => {
-    //       emptyDb.run("INSERT INTO GoldMedal (year, name, gender, sport, discipline, city, country, season) VALUES (1991, 'Mike D', 'Men', 'Running', 'Track', 'Athens', 'Greece', 'Summer')", (error) => {
-    //         if (error && error.toString().includes('NOT NULL constraint failed')) {
-    //           done();
-    //         } else {
-    //           done(new Error(error));
-    //         }
-    //       });
-    //     });
-    //   });
+    it("should return a SQL query string that creates a Country table with a required event column", function(done) {
+        const query = sql.createGoldMedalTable();
+        emptyDb.run(query, () => {
+            emptyDb.run("INSERT INTO GoldMedal (year, name, gender, sport, discipline, city, country, season) VALUES (1991, 'Mike D', 'Men', 'Running', 'Track', 'Athens', 'Greece', 'Summer')", (error) => {
+                if (error && error.toString().includes("NOT NULL constraint failed")) {
+                    done();
+                } else {
+                    done(new Error(error));
+                }
+            });
+        });
+    });
 
-    //   it('should return a SQL query string that creates a Country table with a required gender column', function(done) {
-    //     const query = sql.createGoldMedalTable();
-    //     emptyDb.run(query, () => {
-    //       emptyDb.run("INSERT INTO GoldMedal (year, name, event, sport, discipline, city, country, season) VALUES (1991, 'Mike D', '100km', 'Running', 'Track', 'Athens', 'Greece', 'Summer')", (error) => {
-    //         if (error && error.toString().includes('NOT NULL constraint failed')) {
-    //           done();
-    //         } else {
-    //           done(new Error(error));
-    //         }
-    //       });
-    //     });
-    //   });
+    it("should return a SQL query string that creates a Country table with a required gender column", function(done) {
+        const query = sql.createGoldMedalTable();
+        emptyDb.run(query, () => {
+            emptyDb.run("INSERT INTO GoldMedal (year, name, event, sport, discipline, city, country, season) VALUES (1991, 'Mike D', '100km', 'Running', 'Track', 'Athens', 'Greece', 'Summer')", (error) => {
+                if (error && error.toString().includes("NOT NULL constraint failed")) {
+                    done();
+                } else {
+                    done(new Error(error));
+                }
+            });
+        });
+    });
 
-    //   it('should return a SQL query string that creates a Country table with a required sport column', function(done) {
-    //     const query = sql.createGoldMedalTable();
-    //     emptyDb.run(query, () => {
-    //       emptyDb.run("INSERT INTO GoldMedal (year, name, event, gender, discipline, city, country, season) VALUES (1991, 'Mike D', '100km', 'Men', 'Track', 'Athens', 'Greece', 'Summer')", (error) => {
-    //         if (error && error.toString().includes('NOT NULL constraint failed')) {
-    //           done();
-    //         } else {
-    //           done(new Error(error));
-    //         }
-    //       });
-    //     });
-    //   });
+    it("should return a SQL query string that creates a Country table with a required sport column", function(done) {
+        const query = sql.createGoldMedalTable();
+        emptyDb.run(query, () => {
+            emptyDb.run("INSERT INTO GoldMedal (year, name, event, gender, discipline, city, country, season) VALUES (1991, 'Mike D', '100km', 'Men', 'Track', 'Athens', 'Greece', 'Summer')", (error) => {
+                if (error && error.toString().includes("NOT NULL constraint failed")) {
+                    done();
+                } else {
+                    done(new Error(error));
+                }
+            });
+        });
+    });
 
-    //   it('should return a SQL query string that creates a Country table with a required discipline column', function(done) {
-    //     const query = sql.createGoldMedalTable();
-    //     emptyDb.run(query, () => {
-    //       emptyDb.run("INSERT INTO GoldMedal (year, name, event, gender, sport, city, country, season) VALUES (1991, 'Mike D', '100km', 'Men', 'Running', 'Athens', 'Greece', 'Summer')", (error) => {
-    //         if (error && error.toString().includes('NOT NULL constraint failed')) {
-    //           done();
-    //         } else {
-    //           done(new Error(error));
-    //         }
-    //       });
-    //     });
-    //   });
+    it("should return a SQL query string that creates a Country table with a required discipline column", function(done) {
+        const query = sql.createGoldMedalTable();
+        emptyDb.run(query, () => {
+            emptyDb.run("INSERT INTO GoldMedal (year, name, event, gender, sport, city, country, season) VALUES (1991, 'Mike D', '100km', 'Men', 'Running', 'Athens', 'Greece', 'Summer')", (error) => {
+                if (error && error.toString().includes("NOT NULL constraint failed")) {
+                    done();
+                } else {
+                    done(new Error(error));
+                }
+            });
+        });
+    });
 
-    //   it('should return a SQL query string that creates a Country table with a required city column', function(done) {
-    //     const query = sql.createGoldMedalTable();
-    //     emptyDb.run(query, () => {
-    //       emptyDb.run("INSERT INTO GoldMedal (year, name, event, gender, sport, discipline, country, season) VALUES (1991, 'Mike D', '100km', 'Men', 'Running', 'Track', 'Greece', 'Summer')", (error) => {
-    //         if (error && error.toString().includes('NOT NULL constraint failed')) {
-    //           done();
-    //         } else {
-    //           done(new Error(error));
-    //         }
-    //       });
-    //     });
-    //   });
+    it("should return a SQL query string that creates a Country table with a required city column", function(done) {
+        const query = sql.createGoldMedalTable();
+        emptyDb.run(query, () => {
+            emptyDb.run("INSERT INTO GoldMedal (year, name, event, gender, sport, discipline, country, season) VALUES (1991, 'Mike D', '100km', 'Men', 'Running', 'Track', 'Greece', 'Summer')", (error) => {
+                if (error && error.toString().includes("NOT NULL constraint failed")) {
+                    done();
+                } else {
+                    done(new Error(error));
+                }
+            });
+        });
+    });
 
-    //   it('should return a SQL query string that creates a Country table with a required country column', function(done) {
-    //     const query = sql.createGoldMedalTable();
-    //     emptyDb.run(query, () => {
-    //       emptyDb.run("INSERT INTO GoldMedal (year, name, event, gender, sport, discipline, city, season) VALUES (1991, 'Mike D', '100km', 'Men', 'Running', 'Track', 'Athens', 'Summer')", (error) => {
-    //         if (error && error.toString().includes('NOT NULL constraint failed')) {
-    //           done();
-    //         } else {
-    //           done(new Error(error));
-    //         }
-    //       });
-    //     });
-    //   });
+    it("should return a SQL query string that creates a Country table with a required country column", function(done) {
+        const query = sql.createGoldMedalTable();
+        emptyDb.run(query, () => {
+            emptyDb.run("INSERT INTO GoldMedal (year, name, event, gender, sport, discipline, city, season) VALUES (1991, 'Mike D', '100km', 'Men', 'Running', 'Track', 'Athens', 'Summer')", (error) => {
+                if (error && error.toString().includes("NOT NULL constraint failed")) {
+                    done();
+                } else {
+                    done(new Error(error));
+                }
+            });
+        });
+    });
 
-//   it('should return a SQL query string that creates a Country table with a required season column', function(done) {
-//     const query = sql.createGoldMedalTable();
-//     emptyDb.run(query, () => {
-//       emptyDb.run("INSERT INTO GoldMedal (year, name, event, gender, sport, discipline, city, country) VALUES (1991, 'Mike D', '100km', 'Men', 'Running', 'Track', 'Athens', 'Greece')", (error) => {
-//         if (error && error.toString().includes('NOT NULL constraint failed')) {
-//           done();
-//         } else {
-//           done(new Error(error));
-//         }
-//       });
-//     });
-//   });
+    it("should return a SQL query string that creates a Country table with a required season column", function(done) {
+        const query = sql.createGoldMedalTable();
+        emptyDb.run(query, () => {
+            emptyDb.run("INSERT INTO GoldMedal (year, name, event, gender, sport, discipline, city, country) VALUES (1991, 'Mike D', '100km', 'Men', 'Running', 'Track', 'Athens', 'Greece')", (error) => {
+                if (error && error.toString().includes("NOT NULL constraint failed")) {
+                    done();
+                } else {
+                    done(new Error(error));
+                }
+            });
+        });
+    });
 });
 
 describe("goldMedalNumber", function() {
@@ -586,72 +586,72 @@ describe("orderedMedals", function() {
     });
 });
 
-// describe('orderedSports', function() {
-//   it('a function called orderedSports exists', function() {
-//     expect(sql.orderedSports).to.exist;
-//     expect(typeof sql.orderedSports).to.equal('function');
-//   });
+describe("orderedSports", function() {
+    it("a function called orderedSports exists", function() {
+        expect(sql.orderedSports).to.exist;
+        expect(typeof sql.orderedSports).to.equal("function");
+    });
 
-//   it('should return a SQL query string that filters by a country', function(done) {
-//     const query = sql.orderedSports('Slovenia');
-//     seededDb.all(query, (error, result) => {
-//       const resultNames = result.map(row => { return row.sport; });
-//       const expectedNames = ['Football', 'Zootball'];
-//       const resultsAreExpected = resultNames.every(name => { return expectedNames.includes(name); });
-//       if (result.length === 2 && resultsAreExpected) {
-//         done();
-//       } else if (error) {
-//         done(new Error(error));
-//       } else if (result.length !== 2) {
-//         done(new Error(`Expected query to return 2 sports, actual number of returned sports was ${result.length}`));
-//       } else {
-//         done(new Error(`Expected returned sports to contain 'Football' and 'Zootball', actual values were ${result[0].sport} and ${result[1].sport}`));
-//       }
-//     });
-//   });
+    it("should return a SQL query string that filters by a country", function(done) {
+        const query = sql.orderedSports("Slovenia");
+        seededDb.all(query, (error, result) => {
+            const resultNames = result.map(row => { return row.sport; });
+            const expectedNames = ["Football", "Zootball"];
+            const resultsAreExpected = resultNames.every(name => { return expectedNames.includes(name); });
+            if (result.length === 2 && resultsAreExpected) {
+                done();
+            } else if (error) {
+                done(new Error(error));
+            } else if (result.length !== 2) {
+                done(new Error(`Expected query to return 2 sports, actual number of returned sports was ${result.length}`));
+            } else {
+                done(new Error(`Expected returned sports to contain 'Football' and 'Zootball', actual values were ${result[0].sport} and ${result[1].sport}`));
+            }
+        });
+    });
 
-//   it('should return a SQL query string that retrieves sports optionally ordered ascending by a given field', function(done) {
-//     const query = sql.orderedSports('Slovenia', 'sport', true);
-//     seededDb.all(query, (error, result) => {
-//       if (result.length === 2 && result[0].sport === 'Football') {
-//         done();
-//       } else if (error) {
-//         done(new Error(error));
-//       } else if (result.length !== 2) {
-//         done(new Error(`Expected query to return 2 sports, actual number of returned sports was ${result.length}`));
-//       } else {
-//         done(new Error(`Expected first returned sport to be Football, actual value was ${result[0].sport}`));
-//       }
-//     });
-//   });
+    it("should return a SQL query string that retrieves sports optionally ordered ascending by a given field", function(done) {
+        const query = sql.orderedSports("Slovenia", "sport", true);
+        seededDb.all(query, (error, result) => {
+            if (result.length === 2 && result[0].sport === "Football") {
+                done();
+            } else if (error) {
+                done(new Error(error));
+            } else if (result.length !== 2) {
+                done(new Error(`Expected query to return 2 sports, actual number of returned sports was ${result.length}`));
+            } else {
+                done(new Error(`Expected first returned sport to be Football, actual value was ${result[0].sport}`));
+            }
+        });
+    });
 
-//   it('should return a SQL query string that retrieves sports optionally ordered descending by a given field', function(done) {
-//     const query = sql.orderedSports('Slovenia', 'sport', false);
-//     seededDb.all(query, (error, result) => {
-//       if (result.length === 2 && result[0].sport === 'Zootball') {
-//         done();
-//       } else if (error) {
-//         done(new Error(error));
-//       } else if (result.length !== 2) {
-//         done(new Error(`Expected query to return 2 sports, actual number of returned sports was ${result.length}`));
-//       } else {
-//         done(new Error(`Expected first returned sport to be Zootball, actual value was ${result[0].sport}`));
-//       }
-//     });
-//   });
+    it("should return a SQL query string that retrieves sports optionally ordered descending by a given field", function(done) {
+        const query = sql.orderedSports("Slovenia", "sport", false);
+        seededDb.all(query, (error, result) => {
+            if (result.length === 2 && result[0].sport === "Zootball") {
+                done();
+            } else if (error) {
+                done(new Error(error));
+            } else if (result.length !== 2) {
+                done(new Error(`Expected query to return 2 sports, actual number of returned sports was ${result.length}`));
+            } else {
+                done(new Error(`Expected first returned sport to be Zootball, actual value was ${result[0].sport}`));
+            }
+        });
+    });
 
-//   it('should return a SQL query string that calculates the percentage of wins that country has in each sport', function(done) {
-//     const query = sql.orderedSports('Slovenia', 'sport', true);
-//     seededDb.all(query, (error, result) => {
-//       if (result.length === 2 && result[0].percent === 75) {
-//         done();
-//       } else if (error) {
-//         done(new Error(error));
-//       } else if (result.length !== 2) {
-//         done(new Error(`Expected query to return 2 sports, actual number of returned sports was ${result.length}`));
-//       } else {
-//         done(new Error(`Expected Football to represent 75%, actual value was ${result[0].name}%`));
-//       }
-//     });
-//   });
-// });
+    it("should return a SQL query string that calculates the percentage of wins that country has in each sport", function(done) {
+        const query = sql.orderedSports("Slovenia", "sport", true);
+        seededDb.all(query, (error, result) => {
+            if (result.length === 2 && result[0].percent === 75) {
+                done();
+            } else if (error) {
+                done(new Error(error));
+            } else if (result.length !== 2) {
+                done(new Error(`Expected query to return 2 sports, actual number of returned sports was ${result.length}`));
+            } else {
+                done(new Error(`Expected Football to represent 75%, actual value was ${result[0].name}%`));
+            }
+        });
+    });
+});
