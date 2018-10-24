@@ -1,5 +1,5 @@
-var sqlite3 = require('sqlite3');
-var db = new sqlite3.Database('./gold_medals.sqlite');
+var sqlite3 = require("sqlite3");
+var db = new sqlite3.Database("./gold_medals.sqlite");
 
 /*
 Returns a SQL query string that will create the Country table with four columns: name (required), code (required), gdp, and population.
@@ -31,7 +31,7 @@ const createGoldMedalTable = () => {
         discipline text not null,
         event text not null
     );`;
-  return query;
+    return query;
 };
 
 /*
@@ -56,7 +56,7 @@ const mostSummerWins = country => {
         group by year
         order by count desc
         limit 1;`);
-  return query;
+    return query;
 };
 
 /*
@@ -110,7 +110,13 @@ won the most medals, along with the number of medals aliased to 'count'.
 */
 
 const bestSport = country => {
-  return;
+    const query = (`select sport, count(*) as Count
+        from goldmedal
+        where country = "${country}"
+        group by discipline
+        order by count desc
+        limit 1;`);
+    return query;
 };
 
 /*
@@ -119,7 +125,13 @@ won the most medals, along with the number of medals aliased to 'count'.
 */
 
 const bestEvent = country => {
-  return;
+    const query = (`select event, count(*) as Count
+        from goldmedal
+        where country = "${country}"
+        group by discipline
+        order by count desc
+        limit 1;`);
+    return query;
 };
 
 /*
@@ -127,7 +139,12 @@ Returns a SQL query string that will find the number of male medalists.
 */
 
 const numberMenMedalists = country => {
-  return;
+    const query = (`select count(distinct name) as Count
+        from goldmedal
+        where gender = "Men"
+        and country = "${country}"
+        ;`);
+    return query;
 };
 
 /*
@@ -135,7 +152,12 @@ Returns a SQL query string that will find the number of female medalists.
 */
 
 const numberWomenMedalists = country => {
-  return;
+    const query = (`select count(distinct name) as Count
+        from goldmedal
+        where gender = "Women"
+        and country = "${country}"
+        ;`);
+    return query;
 };
 
 /*
@@ -143,7 +165,7 @@ Returns a SQL query string that will find the athlete with the most medals.
 */
 
 const mostMedaledAthlete = country => {
-  return;
+    return;
 };
 
 /*
@@ -152,7 +174,7 @@ optionally ordered by the given field in the specified direction.
 */
 
 const orderedMedals = (country, field, sortAscending) => {
-  return;
+    return;
 };
 
 /*
@@ -163,22 +185,22 @@ aliased as 'percent'. Optionally ordered by the given field in the specified dir
 */
 
 const orderedSports = (country, field, sortAscending) => {
-  return;
+    return;
 };
 
 module.exports = {
-  createCountryTable,
-  createGoldMedalTable,
-  goldMedalNumber,
-  mostSummerWins,
-  mostWinterWins,
-  bestDiscipline,
-  bestSport,
-  bestYear,
-  bestEvent,
-  numberMenMedalists,
-  numberWomenMedalists,
-  mostMedaledAthlete,
-  orderedMedals,
-  orderedSports
+    createCountryTable,
+    createGoldMedalTable,
+    goldMedalNumber,
+    mostSummerWins,
+    mostWinterWins,
+    bestDiscipline,
+    bestSport,
+    bestYear,
+    bestEvent,
+    numberMenMedalists,
+    numberWomenMedalists,
+    mostMedaledAthlete,
+    orderedMedals,
+    orderedSports
 };
