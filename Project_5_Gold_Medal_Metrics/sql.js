@@ -10,7 +10,7 @@ const createCountryTable = () => {
         name text not null,
         code text not null,
         gdp integer, 
-        population integer)`;
+        population integer);`;
     return query;
 };
 
@@ -30,7 +30,7 @@ const createGoldMedalTable = () => {
         sport text not null,
         discipline text not null,
         event text not null
-    )`;
+    );`;
   return query;
 };
 
@@ -39,7 +39,8 @@ Returns a SQL query string that will find the number of gold medals for the give
 */
 
 const goldMedalNumber = country => {
-    return;
+    const query = (`select count(*) from goldmedal where country = "${country}";`);
+    return query;
 };
 
 /*
@@ -48,7 +49,14 @@ won the most summer medals, along with the number of medals aliased to 'count'.
 */
 
 const mostSummerWins = country => {
-  return;
+    const query = (`select year, count(*) as Count
+        from goldmedal
+        where country = "${country}"
+        and season = "Summer"
+        group by year
+        order by count desc
+        limit 1;`);
+  return query;
 };
 
 /*
