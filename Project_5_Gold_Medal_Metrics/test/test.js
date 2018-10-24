@@ -515,76 +515,76 @@ describe("numberWomenMedalists", function() {
     });
 });
 
-// describe('mostMedaledAthlete', function() {
-//   it('a function called mostMedaledAthlete exists', function() {
-//     expect(sql.mostMedaledAthlete).to.exist;
-//     expect(typeof sql.mostMedaledAthlete).to.equal('function');
-//   });
+describe("mostMedaledAthlete", function() {
+    it("a function called mostMedaledAthlete exists", function() {
+        expect(sql.mostMedaledAthlete).to.exist;
+        expect(typeof sql.mostMedaledAthlete).to.equal("function");
+    });
 
-//   it('should return a SQL query string that retrieves the athlete with the most gold medals for a country', function(done) {
-//     const query = sql.mostMedaledAthlete('Canada');
-//     seededDb.get(query, (error, result) => {
-//       let name = result && result.name;
-//       if (name === 'Michael Phelps') {
-//         done();
-//       } else {
-//         done(new Error(error || `Expected athlete to be Michael Phelps, actual value was ${name}`));
-//       }
-//     });
-//   });
-// });
+    it("should return a SQL query string that retrieves the athlete with the most gold medals for a country", function(done) {
+        const query = sql.mostMedaledAthlete("Canada");
+        seededDb.get(query, (error, result) => {
+            let name = result && result.name;
+            if (name === "Michael Phelps") {
+                done();
+            } else {
+                done(new Error(error || `Expected athlete to be Michael Phelps, actual value was ${name}`));
+            }
+        });
+    });
+});
 
-// describe('orderedMedals', function() {
-//   it('a function called orderedMedals exists', function() {
-//     expect(sql.orderedMedals).to.exist;
-//     expect(typeof sql.orderedMedals).to.equal('function');
-//   });
+describe("orderedMedals", function() {
+    it("a function called orderedMedals exists", function() {
+        expect(sql.orderedMedals).to.exist;
+        expect(typeof sql.orderedMedals).to.equal("function");
+    });
 
-//   it('should return a SQL query string that filters by a country', function(done) {
-//     const query = sql.orderedMedals('France');
-//     seededDb.all(query, (error, result) => {
-//       if (result.length === 2 && (result[0].name === 'Babigail C' || result[1].name === 'Babigail C')) {
-//         done();
-//       } else if (error) {
-//         done(new Error(error));
-//       } else if (result.length !== 2) {
-//         done(new Error(`Expected query to return 2 medals, actual number of returned medals was ${result.length}`));
-//       } else {
-//         done(new Error(`Expected returned medal athlete names to contain Babigail C, actual values were ${result[0].name} and ${result[1].name}`));
-//       }
-//     });
-//   });
+    it("should return a SQL query string that filters by a country", function(done) {
+        const query = sql.orderedMedals("France");
+        seededDb.all(query, (error, result) => {
+            if (result.length === 2 && (result[0].name === "Babigail C" || result[1].name === "Babigail C")) {
+                done();
+            } else if (error) {
+                done(new Error(error));
+            } else if (result.length !== 2) {
+                done(new Error(`Expected query to return 2 medals, actual number of returned medals was ${result.length}`));
+            } else {
+                done(new Error(`Expected returned medal athlete names to contain Babigail C, actual values were ${result[0].name} and ${result[1].name}`));
+            }
+        });
+    });
 
-//   it('should return a SQL query string that retrieves medals optionally ordered ascending by a given field', function(done) {
-//     const query = sql.orderedMedals('Germany', 'name', true);
-//     seededDb.all(query, (error, result) => {
-//       if (result.length === 2 && result[0].name === 'Abigail C') {
-//         done();
-//       } else if (error) {
-//         done(new Error(error));
-//       } else if (result.length !== 2) {
-//         done(new Error(`Expected query to return 2 medals, actual number of returned medals was ${result.length}`));
-//       } else {
-//         done(new Error(`Expected first returned medal athlete name to be Abigail C, actual value was ${result[0].name}`));
-//       }
-//     });
-//   });
+    it("should return a SQL query string that retrieves medals optionally ordered ascending by a given field", function(done) {
+        const query = sql.orderedMedals("Germany", "name", true);
+        seededDb.all(query, (error, result) => {
+            if (result.length === 2 && result[0].name === "Abigail C") {
+                done();
+            } else if (error) {
+                done(new Error(error));
+            } else if (result.length !== 2) {
+                done(new Error(`Expected query to return 2 medals, actual number of returned medals was ${result.length}`));
+            } else {
+                done(new Error(`Expected first returned medal athlete name to be Abigail C, actual value was ${result[0].name}`));
+            }
+        });
+    });
 
-//   it('should return a SQL query string that retrieves medals optionally ordered descending by a given field', function(done) {
-//     const query = sql.orderedMedals('Germany', 'name', false);
-//     seededDb.all(query, (error, result) => {
-//       if (result.length === 2 && result[0].name === 'Zabigail C') {
-//         done();
-//       } else if (error) {
-//         done(new Error(error));
-//       } else if (result.length !== 2) {
-//         done(new Error(`Expected query to return 2 medals, actual number of returned medals was ${result.length}`));
-//       } else {
-//         done(new Error(`Expected first returned medal athlete name to be Zabigail C, actual value was ${result[0].name}`));
-//       }
-//     });
-//   });
-// });
+    it("should return a SQL query string that retrieves medals optionally ordered descending by a given field", function(done) {
+        const query = sql.orderedMedals("Germany", "name", false);
+        seededDb.all(query, (error, result) => {
+            if (result.length === 2 && result[0].name === "Zabigail C") {
+                done();
+            } else if (error) {
+                done(new Error(error));
+            } else if (result.length !== 2) {
+                done(new Error(`Expected query to return 2 medals, actual number of returned medals was ${result.length}`));
+            } else {
+                done(new Error(`Expected first returned medal athlete name to be Zabigail C, actual value was ${result[0].name}`));
+            }
+        });
+    });
+});
 
 // describe('orderedSports', function() {
 //   it('a function called orderedSports exists', function() {
