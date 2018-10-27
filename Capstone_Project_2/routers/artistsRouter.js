@@ -14,27 +14,28 @@ module.exports = artistRouter;
 
 // get all artists
 artistRouter.get("/", (req, res, next) => {
-    // console.log(req);
     let splitURL = req.baseUrl.split("/");
     if (!splitURL[3]) {
-        db.all("select * from artist;", (err, rows) => {
+        db.all("select * from artist where is_currently_employed = 1;", (err, rows) => {
             if (err) {
                 throw new Error(err);
             } else {
-                // console.log(rows);
                 return res.status(200).send({artists: rows});
             }
         });
-    // } else if (splitURL[3]) {
-    //     db.get("select * from artist where id = $id;", 
-    //         {$id: splitURL[3]}, (err, row) => {
-    //             if (err) {
-    //                 // throw new Error(err);
-    //                 return res.status(404).send();
-    //             } else {
-    //                 return res.status(200).send({artist: row})
-    //             }
-    //         });
+    } else if (splitURL[3]) {
+        db.get("select * from artist where id = $id;", 
+            {$id: splitURL[3]}, (err, row) => {
+                if (err) {
+                    throw new Error(err);
+                } else if (row) {
+                    return res.status(200).send({artist: row})
+                } else {
+                    return res.status(404).send();
+                }
+            });
+    } else {
+        return res.status(404).send();
     }
 });
 

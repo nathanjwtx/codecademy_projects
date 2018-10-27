@@ -4,8 +4,7 @@ const sqlite3 = require("sqlite3");
 
 const app = express();
 const db = new sqlite3.Database(process.env.TEST_DATABASE || "./database.sqlite");
-// const PORT = process.env.PORT || 4000;
-const PORT = 5500;
+const PORT = process.env.PORT || 4000;
 
 app.use(express.json());
 app.use(express.urlencoded());
@@ -15,7 +14,10 @@ app.use(express.static("public"));
 const artist = require("./routers/artistsRouter");
 
 
-app.use("/api/artists", artist);
+app.use("/api/artists/:id?", artist);
+
+// need this for testing
+module.exports = app;
 
 app.listen(PORT, () => {
     console.log(`Listening on ${PORT}`);
