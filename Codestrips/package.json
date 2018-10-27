@@ -13,8 +13,12 @@
   "license": "ISC",
   "dependencies": {
     "body-parser": "^1.18.3",
+    "chai": "^4.2.0",
     "express": "^4.16.4",
+    "mocha": "^5.2.0",
     "morgan": "^1.9.1",
-    "sqlite3": "^4.0.3"
+    "sqlite3": "^4.0.3",
+    "structured": "^0.1.2",
+    "supertest": "^3.3.0"
   }
 }

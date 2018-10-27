@@ -14,8 +14,6 @@ app.use(express.urlencoded());
 app.use(morgan("tiny"));
 app.use(express.static("public"));
 
-module.exports = app;
-
 app.get("/strips", (req, res, next) => {
     db.all("select * from Strip;", (err, rows) => {
         if (err) {
@@ -27,6 +25,8 @@ app.get("/strips", (req, res, next) => {
 });
 
 app.post("/strips", (req, res, next) => {
+    /* could have split out the validation into a seperate function and called
+    it as app.post("/strips", validationFunction...) */
     const head = req.body.strip.head;
     const body = req.body.strip.body;
     const bubble = req.body.strip.bubbleType;
@@ -34,23 +34,42 @@ app.post("/strips", (req, res, next) => {
     const bubtxt = req.body.strip.bubbleText;
     const cap = req.body.strip.caption;
 
-    db.run(`insert into Strip (head, body, bubble_type, background, bubble_text, 
-        caption) values ($head, $body, $bubble, $bkgrnd, $bubtxt, $cap);`, 
-    {$head: head,
-        $body: body,
-        $bubble: bubble,
-        $bkgrnd: bkgrnd,
-        $bubtxt: bubtxt,
-        $cap: cap}, 
-    (err) => {
-        if (err) {
-            console.error(err);
-        } else {
-            res.status(204).send();
-        }
-    });
+    if (head && body && bubble && bkgrnd) {
+        db.run(`insert into Strip (head, body, bubble_type, background, bubble_text, 
+            caption) values ($head, $body, $bubble, $bkgrnd, $bubtxt, $cap);`, 
+        {$head: head,
+            $body: body,
+            $bubble: bubble,
+            $bkgrnd: bkgrnd,
+            $bubtxt: bubtxt,
+            $cap: cap}, 
+        function (err) {
+            const rowID = this.lastID;
+            if (err) {
+                res.status(500).send();
+            } else {
+                db.get("select * from Strip where id = $id;", 
+                    {$id: rowID},
+                    (err, row) => {
+                        if (err) {
+                            res.status(500).send();
+                        } else {
+                            let result = {};
+                            result.strip = row;
+                            // combine the above 2 rows to {strip: row} inside
+                            // send(..)
+                            res.status(201).send(result);
+                        }
+                    });
+            }
+        });
+    } else {
+        res.status(400).send();
+    }
 });
 
 app.listen(PORT, () => {
     console.log(`Listening on ${PORT}`);
 });
+
+module.exports = app;
