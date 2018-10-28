@@ -81,11 +81,12 @@ artistRouter.post("/", validateArtist, (req, res, next) => {
 // update artist
 artistRouter.put("/", validateArtist, (req, res, next) => {
     const artistData = req.body.artist;
-    let rowID = artistData.id;
+    let rowID = req.baseUrl.split("/")[3];
     db.run(`update Artist 
     set name = $name, date_Of_Birth = $dob, biography = $bio, 
     is_currently_employed = $emp where id = $id`, 
-    {$id: artistData.id,
+    {
+        $id: rowID,
         $name: artistData.name,
         $dob: artistData.dateOfBirth,
         $bio: artistData.biography,
@@ -93,16 +94,36 @@ artistRouter.put("/", validateArtist, (req, res, next) => {
         if (err) {
             return res.sendStatus(400);
         } else {
-            console.log("ID", rowID);
-            db.get("select * from Artist where id = $id", {$id: rowID},
+            db.get("select * from Artist where id = $id", 
+                {$id: rowID},
                 (err, row) => {
                     if (err) {
-                        console.error(err);
+                        return res.sendStatus(400);
                     } else {
-                        console.log(row);
-                        res.status(200).send({artist: row});
+                        return res.status(200).send({artist: row});
                     }
                 });
         }
     });
+});
+
+// delete artist
+artistRouter.delete("/", (req, res, next) => {
+    const rowID = req.baseUrl.split("/")[3];
+    db.run("update Artist set is_currently_employed = $emp where id = $id", 
+        {$id: rowID, $emp: 0},
+        (err) => {
+            if (err) {
+                res.sendStatus(404);
+            } else {
+                db.get("select * from Artist where id = $id",
+                    {$id: rowID}, (err, row) => {
+                        if (err) {
+                            res.sendStatus(404);
+                        } else {
+                            res.status(200).send({artist: row});
+                        }
+                    })
+            }
+        });
 });
