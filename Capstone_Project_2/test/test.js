@@ -496,58 +496,58 @@ describe("DELETE /api/artists/:id", function() {
     });
 });
 
-// describe('GET /api/series', function() {
-//   before(function(done) {
-//     seed.seedSeriesDatabase(done);
-//   });
+describe("GET /api/series", function() {
+    before(function(done) {
+        seed.seedSeriesDatabase(done);
+    });
 
-//   it('should return all series', function() {
-//     return request(app)
-//         .get('/api/series')
-//         .then(function(response) {
-//           const series = response.body.series;
-//           expect(series.length).to.equal(3);
-//           expect(series.find(series => series.id === 1)).to.exist;
-//           expect(series.find(series => series.id === 2)).to.exist;
-//           expect(series.find(series => series.id === 3)).to.exist;
-//         });
-//   });
+    it("should return all series", function() {
+        return request(app)
+            .get("/api/series")
+            .then(function(response) {
+                const series = response.body.series;
+                expect(series.length).to.equal(3);
+                expect(series.find(series => series.id === 1)).to.exist;
+                expect(series.find(series => series.id === 2)).to.exist;
+                expect(series.find(series => series.id === 3)).to.exist;
+            });
+    });
 
-//   it('should return a status code of 200', function() {
-//     return request(app)
-//         .get('/api/series')
-//         .expect(200);
-//   });
-// });
+    it("should return a status code of 200", function() {
+        return request(app)
+            .get("/api/series")
+            .expect(200);
+    });
+});
 
-// describe('GET /api/series/:id', function() {
-//   before(function(done) {
-//     seed.seedSeriesDatabase(done);
-//   });
+describe("GET /api/series/:id", function() {
+    before(function(done) {
+        seed.seedSeriesDatabase(done);
+    });
 
-//   it('should return the series with the given ID', function() {
-//     return request(app)
-//         .get('/api/series/2')
-//         .then(function(response) {
-//           const series = response.body.series;
-//           expect(series.id).to.equal(2);
-//           expect(series.name).to.equal('Series 2');
-//           expect(series.description).to.equal('This is Series 2');
-//         });
-//   });
+    it("should return the series with the given ID", function() {
+        return request(app)
+            .get("/api/series/2")
+            .then(function(response) {
+                const series = response.body.series;
+                expect(series.id).to.equal(2);
+                expect(series.name).to.equal("Series 2");
+                expect(series.description).to.equal("This is Series 2");
+            });
+    });
 
-//   it('should return a 200 status code for valid IDs', function() {
-//     return request(app)
-//         .get('/api/series/2')
-//         .expect(200);
-//   });
+    it("should return a 200 status code for valid IDs", function() {
+        return request(app)
+            .get("/api/series/2")
+            .expect(200);
+    });
 
-//   it('should return a 404 status code for invalid IDs', function() {
-//     return request(app)
-//         .get('/api/series/999')
-//         .expect(404);
-//   });
-// });
+    it("should return a 404 status code for invalid IDs", function() {
+        return request(app)
+            .get("/api/series/999")
+            .expect(404);
+    });
+});
 
 // describe('POST /api/series', function() {
 //   let newSeries;

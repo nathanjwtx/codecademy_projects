@@ -12,9 +12,11 @@ app.use(morgan("tiny"));
 app.use(express.static("public"));
 
 const artist = require("./routers/artistsRouter");
+const series = require("./routers/seriesRouter");
 
 
 app.use("/api/artists/:id?", artist);
+app.use("/api/series/:id?", series);
 
 // need this for testing
 module.exports = app;
