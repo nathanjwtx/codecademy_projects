@@ -7,7 +7,7 @@ const app = express();
 const artistRouter = express.Router();
 app.use(express.json());
 app.use(express.urlencoded());
-app.use(morgan("tiny"));
+app.use(morgan("short"));
 app.use(express.static("./public"));
 
 module.exports = artistRouter;
@@ -39,9 +39,9 @@ artistRouter.get("/", (req, res, next) => {
     }
 });
 
+// validate required info
 let validateArtist = (req, res, next) => {
     const artistData = req.body.artist;
-    console.log(artistData);
     if (!artistData.name || !artistData.dateOfBirth || !artistData.biography) {
         /* don't use return below so that the error is passed back to the .post router
         the error then gets handed by function (err)
@@ -51,6 +51,7 @@ let validateArtist = (req, res, next) => {
     next();
 };
 
+// create a new artist
 artistRouter.post("/", validateArtist, (req, res, next) => {
     const artistData = req.body.artist;
     db.run(`insert into Artist (name, date_Of_Birth, biography, is_Currently_Employed)
@@ -71,6 +72,35 @@ artistRouter.post("/", validateArtist, (req, res, next) => {
                         res.sendStatus(400);
                     } else {
                         res.status(201).send({artist: row});
+                    }
+                });
+        }
+    });
+});
+
+// update artist
+artistRouter.put("/", validateArtist, (req, res, next) => {
+    const artistData = req.body.artist;
+    let rowID = artistData.id;
+    db.run(`update Artist 
+    set name = $name, date_Of_Birth = $dob, biography = $bio, 
+    is_currently_employed = $emp where id = $id`, 
+    {$id: artistData.id,
+        $name: artistData.name,
+        $dob: artistData.dateOfBirth,
+        $bio: artistData.biography,
+        $emp: artistData.isCurrentlyEmployed}, function(err) {
+        if (err) {
+            return res.sendStatus(400);
+        } else {
+            console.log("ID", rowID);
+            db.get("select * from Artist where id = $id", {$id: rowID},
+                (err, row) => {
+                    if (err) {
+                        console.error(err);
+                    } else {
+                        console.log(row);
+                        res.status(200).send({artist: row});
                     }
                 });
         }
