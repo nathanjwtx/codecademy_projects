@@ -75,3 +75,29 @@ seriesRouter.post("/", validateSeries, (req, res, next) => {
         }
     });
 });
+
+// update series
+seriesRouter.put("/", validateSeries, (req, res, next) => {
+    const seriesData = req.body.series;
+    let rowID = req.baseUrl.split("/")[3];
+    db.run(`update Series 
+    set name = $name, description = $description;`, 
+    {
+        $id: rowID,
+        $name: seriesData.name,
+        $description: seriesData.description}, function(err) {
+        if (err) {
+            return res.sendStatus(400);
+        } else {
+            db.get("select * from Series where id = $id", 
+                {$id: rowID},
+                (err, row) => {
+                    if (err) {
+                        return res.sendStatus(400);
+                    } else {
+                        return res.status(200).send({series: row});
+                    }
+                });
+        }
+    });
+});

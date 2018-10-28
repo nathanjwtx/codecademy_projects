@@ -549,129 +549,129 @@ describe("GET /api/series/:id", function() {
     });
 });
 
-// describe('POST /api/series', function() {
-//   let newSeries;
+describe("POST /api/series", function() {
+    let newSeries;
 
-//   beforeEach(function(done) {
-//     newSeries = {
-//       name: 'New Series',
-//       description: 'New Description'
-//     };
+    beforeEach(function(done) {
+        newSeries = {
+            name: "New Series",
+            description: "New Description"
+        };
 
-//     seed.seedSeriesDatabase(done);
-//   });
+        seed.seedSeriesDatabase(done);
+    });
 
-//   it('should create a valid series', function() {
-//     return request(app)
-//         .post('/api/series/')
-//         .send({series: newSeries})
-//         .then(function() {
-//           testDb.all('SELECT * FROM Series', function(error, result) {
-//             if (error) {
-//               throw new Error(error);
-//             }
-//             const series = result.find(series => series.name === newSeries.name);
-//             expect(series).to.exist;
-//             expect(series.id).to.exist;
-//             expect(series.name).to.equal(newSeries.name);
-//             expect(series.description).to.equal(newSeries.description);
-//           });
-//         });
-//   });
+    it("should create a valid series", function() {
+        return request(app)
+            .post("/api/series/")
+            .send({series: newSeries})
+            .then(function() {
+                testDb.all("SELECT * FROM Series", function(error, result) {
+                    if (error) {
+                        throw new Error(error);
+                    }
+                    const series = result.find(series => series.name === newSeries.name);
+                    expect(series).to.exist;
+                    expect(series.id).to.exist;
+                    expect(series.name).to.equal(newSeries.name);
+                    expect(series.description).to.equal(newSeries.description);
+                });
+            });
+    });
 
-//   it('should return a 201 status code after series creation', function() {
-//     return request(app)
-//         .post('/api/series/')
-//         .send({series: newSeries})
-//         .expect(201);
-//   });
+    it("should return a 201 status code after series creation", function() {
+        return request(app)
+            .post("/api/series/")
+            .send({series: newSeries})
+            .expect(201);
+    });
 
-//   it('should return the newly-created series after series creation', function() {
-//     return request(app)
-//         .post('/api/series/')
-//         .send({series: newSeries})
-//         .then(function(response) {
-//           const series = response.body.series;
-//           expect(series).to.exist;
-//           expect(series.id).to.exist;
-//           expect(series.name).to.equal(newSeries.name);
-//           expect(series.description).to.equal(newSeries.description);
-//         });
-//   });
+    it("should return the newly-created series after series creation", function() {
+        return request(app)
+            .post("/api/series/")
+            .send({series: newSeries})
+            .then(function(response) {
+                const series = response.body.series;
+                expect(series).to.exist;
+                expect(series.id).to.exist;
+                expect(series.name).to.equal(newSeries.name);
+                expect(series.description).to.equal(newSeries.description);
+            });
+    });
 
-//   it('should return a 400 status code for invalid series', function() {
-//     newSeries = {
-//       name: 'New Series'
-//     };
+    it("should return a 400 status code for invalid series", function() {
+        newSeries = {
+            name: "New Series"
+        };
 
-//     return request(app)
-//         .post('/api/series/')
-//         .send({series: newSeries})
-//         .expect(400);
-//   });
-// });
+        return request(app)
+            .post("/api/series/")
+            .send({series: newSeries})
+            .expect(400);
+    });
+});
 
-// describe('PUT /api/series/:id', function() {
-//   let updatedSeries;
+describe("PUT /api/series/:id", function() {
+    let updatedSeries;
 
-//   beforeEach(function(done) {
-//     updatedSeries = {
-//       name: 'Updated Series',
-//       description: 'Updated Description'
-//     };
+    beforeEach(function(done) {
+        updatedSeries = {
+            name: "Updated Series",
+            description: "Updated Description"
+        };
 
-//     seed.seedSeriesDatabase(done);
-//   });
+        seed.seedSeriesDatabase(done);
+    });
 
-//   it('should update the series with the given ID', function(done) {
-//     request(app)
-//         .put('/api/series/1')
-//         .send({series: updatedSeries})
-//         .then(function() {
-//           testDb.get('SELECT * FROM Series WHERE Series.id = 1', function(error, series) {
-//             if (error) {
-//               throw new Error(error);
-//             }
-//             expect(series).to.exist;
-//             expect(series.id).to.equal(1);
-//             expect(series.name).to.equal(updatedSeries.name);
-//             expect(series.description).to.equal(updatedSeries.description);
-//             done()
-//           });
-//         }).catch(done);
-//   });
+    it("should update the series with the given ID", function(done) {
+        request(app)
+            .put("/api/series/1")
+            .send({series: updatedSeries})
+            .then(function() {
+                testDb.get("SELECT * FROM Series WHERE Series.id = 1", function(error, series) {
+                    if (error) {
+                        throw new Error(error);
+                    }
+                    expect(series).to.exist;
+                    expect(series.id).to.equal(1);
+                    expect(series.name).to.equal(updatedSeries.name);
+                    expect(series.description).to.equal(updatedSeries.description);
+                    done();
+                });
+            }).catch(done);
+    });
 
-//   it('should return a 200 status code after series update', function() {
-//     return request(app)
-//         .put('/api/series/1')
-//         .send({series: updatedSeries})
-//         .expect(200);
-//   });
+    it("should return a 200 status code after series update", function() {
+        return request(app)
+            .put("/api/series/1")
+            .send({series: updatedSeries})
+            .expect(200);
+    });
 
-//   it('should return the updated series after series update', function() {
-//     return request(app)
-//         .put('/api/series/1')
-//         .send({series: updatedSeries})
-//         .then(function(response) {
-//           const series = response.body.series;
-//           expect(series).to.exist;
-//           expect(series.id).to.equal(1);
-//           expect(series.name).to.equal(updatedSeries.name);
-//           expect(series.description).to.equal(updatedSeries.description);
-//         });
-//   });
+    it("should return the updated series after series update", function() {
+        return request(app)
+            .put("/api/series/1")
+            .send({series: updatedSeries})
+            .then(function(response) {
+                const series = response.body.series;
+                expect(series).to.exist;
+                expect(series.id).to.equal(1);
+                expect(series.name).to.equal(updatedSeries.name);
+                expect(series.description).to.equal(updatedSeries.description);
+            });
+    });
 
-//   it('should return a 400 status code for invalid series updates', function() {
-//     updatedSeries = {
-//       description: 'Updated Description'
-//     };
+    it("should return a 400 status code for invalid series updates", function() {
+        updatedSeries = {
+            description: "Updated Description"
+        };
 
-//     return request(app)
-//         .put('/api/series/1')
-//         .send({series: updatedSeries})
-//         .expect(400);
-//   });
-// });
+        return request(app)
+            .put("/api/series/1")
+            .send({series: updatedSeries})
+            .expect(400);
+    });
+});
 
 // describe('DELETE /api/series/:id', function() {
 //   beforeEach(function(done) {
