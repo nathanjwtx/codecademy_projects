@@ -112,25 +112,25 @@ seriesRouter.delete("/", (req, res, next) => {
             on series.id = issue.series_id where series.id = $series;`,
         {$series: seriesID[3]}, (err, row) => {
             console.log(row);
-            // if (!row.name) {
+            if (!row.name) {
             //     console.error(err);
-            //     return res.status(404).send("Gulp");
-            // } else if (row.count === 0) {
-                // console.log(row);
-                // db.run("delete from series where id = $series", 
-                //     {$series: seriesID}, (err) => {
-                //         if (err) {
-                //             console.error(err);
-                //         } else {
-                //             return res.status(204).send("WTF!");
-                //         }
-                //     });
-            // } else if (row.count > 0) {
-            //     return res.sendStatus(400);
-            // }
+                db.run("delete from series where id = $series", 
+                    {$series: seriesID[3]}, (err) => {
+                        if (err) {
+                            console.error(err);
+                        } else {
+                            return res.status(204).send("Removed");
+                        }
+                    });
+            } else if (row.count === 0) {
+                console.log(row);
+                return res.status(404).send("Gulp");
+            } else if (row.count > 0) {
+                return res.status(400).send("Issues present");
+            }
         });
-        db.all("select * from series;", (err, rows) => {
-            res.status(200).send(rows);
-        })
+        // db.all("select * from series;", (err, rows) => {
+        //     res.status(200).send(rows);
+        // })
     });
 });
