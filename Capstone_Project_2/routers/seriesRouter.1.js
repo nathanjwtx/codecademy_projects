@@ -47,7 +47,7 @@ seriesRouter.get("/", (req, res, next) => {
                 }
             });
     } else {
-        return res.status(404).send("Grr");
+        return res.status(404).send();
     }
 });
 
@@ -80,9 +80,8 @@ seriesRouter.post("/", validateSeries, (req, res, next) => {
 seriesRouter.put("/", validateSeries, (req, res, next) => {
     const seriesData = req.body.series;
     let rowID = req.baseUrl.split("/")[3];
-    console.log(seriesData);
     db.run(`update Series 
-    set name = $name, description = $description where id = $id;`, 
+    set name = $name, description = $description;`, 
     {
         $id: rowID,
         $name: seriesData.name,

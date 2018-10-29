@@ -7,7 +7,7 @@ const app = express();
 const issueRouter = express.Router();
 app.use(express.json());
 app.use(express.urlencoded());
-app.use(morgan("short"));
+app.use(morgan("dev"));
 app.use(express.static("./public"));
 
 module.exports = issueRouter;
@@ -24,34 +24,40 @@ let validateSeries = (req, res, next) => {
     next();
 };
 
-// record counter
-let recordCount = (table, series="", issue="") => {
-    const recCount;
-    if (!issue) {
-        db.all(`select count(*) from issue where series_id = $series;`,
-        {$series: series}, (err, row) => {
-            if (err) {
-                throw new Error(err);
-            } else {
-                console.log(row);
-            }
-        })
-    }
-}
-
 // get all issues
 issueRouter.get("/", (req, res, next) => {
     let splitURL = req.baseUrl.split("/");
+    // let seriesCheck = recordCount("series", splitURL[3]);
     console.log(splitURL);
+    // console.log(seriesCheck);
     if (splitURL[3]) {
-        db.all("select * from issue where series_id = $id;", 
-            {$id: splitURL[3]}, (err, rows) => {
-                if (err) {
-                    throw new Error(err);
-                } else {
-                    return res.status(200).send({issues: rows});
-                }
-            });
+        db.serialize(() => {
+            db.all("select count(*) from series where id = $id",
+                {$id: splitURL[3]}, (err, row) => {
+                    if (!err) {
+                        db.all("select * from issue where series_id = $id;", 
+                            {$id: splitURL[3]}, (err, rows) => {
+                                if (err) {
+                                    console.error(err);
+                                } else {
+                                    console.log(rows);
+                                    if (rows.length === 0) {
+                                        // console.log("err");
+                                        return res.sendStatus(404);
+                                    } else {
+                                        // console.log(rows.length);
+                                        // console.log("hmm");
+                                        return res.status(200).send({issues: rows});
+                                    }
+                                }
+                            });
+                    } else {
+                        res.status(404).send("Whoops!");
+                    }
+                });
+
+        });
+
     // } else if (splitURL[3]) {
     //     db.get("select * from issue where id = $id;", 
     //         {$id: splitURL[3]}, (err, row) => {
@@ -64,6 +70,6 @@ issueRouter.get("/", (req, res, next) => {
     //             }
     //         });
     } else {
-        return res.status(404).send();
+        return res.status(404).send("Error");
     }
 });
