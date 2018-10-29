@@ -102,3 +102,35 @@ seriesRouter.put("/", validateSeries, (req, res, next) => {
         }
     });
 });
+
+// delete series
+seriesRouter.delete("/", (req, res, next) => {
+    const seriesID = req.baseUrl.split("/");
+    console.log("ID", seriesID);
+    db.serialize(() => {
+        db.get(`select series.name, count(*) as count from series join issue
+            on series.id = issue.series_id where series.id = $series;`,
+        {$series: seriesID[3]}, (err, row) => {
+            console.log(row);
+            // if (!row.name) {
+            //     console.error(err);
+            //     return res.status(404).send("Gulp");
+            // } else if (row.count === 0) {
+                // console.log(row);
+                // db.run("delete from series where id = $series", 
+                //     {$series: seriesID}, (err) => {
+                //         if (err) {
+                //             console.error(err);
+                //         } else {
+                //             return res.status(204).send("WTF!");
+                //         }
+                //     });
+            // } else if (row.count > 0) {
+            //     return res.sendStatus(400);
+            // }
+        });
+        db.all("select * from series;", (err, rows) => {
+            res.status(200).send(rows);
+        })
+    });
+});

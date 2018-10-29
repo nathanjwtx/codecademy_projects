@@ -673,49 +673,49 @@ describe("PUT /api/series/:id", function() {
     });
 });
 
-// describe('DELETE /api/series/:id', function() {
-//   beforeEach(function(done) {
-//     seed.seedSeriesDatabase(done);
-//   });
+describe("DELETE /api/series/:id", function() {
+    beforeEach(function(done) {
+        seed.seedSeriesDatabase(done);
+    });
 
-//   it('should remove the series with the specified ID from the database if that series has no related issues', function() {
-//     return request(app)
-//         .del('/api/series/1')
-//         .then(function() {
-//           testDb.get('SELECT * FROM Series WHERE Series.id = 1', function(error, series) {
-//             if (error) {
-//               throw new Error(error);
-//             }
-//             expect(series).not.to.exist;
-//           });
-//         });
-//   });
+    it("should remove the series with the specified ID from the database if that series has no related issues", function() {
+        return request(app)
+            .del("/api/series/1")
+            .then(function() {
+                testDb.get("SELECT * FROM Series WHERE Series.id = 1", function(error, series) {
+                    if (error) {
+                        throw new Error(error);
+                    }
+                    expect(series).not.to.exist;
+                });
+            });
+    });
 
-//   it('should return a 204 status code after series delete', function() {
-//     return request(app)
-//         .del('/api/series/1')
-//         .expect(204);
-//   });
+    it("should return a 204 status code after series delete", function() {
+        return request(app)
+            .del("/api/series/1")
+            .expect(204);
+    });
 
-//   it('should not delete series with existing related issues', function() {
-//     return request(app)
-//         .del('/api/series/2')
-//         .then(function() {
-//           testDb.get('SELECT * FROM Series WHERE Series.id = 2', function(error, series) {
-//             if (error) {
-//               throw new Error(error);
-//             }
-//             expect(series).to.exist;
-//           });
-//         });
-//   });
+    it("should not delete series with existing related issues", function() {
+        return request(app)
+            .del("/api/series/2")
+            .then(function() {
+                testDb.get("SELECT * FROM Series WHERE Series.id = 2", function(error, series) {
+                    if (error) {
+                        throw new Error(error);
+                    }
+                    expect(series).to.exist;
+                });
+            });
+    });
 
-//   it('should return a 400 status code if deleted series has existing related issues', function() {
-//     return request(app)
-//         .del('/api/series/2')
-//         .expect(400);
-//   });
-// });
+    it("should return a 400 status code if deleted series has existing related issues", function() {
+        return request(app)
+            .del("/api/series/2")
+            .expect(400);
+    });
+});
 
 describe("GET /api/series/:seriesId/issues", function() {
     before(function(done) {
@@ -755,91 +755,91 @@ describe("GET /api/series/:seriesId/issues", function() {
     });
 });
 
-// describe("POST /api/series/:seriesId/issues", function() {
-//     let newIssue;
+describe("POST /api/series/:seriesId/issues", function() {
+    let newIssue;
 
-//     beforeEach(function(done) {
-//         newIssue = {
-//             name: "New Issue",
-//             issueNumber: 3,
-//             publicationDate: "January 3, 1990",
-//             artistId: 1
-//         };
+    beforeEach(function(done) {
+        newIssue = {
+            name: "New Issue",
+            issueNumber: 3,
+            publicationDate: "January 3, 1990",
+            artistId: 1
+        };
 
-//         seed.seedIssueDatabase(done);
-//     });
+        seed.seedIssueDatabase(done);
+    });
 
-//     it("should create a valid issue", function(done) {
-//         request(app)
-//             .post("/api/series/2/issues")
-//             .send({issue: newIssue})
-//             .then(function() {
-//                 testDb.all("SELECT * FROM Issue", function(error, result) {
-//                     if (error) {
-//                         throw new Error(error);
-//                     }
-//                     const issue = result.find(issue => issue.name === newIssue.name);
-//                     expect(issue).to.exist;
-//                     expect(issue.id).to.exist;
-//                     expect(issue.name).to.equal(newIssue.name);
-//                     expect(issue.issue_number).to.equal(newIssue.issueNumber);
-//                     expect(issue.publication_date).to.equal(newIssue.publicationDate);
-//                     expect(issue.artist_id).to.equal(newIssue.artistId);
-//                     expect(issue.series_id).to.equal(2);
-//                     done();
-//                 });
-//             }).catch(done);
-//     });
+    it("should create a valid issue", function(done) {
+        request(app)
+            .post("/api/series/2/issues")
+            .send({issue: newIssue})
+            .then(function() {
+                testDb.all("SELECT * FROM Issue", function(error, result) {
+                    if (error) {
+                        throw new Error(error);
+                    }
+                    const issue = result.find(issue => issue.name === newIssue.name);
+                    expect(issue).to.exist;
+                    expect(issue.id).to.exist;
+                    expect(issue.name).to.equal(newIssue.name);
+                    expect(issue.issue_number).to.equal(newIssue.issueNumber);
+                    expect(issue.publication_date).to.equal(newIssue.publicationDate);
+                    expect(issue.artist_id).to.equal(newIssue.artistId);
+                    expect(issue.series_id).to.equal(2);
+                    done();
+                });
+            }).catch(done);
+    });
 
-//     it("should return a 201 status code after issue creation", function() {
-//         return request(app)
-//             .post("/api/series/2/issues")
-//             .send({issue: newIssue})
-//             .expect(201);
-//     });
+    it("should return a 201 status code after issue creation", function() {
+        return request(app)
+            .post("/api/series/2/issues")
+            .send({issue: newIssue})
+            .expect(201);
+    });
 
-//   it('should return the newly-created issue after issue creation', function() {
-//     return request(app)
-//         .post('/api/series/2/issues')
-//         .send({issue: newIssue})
-//         .then(function(response) {
-//           const issue = response.body.issue;
-//           expect(issue).to.exist;
-//           expect(issue.id).to.exist;
-//           expect(issue.name).to.equal(newIssue.name);
-//           expect(issue.issue_number).to.equal(newIssue.issueNumber);
-//           expect(issue.publication_date).to.equal(newIssue.publicationDate);
-//           expect(issue.artist_id).to.equal(newIssue.artistId);
-//           expect(issue.series_id).to.equal(2);
-//         });
-//   });
+    it("should return the newly-created issue after issue creation", function() {
+        return request(app)
+            .post("/api/series/2/issues")
+            .send({issue: newIssue})
+            .then(function(response) {
+                const issue = response.body.issue;
+                expect(issue).to.exist;
+                expect(issue.id).to.exist;
+                expect(issue.name).to.equal(newIssue.name);
+                expect(issue.issue_number).to.equal(newIssue.issueNumber);
+                expect(issue.publication_date).to.equal(newIssue.publicationDate);
+                expect(issue.artist_id).to.equal(newIssue.artistId);
+                expect(issue.series_id).to.equal(2);
+            });
+    });
 
-//   it('should return a 400 status code for invalid issues', function() {
-//     newIssue = {
-//       issueNumber: 3,
-//       publicationDate: 'January 3, 1990',
-//       artistId: 1
-//     };
+    it("should return a 400 status code for invalid issues", function() {
+        newIssue = {
+            issueNumber: 3,
+            publicationDate: "January 3, 1990",
+            artistId: 1
+        };
 
-//     return request(app)
-//         .post('/api/series/2/issues')
-//         .send({issue: newIssue})
-//         .expect(400);
-//   });
+        return request(app)
+            .post("/api/series/2/issues")
+            .send({issue: newIssue})
+            .expect(400);
+    });
 
-//   it('should return a 400 status code if an artist with the issue\'s artist ID doesn\'t exist', function() {
-//     newIssue = {
-//       issueNumber: 3,
-//       publicationDate: 'January 3, 1990',
-//       artistId: 999
-//     };
+    it("should return a 400 status code if an artist with the issue's artist ID doesn't exist", function() {
+        newIssue = {
+            issueNumber: 3,
+            publicationDate: "January 3, 1990",
+            artistId: 999
+        };
 
-//     return request(app)
-//         .post('/api/series/2/issues')
-//         .send({issue: newIssue})
-//         .expect(400);
-//   });
-// });
+        return request(app)
+            .post("/api/series/2/issues")
+            .send({issue: newIssue})
+            .expect(400);
+    });
+});
 
 // describe('PUT /api/series/:seriesId/issues/:issueId', function() {
 //   let updatedIssue;
