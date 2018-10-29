@@ -27,10 +27,8 @@ let validateSeries = (req, res, next) => {
 // get all issues
 issueRouter.get("/", (req, res, next) => {
     let splitURL = req.baseUrl.split("/");
-    // let seriesCheck = recordCount("series", splitURL[3]);
     console.log(splitURL);
-    // console.log(seriesCheck);
-    if (splitURL[3]) {
+    if (splitURL[3] && !splitURL[5]) {
         db.serialize(() => {
             db.all("select count(*) from series where id = $id",
                 {$id: splitURL[3]}, (err, row) => {
@@ -38,9 +36,9 @@ issueRouter.get("/", (req, res, next) => {
                         db.all("select * from issue where series_id = $id;", 
                             {$id: splitURL[3]}, (err, rows) => {
                                 if (err) {
-                                    console.error(err);
+                                    res.status(404).send(err);
                                 } else {
-                                    console.log(rows);
+                                    // console.log(rows);
                                     if (rows.length === 0) {
                                         // console.log("err");
                                         return res.sendStatus(404);
@@ -52,24 +50,28 @@ issueRouter.get("/", (req, res, next) => {
                                 }
                             });
                     } else {
-                        res.status(404).send("Whoops!");
+                        res.status(404).send(err);
                     }
                 });
 
         });
-
-    // } else if (splitURL[3]) {
-    //     db.get("select * from issue where id = $id;", 
-    //         {$id: splitURL[3]}, (err, row) => {
-    //             if (err) {
-    //                 throw new Error(err);
-    //             } else if (row) {
-    //                 return res.status(200).send({issue: row})
-    //             } else {
-    //                 return res.status(404).send();
-    //             }
-    //         });
+    } else if (splitURL[5]) {
+        db.get("select * from issue where id = $id;", 
+            {$id: splitURL[5]}, (err, row) => {
+                if (err) {
+                    throw new Error(err);
+                } else if (row) {
+                    // console.log(row);
+                    return res.status(200).send({issue: row});
+                } else {
+                    return res.status(404).send();
+                }
+            });
     } else {
         return res.status(404).send("Error");
     }
+});
+
+issueRouter.post("/", (req, res, next) => {
+    
 });

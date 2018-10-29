@@ -13,12 +13,12 @@ app.use(express.static("public"));
 
 const artist = require("./routers/artistsRouter");
 const series = require("./routers/seriesRouter");
-// const issue = require("./routers/issueRouter");
+const issue = require("./routers/issueRouter");
 
 
 app.use("/api/artists/:id?", artist);
 app.use("/api/series/:id?", series);
-// app.use("/api/series/:id/issues/:id?", issue);
+app.use("/api/series/:id/issues/:id?", issue);
 
 // need this for testing
 module.exports = app;
