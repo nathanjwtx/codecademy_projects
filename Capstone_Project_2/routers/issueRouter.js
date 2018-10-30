@@ -14,14 +14,14 @@ module.exports = issueRouter;
 
 // validate required info
 let validateIssue = (req, res, next) => {
-    const issueData = req.body.issue;
+    const issueData = req.body;
     console.log(issueData);
     if (!issueData.name || !issueData.issueNumber || !issueData.publicationDate
         || !issueData.artistId) {
         /* don't use return below so that the error is passed back to the .post router
         the error then gets handed by function (err)
         */
-        res.status(400).send(); 
+        res.status(400).send("Missing info"); 
     }
     next();
 };
@@ -75,26 +75,27 @@ issueRouter.get("/", (req, res, next) => {
 });
 
 issueRouter.post("/", validateIssue, (req, res, next) => {
-    const issueData = req.body.issue;
+    const issueData = req.body;
+    console.log(issueData);
     const splitURL = req.baseUrl.split("/");
     const seriesID = splitURL[3];
     db.run(`insert into issue (name, issue_number, publication_date,
         artist_id, series_id) values ($name, $iss, $pub, $art, $series);`,
     {$name: issueData.name, $iss: issueData.issueNumber, $pub: issueData.publicationDate,
         $art: issueData.artistId, $series: seriesID}, (err) => {
+
         if (err) {
-            console.error(err);
+            console.log(err);
             // return res.status(400).send(err);
         } else {
-            // console.log(issueData.issueNumber);
             db.get("select * from issue where issue_number = $issue and series_id = $series", 
                 {$issue: issueData.issueNumber, $series: seriesID}, (err, row) => {
                     if (err) {
                         console.error(err);
-                        // res.sendStatus(404);
+                        return res.sendStatus(404);
                     } else {
                         console.log(row);
-                        // res.status(201).send({issue: row});
+                        return res.status(201).send({issue: row});
                     }
                 });
         }
