@@ -129,8 +129,5 @@ seriesRouter.delete("/", (req, res, next) => {
                 return res.status(400).send("Issues present");
             }
         });
-        // db.all("select * from series;", (err, rows) => {
-        //     res.status(200).send(rows);
-        // })
     });
 });
