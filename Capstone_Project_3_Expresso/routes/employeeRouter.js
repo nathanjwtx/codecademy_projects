@@ -14,9 +14,17 @@ module.exports = employeeRouter;
 
 let validateEmployee = (req, res, next) => {
     let empData = req.body.employee;
-    console.log(empData);
+    console.log(req.baseUrl);
     if (!empData.name || !empData.position || !empData.wage) {
         res.sendStatus(400);
+    }
+    if (req.method === "PUT") {
+        db.get("select * from Employee where id = $id", 
+            {$id: req.baseUrl.split("/")[3]}, (err, row) => {
+                if (err || row === undefined) {
+                    res.sendStatus(404);
+                }
+            });
     }
     next();
 };
@@ -62,6 +70,30 @@ employeeRouter.post("/", validateEmployee, (req, res, next) => {
                     throw new Error(err);
                 } else {
                     return res.status(201).send({employee: row});
+                }
+            });
+    });
+});
+
+// update an employee
+employeeRouter.put("/", validateEmployee, (req, res, next) => {
+    const empData = req.body.employee;
+    db.serialize(() => {
+        db.run(`update Employee set name = $name, position = $pos, wage = $wage 
+        where id = $id`, {
+            $name: empData.name, $pos: empData.position, $wage: empData.wage,
+            $id: req.baseUrl.split("/")[3]
+        }, (err) => {
+            if (err) {
+                return res.sendStatus(err);
+            }
+        });
+        db.get("select * from Employee where id = $id;", 
+            {$id: req.baseUrl.split("/")[3]}, (err, row) => {
+                if (err) {
+                    return res.sendStatus(400);
+                } else {
+                    return res.status(200).send({employee: row});
                 }
             });
     });
