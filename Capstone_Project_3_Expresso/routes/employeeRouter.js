@@ -39,7 +39,7 @@ employeeRouter.get("/", (req, res, next) => {
                     if (err) {
                         return res.sendStatus(404);
                     } else if (row) {
-                        return res.status(201).send({employee: row});
+                        return res.status(200).send({employee: row});
                     }
                     return res.sendStatus(404);
                 });
@@ -50,13 +50,19 @@ employeeRouter.get("/", (req, res, next) => {
 // create a new employee
 employeeRouter.post("/", validateEmployee, (req, res, next) => {
     db.run(`insert into Employee (name, position, wage)
-        values (name = $name, position = $pos,
-            wage = $wage);`, {$name: req.body.employee.name,
+        values ($name, $pos, $wage);`, {$name: req.body.employee.name,
         $pos: req.body.employee.position,
         $wage: req.body.employee.wage}, function(err) {
         if (err) {
             return res.sendStatus(err);
         }
-        return res.sendStatus(201);
+        db.get("select * from Employee where id = $id", {$id: this.lastID}, 
+            (err, row) => {
+                if (err) {
+                    throw new Error(err);
+                } else {
+                    return res.status(201).send({employee: row});
+                }
+            });
     });
 });
