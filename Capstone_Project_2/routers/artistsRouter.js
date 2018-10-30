@@ -54,12 +54,12 @@ let validateArtist = (req, res, next) => {
 // create a new artist
 artistRouter.post("/", validateArtist, (req, res, next) => {
     const artistData = req.body.artist;
-    db.run(`insert into Artist (name, date_Of_Birth, biography, is_Currently_Employed)
-    values ($name, $dob, $bio, $emp);`, {
+    console.log(artistData);
+    db.run(`insert into Artist (name, date_Of_Birth, biography)
+    values ($name, $dob, $bio);`, {
         $name: artistData.name,
         $dob: artistData.dateOfBirth,
-        $bio: artistData.biography,
-        $emp: 1
+        $bio: artistData.biography
     }, function (err) {
         if (err) {
             // throw new Error(err);

@@ -7,7 +7,7 @@ db.run(`create table Artist (
     name text not null,
     date_of_birth text not null,
     biography text not null,
-    is_currently_employed integer "1"
+    is_currently_employed integer DEFAULT "1"
 );`, err => {
     if (err) {
         console.error(err);

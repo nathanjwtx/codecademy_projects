@@ -101,3 +101,56 @@ issueRouter.post("/", validateIssue, (req, res, next) => {
         }
     });
 });
+
+// delete an issue
+issueRouter.delete("/", (req, res, next) => {
+    const issueID = req.baseUrl.split("/")[5];
+    console.log(issueID);
+    if (issueID === undefined) {
+        return res.sendStatus(404);
+    } else {
+        db.run("delete from issue where id = $id;", {$id: issueID}, 
+            (err) => {
+                if (err) {
+                    return res.sendStatus(404);
+                } else {
+                    return res.sendStatus(204);
+                }
+            });
+    }
+});
+
+// update an issue
+issueRouter.put("/", validateIssue, (req, res, next) => {
+    const issueID = req.baseUrl.split("/")[5];
+    const issueData = req.body.issue;
+    // console.log(issueID);
+    if (issueID === undefined) {
+        return res.sendStatus(404);
+    } else {
+        db.run(`update Issue set name = $name, issue_number = $issue, 
+            publication_date = $pub, artist_id = $art, series_id = $series
+            where id = $issId;`,
+        {
+            $name: issueData.name,
+            $issId: issueID,
+            $issue: issueData.issueNumber,
+            $pub: issueData.publicationDate,
+            $art: issueData.artistId,
+            $series: req.baseUrl.split("/")[3]
+        }, function (err) {
+            if (err) {
+                return res.sendStatus(404);
+            } else {
+                db.get("select * from Issue where id = $id;", {$id: issueID},
+                    (err, row) => {
+                        if (err) {
+                            return res.sendStatus(404);
+                        } else {
+                            return res.status(200).send({issue: row});
+                        }
+                    });
+            }
+        });
+    }
+});
