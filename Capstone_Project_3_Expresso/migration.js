@@ -61,7 +61,7 @@ db.serialize(() => {
     db.run(`create table MenuItem (
         id integer PRIMARY KEY,
         name text NOT NULL,
-        dscription text,
+        description text,
         inventory integer NOT NULL,
         price integer NOT NULL,
         menu_id integer NOT NULL, FOREIGN KEY (menu_id) REFERENCES Menu(id)

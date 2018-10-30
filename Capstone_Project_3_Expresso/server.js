@@ -11,7 +11,9 @@ app.use(express.urlencoded());
 app.use(morgan("tiny"));
 app.use(express.static("public"));
 
+const employee = require("./routes/employeeRouter");
 
+app.use("/api/employees/:empId?", employee);
 
 // need this for testing
 module.exports = app;
