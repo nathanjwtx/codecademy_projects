@@ -15,13 +15,23 @@ module.exports = issueRouter;
 // validate required info
 let validateIssue = (req, res, next) => {
     const issueData = req.body.issue;
-    console.log(issueData);
+    // console.log(issueData);
     if (!issueData.name || !issueData.issueNumber || !issueData.publicationDate
         || !issueData.artistId) {
         /* don't use return below so that the error is passed back to the .post router
         the error then gets handed by function (err)
         */
-        res.status(400).send("Missing info"); 
+        if (req.method === "POST") {
+            return res.status(400).send(); 
+        } else if (req.method === "PUT" && req.baseUrl.split("/")[5]) {
+            db.get("select * from Issue where id = $id;", 
+                {$id: req.baseUrl.split("/")[5]}, (err, row) => {
+                    if (row === undefined) {
+                        // error when id doesn't exist
+                        res.status(404).send();
+                    }
+                });
+        }
     }
     next();
 };
@@ -84,8 +94,8 @@ issueRouter.post("/", validateIssue, (req, res, next) => {
     {$name: issueData.name, $iss: issueData.issueNumber, $pub: issueData.publicationDate,
         $art: issueData.artistId, $series: seriesID}, (err) => {
         if (err) {
-            console.log(err);
-            return res.status(400).send(err);
+            // console.log(err);
+            return res.status(404).send(err);
         } else {
             // res.status(200).send("Success");
             db.get("select * from issue where issue_number = $issue and series_id = $series", 
@@ -109,12 +119,19 @@ issueRouter.delete("/", (req, res, next) => {
     if (issueID === undefined) {
         return res.sendStatus(404);
     } else {
-        db.run("delete from issue where id = $id;", {$id: issueID}, 
-            (err) => {
-                if (err) {
+        db.get("select * from Issue where id = $id;", {$id: issueID}, 
+            (err,rowCheck) => {
+                if (err || rowCheck === undefined) {
                     return res.sendStatus(404);
                 } else {
-                    return res.sendStatus(204);
+                    db.run("delete from issue where id = $id;", {$id: issueID}, 
+                        (err) => {
+                            if (err) {
+                                return res.sendStatus(404);
+                            } else {
+                                return res.sendStatus(204);
+                            }
+                        });
                 }
             });
     }
@@ -124,33 +141,29 @@ issueRouter.delete("/", (req, res, next) => {
 issueRouter.put("/", validateIssue, (req, res, next) => {
     const issueID = req.baseUrl.split("/")[5];
     const issueData = req.body.issue;
-    // console.log(issueID);
-    if (issueID === undefined) {
-        return res.sendStatus(404);
-    } else {
-        db.run(`update Issue set name = $name, issue_number = $issue, 
-            publication_date = $pub, artist_id = $art, series_id = $series
-            where id = $issId;`,
-        {
-            $name: issueData.name,
-            $issId: issueID,
-            $issue: issueData.issueNumber,
-            $pub: issueData.publicationDate,
-            $art: issueData.artistId,
-            $series: req.baseUrl.split("/")[3]
-        }, function (err) {
-            if (err) {
-                return res.sendStatus(404);
-            } else {
-                db.get("select * from Issue where id = $id;", {$id: issueID},
-                    (err, row) => {
-                        if (err) {
-                            return res.sendStatus(404);
-                        } else {
-                            return res.status(200).send({issue: row});
-                        }
-                    });
-            }
-        });
-    }
+    db.run(`update Issue set name = $name, issue_number = $issue, 
+        publication_date = $pub, artist_id = $art, series_id = $series
+        where id = $issId;`,
+    {
+        $name: issueData.name,
+        $issId: issueID,
+        $issue: issueData.issueNumber,
+        $pub: issueData.publicationDate,
+        $art: issueData.artistId,
+        $series: req.baseUrl.split("/")[3]
+    }, function (err) {
+        if (err) {
+            // error 400 when invalid issue update or artist id doesn't exist
+            return res.sendStatus(400);
+        } else {
+            db.get("select * from Issue where id = $id;", {$id: issueID},
+                (err, row) => {
+                    if (err) {
+                        return res.sendStatus(400);
+                    } else {
+                        return res.status(200).send({issue: row});
+                    }
+                });
+        }
+    });
 });
