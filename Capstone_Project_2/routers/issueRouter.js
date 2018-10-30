@@ -14,7 +14,7 @@ module.exports = issueRouter;
 
 // validate required info
 let validateIssue = (req, res, next) => {
-    const issueData = req.body;
+    const issueData = req.body.issue;
     console.log(issueData);
     if (!issueData.name || !issueData.issueNumber || !issueData.publicationDate
         || !issueData.artistId) {
@@ -75,19 +75,19 @@ issueRouter.get("/", (req, res, next) => {
 });
 
 issueRouter.post("/", validateIssue, (req, res, next) => {
-    const issueData = req.body;
-    console.log(issueData);
+    const issueData = req.body.issue;
+    // console.log(req.body.issue.name);
     const splitURL = req.baseUrl.split("/");
     const seriesID = splitURL[3];
     db.run(`insert into issue (name, issue_number, publication_date,
         artist_id, series_id) values ($name, $iss, $pub, $art, $series);`,
     {$name: issueData.name, $iss: issueData.issueNumber, $pub: issueData.publicationDate,
         $art: issueData.artistId, $series: seriesID}, (err) => {
-
         if (err) {
             console.log(err);
-            // return res.status(400).send(err);
+            return res.status(400).send(err);
         } else {
+            // res.status(200).send("Success");
             db.get("select * from issue where issue_number = $issue and series_id = $series", 
                 {$issue: issueData.issueNumber, $series: seriesID}, (err, row) => {
                     if (err) {
