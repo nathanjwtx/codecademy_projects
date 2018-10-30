@@ -15,10 +15,10 @@ module.exports = employeeRouter;
 let validateEmployee = (req, res, next) => {
     let empData = req.body.employee;
     console.log(req.baseUrl);
-    if (!empData.name || !empData.position || !empData.wage) {
+    if (req.method != "DELETE" && (!empData.name || !empData.position || !empData.wage)) {
         res.sendStatus(400);
     }
-    if (req.method === "PUT") {
+    if (req.method === "PUT" || req.method === "DELETE") {
         db.get("select * from Employee where id = $id", 
             {$id: req.baseUrl.split("/")[3]}, (err, row) => {
                 if (err || row === undefined) {
@@ -95,6 +95,23 @@ employeeRouter.put("/", validateEmployee, (req, res, next) => {
                 } else {
                     return res.status(200).send({employee: row});
                 }
+            });
+    });
+});
+
+// delete an employee
+employeeRouter.delete("/", validateEmployee, (req, res, next) => {
+    const empID = req.baseUrl.split("/")[3];
+    db.serialize(() => {
+        db.run("update Employee set is_current_employee = 0 where id = $id",
+            {$id: empID}, err => {
+                if (err) {
+                    return res.sendStatus(404);
+                }
+            });
+        db.get("select * from Employee where id = $id", {$id: empID}, 
+            (err, row) => {
+                return res.status(200).send({employee: row});
             });
     });
 });
