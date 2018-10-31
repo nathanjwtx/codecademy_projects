@@ -102,16 +102,14 @@ employeeRouter.put("/", validateEmployee, (req, res, next) => {
 // delete an employee
 employeeRouter.delete("/", validateEmployee, (req, res, next) => {
     const empID = req.baseUrl.split("/")[3];
-    db.serialize(() => {
-        db.run("update Employee set is_current_employee = 0 where id = $id",
-            {$id: empID}, err => {
-                if (err) {
-                    return res.sendStatus(404);
-                }
-            });
-        db.get("select * from Employee where id = $id", {$id: empID}, 
-            (err, row) => {
-                return res.status(200).send({employee: row});
-            });
-    });
+    db.run("update Employee set is_current_employee = 0 where id = $id",
+        {$id: empID}, err => {
+            if (err) {
+                return res.sendStatus(404);
+            }
+            db.get("select * from Employee where id = $id", {$id: empID}, 
+                (err, row) => {
+                    return res.status(200).send({employee: row});
+                });
+        });
 });
