@@ -12,8 +12,10 @@ app.use(morgan("tiny"));
 app.use(express.static("public"));
 
 const employee = require("./routes/employeeRouter");
+const timesheet = require("./routes/timesheetRouter");
 
 app.use("/api/employees/:empId?", employee);
+app.use("/api/employees/:id/timesheets/:tsID?", timesheet);
 
 // need this for testing
 module.exports = app;
