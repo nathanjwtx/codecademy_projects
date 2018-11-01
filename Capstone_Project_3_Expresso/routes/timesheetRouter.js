@@ -52,8 +52,6 @@ let dataCheck = (req, res, next) => {
     }
 };
 
-"https://stackoverflow.com/questions/10695629/what-is-the-parameter-next-used-for-in-express?noredirect=1&lq=1"
-
 // get all timesheets
 timesheetRouter.get("/", getParams, checkEmp, (req, res, next) => {
     if (req.empID) {
@@ -71,9 +69,8 @@ timesheetRouter.get("/", getParams, checkEmp, (req, res, next) => {
 });
 
 // create new timesheet
-timesheetRouter.post("/", getParams, (req, res, next) => {
+timesheetRouter.post("/", getParams, dataCheck, (req, res, next) => {
     const tsData = req.body.timesheet;
-    console.log("ID", req.empID);
     db.run(`insert into Timesheet (hours, rate, date, employee_id) 
         values ($hours, $rate, $date, $emp);`, {
         $hours: tsData.hours,
@@ -108,8 +105,19 @@ timesheetRouter.put("/", getParams, checkEmp, checkTS, dataCheck, (req, res, nex
         }
         db.get("select * from Timesheet where id = $id", {$id: req.tsID},
             (err, row) => {
-                return res.status(201).send({timesheet: row});
+                return res.status(200).send({timesheet: row});
             });
     });
 });
 
+// delete a timesheet
+timesheetRouter.delete("/", getParams, checkEmp, checkTS, (req, res, next) => {
+    db.run("delete from Timesheet where Timesheet.id = $id;", 
+        {$id: req.tsID},err => {
+            if (err) {
+                return res.sendStatus(404);
+            } else {
+                return res.status(204).send("Timesheet deleted");
+            }
+        });
+});

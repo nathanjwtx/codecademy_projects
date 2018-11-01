@@ -567,202 +567,202 @@ describe("GET /api/employees/:employeeId/timesheets", function() {
     });
 });
 
-// describe("POST /api/employees/:employeeId/timesheets", function() {
-//     let newTimesheet;
+describe("POST /api/employees/:employeeId/timesheets", function() {
+    let newTimesheet;
 
-//     beforeEach(function(done) {
-//         newTimesheet = {
-//             hours: 10,
-//             rate: 3.5,
-//             date: 100
-//         };
+    beforeEach(function(done) {
+        newTimesheet = {
+            hours: 10,
+            rate: 3.5,
+            date: 100
+        };
 
-//         seed.seedTimesheetDatabase(done);
-//     });
+        seed.seedTimesheetDatabase(done);
+    });
 
-//     it("should create a valid timesheet", function() {
-//         return request(app)
-//             .post("/api/employees/2/timesheets")
-//             .send({timesheet: newTimesheet})
-//             .then(function() {
-//                 testDb.all("SELECT * FROM timesheet", function(error, result) {
-//                     const timesheet = result.find(timesheet => timesheet.date === newTimesheet.date);
-//                     expect(timesheet).to.exist;
-//                     expect(timesheet.id).to.exist;
-//                     expect(timesheet.hours).to.equal(newTimesheet.hours);
-//                     expect(timesheet.rate).to.equal(newTimesheet.rate);
-//                     expect(timesheet.date).to.equal(newTimesheet.date);
-//                     expect(timesheet.employee_id).to.equal(2);
-//                 });
-//             });
-//     });
+    it("should create a valid timesheet", function() {
+        return request(app)
+            .post("/api/employees/2/timesheets")
+            .send({timesheet: newTimesheet})
+            .then(function() {
+                testDb.all("SELECT * FROM timesheet", function(error, result) {
+                    const timesheet = result.find(timesheet => timesheet.date === newTimesheet.date);
+                    expect(timesheet).to.exist;
+                    expect(timesheet.id).to.exist;
+                    expect(timesheet.hours).to.equal(newTimesheet.hours);
+                    expect(timesheet.rate).to.equal(newTimesheet.rate);
+                    expect(timesheet.date).to.equal(newTimesheet.date);
+                    expect(timesheet.employee_id).to.equal(2);
+                });
+            });
+    });
 
-//     it("should return a 201 status code after timesheet creation", function() {
-//         return request(app)
-//             .post("/api/employees/2/timesheets")
-//             .send({timesheet: newTimesheet})
-//             .expect(201);
-//     });
+    it("should return a 201 status code after timesheet creation", function() {
+        return request(app)
+            .post("/api/employees/2/timesheets")
+            .send({timesheet: newTimesheet})
+            .expect(201);
+    });
 
-//     it("should return the newly-created timesheet after timesheet creation", function() {
-//         return request(app)
-//             .post("/api/employees/2/timesheets")
-//             .send({timesheet: newTimesheet})
-//             .then(function(response) {
-//                 const timesheet = response.body.timesheet;
-//                 expect(timesheet).to.exist;
-//                 expect(timesheet.id).to.exist;
-//                 expect(timesheet.hours).to.equal(newTimesheet.hours);
-//                 expect(timesheet.rate).to.equal(newTimesheet.rate);
-//                 expect(timesheet.date).to.equal(newTimesheet.date);
-//                 expect(timesheet.employee_id).to.equal(2);
-//             });
-//     });
+    it("should return the newly-created timesheet after timesheet creation", function() {
+        return request(app)
+            .post("/api/employees/2/timesheets")
+            .send({timesheet: newTimesheet})
+            .then(function(response) {
+                const timesheet = response.body.timesheet;
+                expect(timesheet).to.exist;
+                expect(timesheet.id).to.exist;
+                expect(timesheet.hours).to.equal(newTimesheet.hours);
+                expect(timesheet.rate).to.equal(newTimesheet.rate);
+                expect(timesheet.date).to.equal(newTimesheet.date);
+                expect(timesheet.employee_id).to.equal(2);
+            });
+    });
 
-//     it("should return a 400 status code for invalid timesheets", function() {
-//         newTimesheet = {
-//             rate: 3.5,
-//             date: 100
-//         };
+    it("should return a 400 status code for invalid timesheets", function() {
+        newTimesheet = {
+            rate: 3.5,
+            date: 100
+        };
 
-//         return request(app)
-//             .post("/api/employees/2/timesheets")
-//             .send({timesheet: newTimesheet})
-//             .expect(400);
-//     });
+        return request(app)
+            .post("/api/employees/2/timesheets")
+            .send({timesheet: newTimesheet})
+            .expect(400);
+    });
 
-//     it("should return a 404 status code if an employee with the timesheet's employee ID doesn't exist", function() {
-//         return request(app)
-//             .post("/api/employees/100/timesheets")
-//             .send({timesheet: newTimesheet})
-//             .expect(404);
-//     });
-// });
+    it("should return a 404 status code if an employee with the timesheet's employee ID doesn't exist", function() {
+        return request(app)
+            .post("/api/employees/100/timesheets")
+            .send({timesheet: newTimesheet})
+            .expect(404);
+    });
+});
 
-// describe("PUT /api/employees/:employeeId/timesheets/:timesheetId", function() {
-//     let updatedTimesheet;
+describe("PUT /api/employees/:employeeId/timesheets/:timesheetId", function() {
+    let updatedTimesheet;
 
-//     beforeEach(function(done) {
-//         updatedTimesheet = {
-//             hours: 20,
-//             rate: 3.5,
-//             date: 100
-//         };
+    beforeEach(function(done) {
+        updatedTimesheet = {
+            hours: 20,
+            rate: 3.5,
+            date: 100
+        };
 
-//         seed.seedEmployeeDatabase(done);
-//     });
+        seed.seedEmployeeDatabase(done);
+    });
 
-//     it("should update the timesheet with the given ID", function(done) {
-//         request(app)
-//             .put("/api/employees/1/timesheets/2")
-//             .send({timesheet: updatedTimesheet})
-//             .then(function() {
-//                 testDb.get("SELECT * FROM timesheet WHERE timesheet.id = 2", function(error, timesheet) {
-//                     if (error) {
-//                         throw new Error(error);
-//                     }
-//                     expect(timesheet).to.exist;
-//                     expect(timesheet.id).to.exist;
-//                     expect(timesheet.hours).to.equal(updatedTimesheet.hours);
-//                     expect(timesheet.rate).to.equal(updatedTimesheet.rate);
-//                     expect(timesheet.date).to.equal(updatedTimesheet.date);
-//                     expect(timesheet.employee_id).to.equal(1);
-//                     done();
-//                 });
-//             }).catch(done);
-//     });
+    it("should update the timesheet with the given ID", function(done) {
+        request(app)
+            .put("/api/employees/1/timesheets/2")
+            .send({timesheet: updatedTimesheet})
+            .then(function() {
+                testDb.get("SELECT * FROM timesheet WHERE timesheet.id = 2", function(error, timesheet) {
+                    if (error) {
+                        throw new Error(error);
+                    }
+                    expect(timesheet).to.exist;
+                    expect(timesheet.id).to.exist;
+                    expect(timesheet.hours).to.equal(updatedTimesheet.hours);
+                    expect(timesheet.rate).to.equal(updatedTimesheet.rate);
+                    expect(timesheet.date).to.equal(updatedTimesheet.date);
+                    expect(timesheet.employee_id).to.equal(1);
+                    done();
+                });
+            }).catch(done);
+    });
 
-//     it("should return a 200 status code after timesheet update", function() {
-//         return request(app)
-//             .put("/api/employees/1/timesheets/2")
-//             .send({timesheet: updatedTimesheet})
-//             .expect(200);
-//     });
+    it("should return a 200 status code after timesheet update", function() {
+        return request(app)
+            .put("/api/employees/1/timesheets/2")
+            .send({timesheet: updatedTimesheet})
+            .expect(200);
+    });
 
-//     it("should return the updated timesheet after timesheet update", function() {
-//         return request(app)
-//             .put("/api/employees/1/timesheets/2")
-//             .send({timesheet: updatedTimesheet})
-//             .then(function(response) {
-//                 const timesheet = response.body.timesheet;
-//                 expect(timesheet).to.exist;
-//                 expect(timesheet.id).to.exist;
-//                 expect(timesheet.hours).to.equal(updatedTimesheet.hours);
-//                 expect(timesheet.rate).to.equal(updatedTimesheet.rate);
-//                 expect(timesheet.date).to.equal(updatedTimesheet.date);
-//                 expect(timesheet.employee_id).to.equal(1);
-//             });
-//     });
+    it("should return the updated timesheet after timesheet update", function() {
+        return request(app)
+            .put("/api/employees/1/timesheets/2")
+            .send({timesheet: updatedTimesheet})
+            .then(function(response) {
+                const timesheet = response.body.timesheet;
+                expect(timesheet).to.exist;
+                expect(timesheet.id).to.exist;
+                expect(timesheet.hours).to.equal(updatedTimesheet.hours);
+                expect(timesheet.rate).to.equal(updatedTimesheet.rate);
+                expect(timesheet.date).to.equal(updatedTimesheet.date);
+                expect(timesheet.employee_id).to.equal(1);
+            });
+    });
 
-//     it("should return a 404 status code for invalid timesheet IDs", function() {
-//         updatedTimesheet = {
-//             rate: 3.5,
-//             date: 100
-//         };
+    it("should return a 404 status code for invalid timesheet IDs", function() {
+        updatedTimesheet = {
+            rate: 3.5,
+            date: 100
+        };
 
-//         return request(app)
-//             .put("/api/employees/1/timesheets/999")
-//             .send({timesheet: updatedTimesheet})
-//             .expect(404);
-//     });
+        return request(app)
+            .put("/api/employees/1/timesheets/999")
+            .send({timesheet: updatedTimesheet})
+            .expect(404);
+    });
 
-//     it("should return a 400 status code for invalid timesheet updates", function() {
-//         updatedTimesheet = {
-//             rate: 3.5,
-//             date: 100
-//         };
+    it("should return a 400 status code for invalid timesheet updates", function() {
+        updatedTimesheet = {
+            rate: 3.5,
+            date: 100
+        };
 
-//         return request(app)
-//             .put("/api/employees/1/timesheets/2")
-//             .send({timesheet: updatedTimesheet})
-//             .expect(400);
-//     });
+        return request(app)
+            .put("/api/employees/1/timesheets/2")
+            .send({timesheet: updatedTimesheet})
+            .expect(400);
+    });
 
-//     it("should return a 404 status code if an employee with the updated employee ID doesn't exist", function() {
-//         updatedTimesheet = {
-//             hours: 20,
-//             rate: 3.5,
-//             date: 100
-//         };
+    it("should return a 404 status code if an employee with the updated employee ID doesn't exist", function() {
+        updatedTimesheet = {
+            hours: 20,
+            rate: 3.5,
+            date: 100
+        };
 
-//         return request(app)
-//             .put("/api/employees/999/timesheets/1")
-//             .send({timesheet: updatedTimesheet})
-//             .expect(404);
-//     });
-// });
+        return request(app)
+            .put("/api/employees/999/timesheets/1")
+            .send({timesheet: updatedTimesheet})
+            .expect(404);
+    });
+});
 
-// describe("DELETE /api/employees/:employeeId/timesheets/:timesheetId", function() {
-//     beforeEach(function(done) {
-//         seed.seedTimesheetDatabase(done);
-//     });
+describe("DELETE /api/employees/:employeeId/timesheets/:timesheetId", function() {
+    beforeEach(function(done) {
+        seed.seedTimesheetDatabase(done);
+    });
 
-//     it("should remove the timesheet with the specified ID from the database", function(done) {
-//         request(app)
-//             .del("/api/employees/2/timesheets/1")
-//             .then(function() {
-//                 testDb.get("SELECT * FROM timesheet WHERE timesheet.id = 1", function(error, timesheet) {
-//                     if (error) {
-//                         throw new Error(error);
-//                     }
-//                     expect(timesheet).not.to.exist;
-//                     done();
-//                 });
-//             }).catch(done);
-//     });
+    it("should remove the timesheet with the specified ID from the database", function(done) {
+        request(app)
+            .del("/api/employees/2/timesheets/1")
+            .then(function() {
+                testDb.get("SELECT * FROM timesheet WHERE timesheet.id = 1", function(error, timesheet) {
+                    if (error) {
+                        throw new Error(error);
+                    }
+                    expect(timesheet).not.to.exist;
+                    done();
+                });
+            }).catch(done);
+    });
 
-//     it("should return a 204 status code after timesheet delete", function() {
-//         return request(app)
-//             .del("/api/employees/2/timesheets/1")
-//             .expect(204);
-//     });
+    it("should return a 204 status code after timesheet delete", function() {
+        return request(app)
+            .del("/api/employees/2/timesheets/1")
+            .expect(204);
+    });
 
-//     it("should return a 404 status code for invalid timesheet IDs", function() {
-//         return request(app)
-//             .del("/api/employees/2/timesheets/999")
-//             .expect(404);
-//     });
-// });
+    it("should return a 404 status code for invalid timesheet IDs", function() {
+        return request(app)
+            .del("/api/employees/2/timesheets/999")
+            .expect(404);
+    });
+});
 
 // describe("GET /api/menus", function() {
 //     before(function(done) {

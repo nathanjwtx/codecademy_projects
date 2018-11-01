@@ -16,17 +16,21 @@ let validateEmployee = (req, res, next) => {
     let empData = req.body.employee;
     console.log(req.baseUrl);
     if (req.method != "DELETE" && (!empData.name || !empData.position || !empData.wage)) {
-        res.sendStatus(400);
+        return res.sendStatus(400);
+    } else {
+        next();
     }
-    if (req.method === "PUT" || req.method === "DELETE") {
-        db.get("select * from Employee where id = $id", 
-            {$id: req.baseUrl.split("/")[3]}, (err, row) => {
-                if (err || row === undefined) {
-                    res.sendStatus(404);
-                }
-            });
-    }
-    next();
+};
+
+let checkEmpID = (req, res, next) => {
+    db.get("select * from Employee where id = $id", 
+        {$id: req.baseUrl.split("/")[3]}, (err, row) => {
+            if (err || row === undefined) {
+                res.sendStatus(404);
+            } else {
+                next();
+            }
+        });
 };
 
 // get all employed employees
@@ -76,7 +80,7 @@ employeeRouter.post("/", validateEmployee, (req, res, next) => {
 });
 
 // update an employee
-employeeRouter.put("/", validateEmployee, (req, res, next) => {
+employeeRouter.put("/", validateEmployee, checkEmpID, (req, res, next) => {
     const empData = req.body.employee;
     db.serialize(() => {
         db.run(`update Employee set name = $name, position = $pos, wage = $wage 
@@ -100,7 +104,7 @@ employeeRouter.put("/", validateEmployee, (req, res, next) => {
 });
 
 // delete an employee
-employeeRouter.delete("/", validateEmployee, (req, res, next) => {
+employeeRouter.delete("/", checkEmpID, (req, res, next) => {
     const empID = req.baseUrl.split("/")[3];
     db.run("update Employee set is_current_employee = 0 where id = $id",
         {$id: empID}, err => {

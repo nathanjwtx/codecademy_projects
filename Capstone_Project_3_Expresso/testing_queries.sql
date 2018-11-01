@@ -1,1 +1,2 @@
-select * from timesheet;
+-- select * from timesheet;
+SELECT * FROM Employee;
