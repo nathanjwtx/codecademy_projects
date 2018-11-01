@@ -25,6 +25,7 @@ function checkMenuId (req, res, next) {
                 if (err || row === undefined) {
                     res.sendStatus(404);
                 } else {
+                    res.locals.row = row;
                     next();
                 }
             });
@@ -46,9 +47,7 @@ function checkData (req, res, next) {
     }
 }
 
-menuRouter.use(getParams);
-menuRouter.use(checkMenuId);
-menuRouter.use(checkData);
+menuRouter.use(getParams, checkMenuId, checkData);
 
 // get all or specific menu
 menuRouter.get("/", (req, res, next) => {
@@ -89,4 +88,9 @@ menuRouter.post("/", (req, res, next) => {
                     })
             }
         });
+});
+
+// update a menu
+menuRouter.put("/", (req, res, next) => {
+    console.log(res.locals.row);
 });
