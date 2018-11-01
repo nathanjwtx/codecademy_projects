@@ -33,8 +33,22 @@ function checkMenuId (req, res, next) {
     }
 }
 
+function checkData (req, res, next) {
+    if (req.method === "POST") {
+        let menuData = req.body.menu;
+        if (!menuData.title) {
+            res.sendStatus(400);
+        } else {
+            next();
+        }
+    } else {
+        next();
+    }
+}
+
 menuRouter.use(getParams);
 menuRouter.use(checkMenuId);
+menuRouter.use(checkData);
 
 // get all or specific menu
 menuRouter.get("/", (req, res, next) => {
@@ -60,5 +74,19 @@ menuRouter.get("/", (req, res, next) => {
 
 // create new menu
 menuRouter.post("/", (req, res, next) => {
-    
+    db.run("insert into menu (title) values ($title);", {$title: req.body.menu.title},
+        function (err) {
+            if (err) {
+                res.sendStatus(400);
+            } else {
+                db.get("select * from menu where id = $id;", {$id: this.lastID},
+                    (err, row) => {
+                        if (err) {
+                            res.sendStatus(400);
+                        } else {
+                            res.status(201).send({menu: row});
+                        }
+                    })
+            }
+        });
 });

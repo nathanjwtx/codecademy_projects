@@ -816,57 +816,57 @@ describe("GET /api/menus/:id", function() {
     });
 });
 
-// describe("POST /api/menus", function() {
-//     let newMenu;
+describe("POST /api/menus", function() {
+    let newMenu;
 
-//     beforeEach(function(done) {
-//         newMenu = {
-//             title: "New Menu"
-//         };
+    beforeEach(function(done) {
+        newMenu = {
+            title: "New Menu"
+        };
 
-//         seed.seedMenuDatabase(done);
-//     });
+        seed.seedMenuDatabase(done);
+    });
 
-//     it("should create a valid menu", function() {
-//         return request(app)
-//             .post("/api/menus/")
-//             .send({menu: newMenu})
-//             .then(function() {
-//                 testDb.all("SELECT * FROM Menu", function(error, result) {
-//                     const menu = result.find(menu => menu.title === newMenu.title);
-//                     expect(menu).to.exist;
-//                     expect(menu.id).to.exist;
-//                     expect(menu.title).to.equal(newMenu.title);
-//                 });
-//             });
-//     });
+    it("should create a valid menu", function() {
+        return request(app)
+            .post("/api/menus/")
+            .send({menu: newMenu})
+            .then(function() {
+                testDb.all("SELECT * FROM Menu", function(error, result) {
+                    const menu = result.find(menu => menu.title === newMenu.title);
+                    expect(menu).to.exist;
+                    expect(menu.id).to.exist;
+                    expect(menu.title).to.equal(newMenu.title);
+                });
+            });
+    });
 
-//     it("should return a 201 status code after menu creation", function() {
-//         return request(app)
-//             .post("/api/menus/")
-//             .send({menu: newMenu})
-//             .expect(201);
-//     });
+    it("should return a 201 status code after menu creation", function() {
+        return request(app)
+            .post("/api/menus/")
+            .send({menu: newMenu})
+            .expect(201);
+    });
 
-//     it("should return the newly-created menu after menu creation", function() {
-//         return request(app)
-//             .post("/api/menus/")
-//             .send({menu: newMenu})
-//             .then(function(response) {
-//                 const menu = response.body.menu;
-//                 expect(menu).to.exist;
-//                 expect(menu.id).to.exist;
-//                 expect(menu.title).to.equal(newMenu.title);
-//             });
-//     });
+    it("should return the newly-created menu after menu creation", function() {
+        return request(app)
+            .post("/api/menus/")
+            .send({menu: newMenu})
+            .then(function(response) {
+                const menu = response.body.menu;
+                expect(menu).to.exist;
+                expect(menu.id).to.exist;
+                expect(menu.title).to.equal(newMenu.title);
+            });
+    });
 
-//     it("should return a 400 status code for invalid menus", function() {
-//         return request(app)
-//             .post("/api/menus/")
-//             .send({menu: {}})
-//             .expect(400);
-//     });
-// });
+    it("should return a 400 status code for invalid menus", function() {
+        return request(app)
+            .post("/api/menus/")
+            .send({menu: {}})
+            .expect(400);
+    });
+});
 
 // describe("PUT /api/menus/:id", function() {
 //     let updatedMenu;
