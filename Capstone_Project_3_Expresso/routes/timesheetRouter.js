@@ -23,33 +23,36 @@ let getParams = (req, res, next) => {
 let checkEmp = (req, res, next) => {
     db.get("select * from Employee where id = $id", {$id: req.empID},
         (err, row) => {
+            console.log(req.empID);
             if (err || row === undefined) {
-                res.status(404).send();
-            // } else {
-            //     next();
+                res.sendStatus(404);
+            } else {
+                next();
             }
         });
-        next();
 };
 
-// let checkTS = (id) => {
-//     db.get("select * from Timesheet where id = $id", {$id: id} , 
-//         (err, row) => {
-//             if (err || row === undefined) {
-//                 return null;
-//             }
-//         });
-// };
+let checkTS = (req, res, next) => {
+    db.get("select * from Timesheet where Timesheet.id = $id", {$id: req.tsID} , 
+        (err, row) => {
+            if (err || row === undefined) {
+                res.sendStatus(404);
+            } else {
+                next();
+            }
+        });
+};
 
-// let dataCheck = (req, res, next) => {
-//     const tsData = req.body.timesheet;
-//     if (!tsData.hours || !tsData.rate || !tsData.date) {
-//         res.sendStatus(400);
-//     }
-//     next();
-// };
+let dataCheck = (req, res, next) => {
+    const tsData = req.body.timesheet;
+    if (!tsData.hours || !tsData.rate || !tsData.date) {
+        res.sendStatus(400);
+    } else {
+        next();
+    }
+};
 
-https://stackoverflow.com/questions/10695629/what-is-the-parameter-next-used-for-in-express?noredirect=1&lq=1
+"https://stackoverflow.com/questions/10695629/what-is-the-parameter-next-used-for-in-express?noredirect=1&lq=1"
 
 // get all timesheets
 timesheetRouter.get("/", getParams, checkEmp, (req, res, next) => {
@@ -67,46 +70,46 @@ timesheetRouter.get("/", getParams, checkEmp, (req, res, next) => {
     }
 });
 
-// // create new timesheet
-// timesheetRouter.post("/", getParams, (req, res, next) => {
-//     const tsData = req.body.timesheet;
-//     console.log("ID", req.empID);
-//     db.run(`insert into Timesheet (hours, rate, date, employee_id) 
-//         values ($hours, $rate, $date, $emp);`, {
-//         $hours: tsData.hours,
-//         $rate: tsData.rate,
-//         $date: tsData.date,
-//         $emp: req.empID
-//     }, function(err) {
-//         if (err) {
-//             return res.status(404).send(err);
-//         } else {
-//             db.get("select * from Timesheet where id = $id", {$id: this.lastID},
-//                 (err, row) => {
-//                     return res.status(201).send({timesheet: row});
-//                 });
-//         }
-//     });
-// });
+// create new timesheet
+timesheetRouter.post("/", getParams, (req, res, next) => {
+    const tsData = req.body.timesheet;
+    console.log("ID", req.empID);
+    db.run(`insert into Timesheet (hours, rate, date, employee_id) 
+        values ($hours, $rate, $date, $emp);`, {
+        $hours: tsData.hours,
+        $rate: tsData.rate,
+        $date: tsData.date,
+        $emp: req.empID
+    }, function(err) {
+        if (err) {
+            return res.status(404).send(err);
+        } else {
+            db.get("select * from Timesheet where id = $id", {$id: this.lastID},
+                (err, row) => {
+                    return res.status(201).send({timesheet: row});
+                });
+        }
+    });
+});
 
-// // edit existing timesheet
-// timesheetRouter.put("/", getParams, checkEmp, checkTS, dataCheck, (req, res, next) => {
-//     const tsData = req.body.timesheet;
-//     console.log(tsData);
-//     db.run(`update Timesheet set hours = $hours, rate = $rate, date = $rate 
-//     where id = $id`, {
-//         $hours: tsData.hours,
-//         $rate: tsData.rate,
-//         $date: tsData.date,
-//         $id: req.tsID
-//     }, function(err) {
-//         if (err) {
-//             return res.status(404).send(err);
-//         }
-//         db.get("select * from Timesheet where id = $id", {$id: this.lastID},
-//             (err, row) => {
-//                 return res.status(201).send({timesheet: row});
-//             });
-//     });
-// });
+// edit existing timesheet
+timesheetRouter.put("/", getParams, checkEmp, checkTS, dataCheck, (req, res, next) => {
+    const tsData = req.body.timesheet;
+    console.log(tsData);
+    db.run(`update Timesheet set hours = $hours, rate = $rate, date = $date 
+    where id = $id`, {
+        $hours: tsData.hours,
+        $rate: tsData.rate,
+        $date: tsData.date,
+        $id: req.tsID
+    }, function(err) {
+        if (err) {
+            return res.status(404).send(err);
+        }
+        db.get("select * from Timesheet where id = $id", {$id: req.tsID},
+            (err, row) => {
+                return res.status(201).send({timesheet: row});
+            });
+    });
+});
 
