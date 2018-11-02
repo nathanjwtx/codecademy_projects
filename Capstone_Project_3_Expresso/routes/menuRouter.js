@@ -112,3 +112,30 @@ menuRouter.put("/", (req, res, next) => {
             }
         });
 });
+
+// delete a menu
+menuRouter.delete("/", (req, res, next) => {
+    const chkItemsSQL = "select count(*) as count from MenuItem where menu_id = $id;";
+    const deleteSQL = "delete from menu where id = $id;";
+    // check for menu
+    db.serialize(() => {
+        getRow(res.locals.menuID).then((data) => {}, (err) => {
+            return res.status(404).send(err);
+        });
+    });
+    // if menu exists check for menu items
+    db.get(chkItemsSQL, {$id: res.locals.menuID}, (err, row) => {
+        console.log(row.count);
+        if (row.count === 0) {
+            db.run(deleteSQL, {$id: res.locals.menuID}, (err) => {
+                if (!err) {
+                    return res.status(204).send();
+                } else {
+                    return res.status(400).send();
+                }
+            });
+        } else {
+            return res.status(400).send("Menu items");
+        }
+    });
+});
