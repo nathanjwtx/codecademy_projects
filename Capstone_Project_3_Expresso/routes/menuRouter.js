@@ -47,23 +47,32 @@ function checkData (req, res, next) {
     }
 }
 
+let getRow = (id) => new Promise ((resolve, reject) => {
+    let sql = "select * from menu where id = $id";
+    db.get(sql, {$id: id}, (err, row) => {
+        if (err) {
+            reject(err);
+        } else {
+            resolve(row);
+        }
+    });
+});
+
 menuRouter.use(getParams, checkMenuId, checkData);
 
 // get all or specific menu
 menuRouter.get("/", (req, res, next) => {
     if (res.locals.menuID !== undefined) {
-        db.get("select * from menu where id = $id;", {$id: res.locals.menuID},
-            (err, row) => {
-                if (err) {
-                    return res.sendStatus(404);
-                } else {
-                    return res.status(200).send({menu: row});
-                }
+        getRow(res.locals.menuID)
+            .then((data) => {
+                res.status(200).send({menu: data});
+            }, (err) => {
+                res.status(404).send(err);
             });
     } else if (res.locals.menuID === undefined) {
         db.all("select * from menu;", (err, rows) => {
             if (err) {
-                return res.sendStatus(400);
+                return res.status(404).send(err);
             } else {
                 return res.status(200).send({menus: rows});
             }
@@ -78,19 +87,28 @@ menuRouter.post("/", (req, res, next) => {
             if (err) {
                 res.sendStatus(400);
             } else {
-                db.get("select * from menu where id = $id;", {$id: this.lastID},
-                    (err, row) => {
-                        if (err) {
-                            res.sendStatus(400);
-                        } else {
-                            res.status(201).send({menu: row});
-                        }
-                    })
+                getRow(this.lastID)
+                    .then((data) => {res.status(201).send({menu: data});
+                    }, (err) => {
+                        return res.status(404).send(err);
+                    });
             }
         });
 });
 
 // update a menu
 menuRouter.put("/", (req, res, next) => {
-    console.log(res.locals.row);
+    const sql = "update menu set title = $title where id = $id";
+    db.run(sql, {$title: req.body.menu.title, $id: res.locals.menuID},
+        (err) => {
+            if (err) {
+                return res.status(400).send(err);
+            } else {
+                getRow(4).then((data) => {
+                    return res.status(200).send(data);
+                }, (err) => {
+                    return res.status(400).send(err);
+                });
+            }
+        });
 });
