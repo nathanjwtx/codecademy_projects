@@ -100,12 +100,12 @@ menuRouter.post("/", (req, res, next) => {
 menuRouter.put("/", (req, res, next) => {
     const sql = "update menu set title = $title where id = $id";
     db.run(sql, {$title: req.body.menu.title, $id: res.locals.menuID},
-        (err) => {
+        function (err) {
             if (err) {
                 return res.status(400).send(err);
             } else {
-                getRow(4).then((data) => {
-                    return res.status(200).send(data);
+                getRow(res.locals.menuID).then((data) => {
+                    return res.status(200).send({menu: data});
                 }, (err) => {
                     return res.status(400).send(err);
                 });
