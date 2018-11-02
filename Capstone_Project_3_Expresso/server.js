@@ -18,8 +18,9 @@ const menuItem = require("./routes/menuItemRouter");
 
 app.use("/api/employees/:empId?", employee);
 app.use("/api/employees/:id/timesheets/:tsID?", timesheet);
-app.use("/api/menus/:menuID?", menu);
 app.use("/api/menus/:menuId/menu-items/:menuItemId?", menuItem);
+app.use("/api/menus/:menuID?", menu);
+
 
 // need this for testing
 module.exports = app;
