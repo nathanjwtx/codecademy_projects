@@ -764,248 +764,248 @@ const testDb = new sqlite3.Database(process.env.TEST_DATABASE);
 //     });
 // });
 
-describe("GET /api/menus", function() {
-    before(function(done) {
-        seed.seedMenuDatabase(done);
-    });
-
-    it("should return all menus", function() {
-        return request(app)
-            .get("/api/menus")
-            .then(function(response) {
-                const menus = response.body.menus;
-                expect(menus.length).to.equal(3);
-                expect(menus.find(menus => menus.id === 1)).to.exist;
-                expect(menus.find(menus => menus.id === 2)).to.exist;
-                expect(menus.find(menus => menus.id === 3)).to.exist;
-            });
-    });
-
-    it("should return a status code of 200", function() {
-        return request(app)
-            .get("/api/menus")
-            .expect(200);
-    });
-});
-
-describe("GET /api/menus/:id", function() {
-    before(function(done) {
-        seed.seedMenuDatabase(done);
-    });
-
-    it("should return the menus with the given ID", function() {
-        return request(app)
-            .get("/api/menus/2")
-            .then(function(response) {
-                const menu = response.body.menu;
-                expect(menu.id).to.equal(2);
-                expect(menu.title).to.equal("Lunch");
-            });
-    });
-
-    it("should return a 200 status code for valid IDs", function() {
-        return request(app)
-            .get("/api/menus/2")
-            .expect(200);
-    });
-
-    it("should return a 404 status code for invalid IDs", function() {
-        return request(app)
-            .get("/api/menus/999")
-            .expect(404);
-    });
-});
-
-describe("POST /api/menus", function() {
-    let newMenu;
-
-    beforeEach(function(done) {
-        newMenu = {
-            title: "New Menu"
-        };
-
-        seed.seedMenuDatabase(done);
-    });
-
-    it("should create a valid menu", function() {
-        return request(app)
-            .post("/api/menus/")
-            .send({menu: newMenu})
-            .then(function() {
-                testDb.all("SELECT * FROM Menu", function(error, result) {
-                    const menu = result.find(menu => menu.title === newMenu.title);
-                    expect(menu).to.exist;
-                    expect(menu.id).to.exist;
-                    expect(menu.title).to.equal(newMenu.title);
-                });
-            });
-    });
-
-    it("should return a 201 status code after menu creation", function() {
-        return request(app)
-            .post("/api/menus/")
-            .send({menu: newMenu})
-            .expect(201);
-    });
-
-    it("should return the newly-created menu after menu creation", function() {
-        return request(app)
-            .post("/api/menus/")
-            .send({menu: newMenu})
-            .then(function(response) {
-                const menu = response.body.menu;
-                expect(menu).to.exist;
-                expect(menu.id).to.exist;
-                expect(menu.title).to.equal(newMenu.title);
-            });
-    });
-
-    it("should return a 400 status code for invalid menus", function() {
-        return request(app)
-            .post("/api/menus/")
-            .send({menu: {}})
-            .expect(400);
-    });
-});
-
-describe("PUT /api/menus/:id", function() {
-    let updatedMenu;
-
-    beforeEach(function(done) {
-        updatedMenu = {
-            title: "Updated Menu"
-        };
-
-        seed.seedMenuDatabase(done);
-    });
-
-    it("should update the menu with the given ID", function(done) {
-        request(app)
-            .put("/api/menus/2")
-            .send({menu: updatedMenu})
-            .then(function() {
-                testDb.get("SELECT * FROM Menu WHERE Menu.id = 2", function(error, menu) {
-                    if (error) {
-                        throw new Error(error);
-                    }
-                    expect(menu).to.exist;
-                    expect(menu.id).to.equal(2);
-                    expect(menu.title).to.equal(updatedMenu.title);
-                    done();
-                });
-            }).catch(done);
-    });
-
-    it("should return a 200 status code after menu update", function() {
-        return request(app)
-            .put("/api/menus/2")
-            .send({menu: updatedMenu})
-            .expect(200);
-    });
-
-    it("should return the updated menu after menu update", function() {
-        return request(app)
-            .put("/api/menus/2")
-            .send({menu: updatedMenu})
-            .then(function(response) {
-                const menu = response.body.menu;
-                expect(menu).to.exist;
-                expect(menu.id).to.equal(2);
-                expect(menu.title).to.equal(updatedMenu.title);
-            });
-    });
-
-    it("should return a 400 status code for invalid menu updates", function() {
-        return request(app)
-            .put("/api/menus/1")
-            .send({menu: {}})
-            .expect(400);
-    });
-});
-
-describe("DELETE /api/menus/:id", function() {
-    beforeEach(function(done) {
-        seed.seedMenuDatabase(() => seed.seedMenuItemDatabase(done));
-    });
-
-    it("should remove the menu with the specified ID from the database if that menu has no related menu items", function(done) {
-        request(app)
-            .del("/api/menus/3")
-            .then(function() {
-                testDb.get("SELECT * FROM Menu WHERE Menu.id = 3", function(error, menu) {
-                    if (error) {
-                        throw new Error(error);
-                    }
-                    expect(menu).not.to.exist;
-                    done();
-                });
-            }).catch(done);
-    });
-
-    it("should return a 204 status code after menu delete", function() {
-        return request(app)
-            .del("/api/menus/3")
-            .expect(204);
-    });
-
-    it("should not delete menus with existing related menu items", function(done) {
-        request(app)
-            .del("/api/menus/2")
-            .then(function() {
-                testDb.get("SELECT * FROM Menu WHERE Menu.id = 2", function(error, menu) {
-                    if (error) {
-                        throw new Error(error);
-                    }
-                    expect(menu).to.exist;
-                    done();
-                });
-            }).catch(done);
-    });
-
-    it("should return a 400 status code if deleted menu has existing related menu items", function() {
-        return request(app)
-            .del("/api/menus/2")
-            .expect(400);
-    });
-});
-
-// describe("GET /api/menus/:menuId/menu-items", function() {
+// describe("GET /api/menus", function() {
 //     before(function(done) {
-//         seed.seedMenuItemDatabase(done);
+//         seed.seedMenuDatabase(done);
 //     });
 
-//     it("should return all menu items of an existing menu", function() {
+//     it("should return all menus", function() {
 //         return request(app)
-//             .get("/api/menus/1/menu-items")
+//             .get("/api/menus")
 //             .then(function(response) {
-//                 const menuItems = response.body.menuItems;
-//                 expect(menuItems.length).to.equal(2);
-//                 expect(menuItems.find(menuItem => menuItem.id === 1)).to.exist;
-//                 expect(menuItems.find(menuItem => menuItem.id === 2)).to.exist;
+//                 const menus = response.body.menus;
+//                 expect(menus.length).to.equal(3);
+//                 expect(menus.find(menus => menus.id === 1)).to.exist;
+//                 expect(menus.find(menus => menus.id === 2)).to.exist;
+//                 expect(menus.find(menus => menus.id === 3)).to.exist;
 //             });
 //     });
 
-//     it("should return an empty array for existing menus with no menu items", function() {
+//     it("should return a status code of 200", function() {
 //         return request(app)
-//             .get("/api/menus/3/menu-items")
+//             .get("/api/menus")
+//             .expect(200);
+//     });
+// });
+
+// describe("GET /api/menus/:id", function() {
+//     before(function(done) {
+//         seed.seedMenuDatabase(done);
+//     });
+
+//     it("should return the menus with the given ID", function() {
+//         return request(app)
+//             .get("/api/menus/2")
 //             .then(function(response) {
-//                 const menuItems = response.body.menuItems;
-//                 expect(menuItems.length).to.equal(0);
+//                 const menu = response.body.menu;
+//                 expect(menu.id).to.equal(2);
+//                 expect(menu.title).to.equal("Lunch");
 //             });
 //     });
 
-//     it("should return a status code of 200 for valid menus", function() {
+//     it("should return a 200 status code for valid IDs", function() {
 //         return request(app)
-//             .get("/api/menus/2/menu-items")
+//             .get("/api/menus/2")
 //             .expect(200);
 //     });
 
-//     it("should return a status code of 404 for invalid menus", function() {
+//     it("should return a 404 status code for invalid IDs", function() {
 //         return request(app)
-//             .get("/api/menus/999/menu-items")
+//             .get("/api/menus/999")
 //             .expect(404);
 //     });
 // });
+
+// describe("POST /api/menus", function() {
+//     let newMenu;
+
+//     beforeEach(function(done) {
+//         newMenu = {
+//             title: "New Menu"
+//         };
+
+//         seed.seedMenuDatabase(done);
+//     });
+
+//     it("should create a valid menu", function() {
+//         return request(app)
+//             .post("/api/menus/")
+//             .send({menu: newMenu})
+//             .then(function() {
+//                 testDb.all("SELECT * FROM Menu", function(error, result) {
+//                     const menu = result.find(menu => menu.title === newMenu.title);
+//                     expect(menu).to.exist;
+//                     expect(menu.id).to.exist;
+//                     expect(menu.title).to.equal(newMenu.title);
+//                 });
+//             });
+//     });
+
+//     it("should return a 201 status code after menu creation", function() {
+//         return request(app)
+//             .post("/api/menus/")
+//             .send({menu: newMenu})
+//             .expect(201);
+//     });
+
+//     it("should return the newly-created menu after menu creation", function() {
+//         return request(app)
+//             .post("/api/menus/")
+//             .send({menu: newMenu})
+//             .then(function(response) {
+//                 const menu = response.body.menu;
+//                 expect(menu).to.exist;
+//                 expect(menu.id).to.exist;
+//                 expect(menu.title).to.equal(newMenu.title);
+//             });
+//     });
+
+//     it("should return a 400 status code for invalid menus", function() {
+//         return request(app)
+//             .post("/api/menus/")
+//             .send({menu: {}})
+//             .expect(400);
+//     });
+// });
+
+// describe("PUT /api/menus/:id", function() {
+//     let updatedMenu;
+
+//     beforeEach(function(done) {
+//         updatedMenu = {
+//             title: "Updated Menu"
+//         };
+
+//         seed.seedMenuDatabase(done);
+//     });
+
+//     it("should update the menu with the given ID", function(done) {
+//         request(app)
+//             .put("/api/menus/2")
+//             .send({menu: updatedMenu})
+//             .then(function() {
+//                 testDb.get("SELECT * FROM Menu WHERE Menu.id = 2", function(error, menu) {
+//                     if (error) {
+//                         throw new Error(error);
+//                     }
+//                     expect(menu).to.exist;
+//                     expect(menu.id).to.equal(2);
+//                     expect(menu.title).to.equal(updatedMenu.title);
+//                     done();
+//                 });
+//             }).catch(done);
+//     });
+
+//     it("should return a 200 status code after menu update", function() {
+//         return request(app)
+//             .put("/api/menus/2")
+//             .send({menu: updatedMenu})
+//             .expect(200);
+//     });
+
+//     it("should return the updated menu after menu update", function() {
+//         return request(app)
+//             .put("/api/menus/2")
+//             .send({menu: updatedMenu})
+//             .then(function(response) {
+//                 const menu = response.body.menu;
+//                 expect(menu).to.exist;
+//                 expect(menu.id).to.equal(2);
+//                 expect(menu.title).to.equal(updatedMenu.title);
+//             });
+//     });
+
+//     it("should return a 400 status code for invalid menu updates", function() {
+//         return request(app)
+//             .put("/api/menus/1")
+//             .send({menu: {}})
+//             .expect(400);
+//     });
+// });
+
+// describe("DELETE /api/menus/:id", function() {
+//     beforeEach(function(done) {
+//         seed.seedMenuDatabase(() => seed.seedMenuItemDatabase(done));
+//     });
+
+//     it("should remove the menu with the specified ID from the database if that menu has no related menu items", function(done) {
+//         request(app)
+//             .del("/api/menus/3")
+//             .then(function() {
+//                 testDb.get("SELECT * FROM Menu WHERE Menu.id = 3", function(error, menu) {
+//                     if (error) {
+//                         throw new Error(error);
+//                     }
+//                     expect(menu).not.to.exist;
+//                     done();
+//                 });
+//             }).catch(done);
+//     });
+
+//     it("should return a 204 status code after menu delete", function() {
+//         return request(app)
+//             .del("/api/menus/3")
+//             .expect(204);
+//     });
+
+//     it("should not delete menus with existing related menu items", function(done) {
+//         request(app)
+//             .del("/api/menus/2")
+//             .then(function() {
+//                 testDb.get("SELECT * FROM Menu WHERE Menu.id = 2", function(error, menu) {
+//                     if (error) {
+//                         throw new Error(error);
+//                     }
+//                     expect(menu).to.exist;
+//                     done();
+//                 });
+//             }).catch(done);
+//     });
+
+//     it("should return a 400 status code if deleted menu has existing related menu items", function() {
+//         return request(app)
+//             .del("/api/menus/2")
+//             .expect(400);
+//     });
+// });
+
+describe("GET /api/menus/:menuId/menu-items", function() {
+    before(function(done) {
+        seed.seedMenuItemDatabase(done);
+    });
+
+    it("should return all menu items of an existing menu", function() {
+        return request(app)
+            .get("/api/menus/1/menu-items")
+            .then(function(response) {
+                const menuItems = response.body.menuItems;
+                expect(menuItems.length).to.equal(2);
+                expect(menuItems.find(menuItem => menuItem.id === 1)).to.exist;
+                expect(menuItems.find(menuItem => menuItem.id === 2)).to.exist;
+            });
+    });
+
+    it("should return an empty array for existing menus with no menu items", function() {
+        return request(app)
+            .get("/api/menus/3/menu-items")
+            .then(function(response) {
+                const menuItems = response.body.menuItems;
+                expect(menuItems.length).to.equal(0);
+            });
+    });
+
+    it("should return a status code of 200 for valid menus", function() {
+        return request(app)
+            .get("/api/menus/2/menu-items")
+            .expect(200);
+    });
+
+    it("should return a status code of 404 for invalid menus", function() {
+        return request(app)
+            .get("/api/menus/999/menu-items")
+            .expect(404);
+    });
+});
 
 // describe("POST /api/menus/:menuId/menu-items", function() {
 //     let newMenuItem;

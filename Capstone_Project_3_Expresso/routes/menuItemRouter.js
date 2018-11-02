@@ -19,4 +19,44 @@ function getParams (req, res, next) {
     next();
 }
 
+let getMenuItem = (menu, id = 0) => new Promise ((resolve, reject) => {
+    let sql;
+    let args;
+    if (id > 0) {
+        sql = "select * from menuitem where id = $id and menu_id = $menu";
+        args = {$id: id, $menu: menu};
+    } else {
+        sql = "select * from menuitem where menu_id = $menu";
+        args = {$menu: menu};
+    }
+    db.all(sql, args, (err, row) => {
+        if (err) {
+            reject(err);
+        } else {
+            resolve(row);
+        }
+    });
+});
+
 menuItemRouter.use(getParams);
+
+// return menu items
+menuItemRouter.get("/", (req, res, next) => {
+    if (!res.locals.menuItemID) {
+        getMenuItem(res.locals.menuID)
+            .then((data) => {
+                return res.status(200).send({"menuItems": data});
+            }, (err) => {
+                return res.status(400).send("Something went wrong");
+            });
+    } else if (res.locals.menuItemID) {
+        getMenuItem(res.locals.menuID, res.locals.menuItemID)
+            .then((data) => {
+                return res.status(200).send({"menuItem": data});
+            }, (err) => {
+                return res.status(400).send("Something went wrong");
+            });
+    }
+});
+
+// create a new menu item
