@@ -26,6 +26,7 @@ function getParams (req, res, next) {
 
 function checkData (req, res, next) {
     let itemData = req.body.menuItem;
+    console.log(itemData);
     if (!itemData.name || !itemData.inventory || !itemData.price) {
         res.status(400).send("Missing data");
     }
@@ -118,6 +119,44 @@ menuItemRouter.post("/", checkData, (req, res, next) => {
                 });
             }
         }).catch((err) => {
-            return res.status(404).send("2 - Something went wrong");
+            return res.status(404).send("POST - Something went wrong");
+        });
+});
+
+// edit an existing item
+menuItemRouter.put("/", checkData, (req, res, next) => {
+    getMenuItem(res.locals.menuID, res.locals.menuItemID)
+        .then((menuItem) => {
+            if (menuItem[0] !== undefined) {
+                let sql = `update menuitem set name = $name, description = $desc,
+                 inventory = $inv, price = $price, menu_id = $menu where id = $id;`;
+                let args = {$name: req.body.menuItem.name,
+                    $desc: req.body.menuItem.description,
+                    $inv: req.body.menuItem.inventory,
+                    $price: req.body.menuItem.price,
+                    $menu: res.locals.menuID,
+                    $id: res.locals.menuItemID};
+                db.run(sql, args, function (err) {
+                    if (!err) {
+                        // console.log("no error");
+                        getMenuItem(res.locals.menuID, res.locals.menuItemID)
+                            .then((menuItem) => {
+                                res.status(200).send({"menuItem": menuItem[0]});
+                            }, err => {
+                                throw new Error();
+                            }).catch ((err) => {
+                                console.error("400 - missing data");
+                            });
+                    } else {
+                        console.log(err);
+                    }
+                });
+            } else {
+                throw new Error("Ooops");
+            }
+        }, err => {
+            throw new Error();
+        }).catch(err => {
+            return res.status(404).send("PUT - Something went wrong");
         });
 });

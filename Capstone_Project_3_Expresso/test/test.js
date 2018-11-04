@@ -1076,88 +1076,88 @@ describe("POST /api/menus/:menuId/menu-items", function() {
     });
 });
 
-// describe("PUT /api/menus/:menuId/menu-items/:menuItemId", function() {
-//     let updatedMenuItem;
+describe("PUT /api/menus/:menuId/menu-items/:menuItemId", function() {
+    let updatedMenuItem;
 
-//     beforeEach(function(done) {
-//         updatedMenuItem = {
-//             name: "Updated Menu Item",
-//             description: "Updated Description",
-//             inventory: 20,
-//             price: 1.5
-//         };
+    beforeEach(function(done) {
+        updatedMenuItem = {
+            name: "Updated Menu Item",
+            description: "Updated Description",
+            inventory: 20,
+            price: 1.5
+        };
 
-//         seed.seedMenuItemDatabase(done);
-//     });
+        seed.seedMenuItemDatabase(done);
+    });
 
-//     it("should update the menu item with the given ID", function(done) {
-//         request(app)
-//             .put("/api/menus/1/menu-items/2")
-//             .send({menuItem: updatedMenuItem})
-//             .then(function() {
-//                 testDb.get("SELECT * FROM MenuItem WHERE MenuItem.id = 2", function(error, menuItem) {
-//                     if (error) {
-//                         throw new Error(error);
-//                     }
-//                     expect(menuItem).to.exist;
-//                     expect(menuItem.id).to.equal(2);
-//                     expect(menuItem.name).to.equal(updatedMenuItem.name);
-//                     expect(menuItem.description).to.equal(updatedMenuItem.description);
-//                     expect(menuItem.inventory).to.equal(updatedMenuItem.inventory);
-//                     expect(menuItem.price).to.equal(updatedMenuItem.price);
-//                     done();
-//                 });
-//             }).catch(done);
-//     });
+    it("should update the menu item with the given ID", function(done) {
+        request(app)
+            .put("/api/menus/1/menu-items/2")
+            .send({menuItem: updatedMenuItem})
+            .then(function() {
+                testDb.get("SELECT * FROM MenuItem WHERE MenuItem.id = 2", function(error, menuItem) {
+                    if (error) {
+                        throw new Error(error);
+                    }
+                    expect(menuItem).to.exist;
+                    expect(menuItem.id).to.equal(2);
+                    expect(menuItem.name).to.equal(updatedMenuItem.name);
+                    expect(menuItem.description).to.equal(updatedMenuItem.description);
+                    expect(menuItem.inventory).to.equal(updatedMenuItem.inventory);
+                    expect(menuItem.price).to.equal(updatedMenuItem.price);
+                    done();
+                });
+            }).catch(done);
+    });
 
-//     it("should return a 200 status code after menuItem update", function() {
-//         return request(app)
-//             .put("/api/menus/1/menu-items/2")
-//             .send({menuItem: updatedMenuItem})
-//             .expect(200);
-//     });
+    it("should return a 200 status code after menuItem update", function() {
+        return request(app)
+            .put("/api/menus/1/menu-items/2")
+            .send({menuItem: updatedMenuItem})
+            .expect(200);
+    });
 
-//     it("should return the updated menu item after menu item update", function() {
-//         return request(app)
-//             .put("/api/menus/1/menu-items/2")
-//             .send({menuItem: updatedMenuItem})
-//             .then(function(response) {
-//                 const menuItem = response.body.menuItem;
-//                 expect(menuItem).to.exist;
-//                 expect(menuItem.id).to.equal(2);
-//                 expect(menuItem.name).to.equal(updatedMenuItem.name);
-//                 expect(menuItem.description).to.equal(updatedMenuItem.description);
-//                 expect(menuItem.inventory).to.equal(updatedMenuItem.inventory);
-//                 expect(menuItem.price).to.equal(updatedMenuItem.price);
-//             });
-//     });
+    it("should return the updated menu item after menu item update", function() {
+        return request(app)
+            .put("/api/menus/1/menu-items/2")
+            .send({menuItem: updatedMenuItem})
+            .then(function(response) {
+                const menuItem = response.body.menuItem;
+                expect(menuItem).to.exist;
+                expect(menuItem.id).to.equal(2);
+                expect(menuItem.name).to.equal(updatedMenuItem.name);
+                expect(menuItem.description).to.equal(updatedMenuItem.description);
+                expect(menuItem.inventory).to.equal(updatedMenuItem.inventory);
+                expect(menuItem.price).to.equal(updatedMenuItem.price);
+            });
+    });
 
-//     it("should return a 404 status code for invalid menu item IDs", function() {
-//         updatedMenuItem = {
-//             description: "Updated Description",
-//             inventory: 20,
-//             price: 1.5
-//         };
+    it("should return a 404 status code for invalid menu item IDs", function() {
+        updatedMenuItem = {
+            description: "Updated Description",
+            inventory: 20,
+            price: 1.5
+        };
 
-//         return request(app)
-//             .put("/api/menus/1/menu-items/999")
-//             .send({menuItem: updatedMenuItem})
-//             .expect(404);
-//     });
+        return request(app)
+            .put("/api/menus/1/menu-items/999")
+            .send({menuItem: updatedMenuItem})
+            .expect(404);
+    });
 
-//     it("should return a 400 status code for invalid menu item updates", function() {
-//         updatedMenuItem = {
-//             description: "Updated Description",
-//             inventory: 20,
-//             price: 1.5
-//         };
+    it("should return a 400 status code for invalid menu item updates", function() {
+        updatedMenuItem = {
+            description: "Updated Description",
+            inventory: 20,
+            price: 1.5
+        };
 
-//         return request(app)
-//             .put("/api/menus/1/menu-items/2")
-//             .send({menuItem: updatedMenuItem})
-//             .expect(400);
-//     });
-// });
+        return request(app)
+            .put("/api/menus/1/menu-items/2")
+            .send({menuItem: updatedMenuItem})
+            .expect(400);
+    });
+});
 
 // describe("DELETE /api/menus/:menuId/menu-items/:menuItemId", function() {
 //     beforeEach(function(done) {
