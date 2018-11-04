@@ -24,6 +24,14 @@ function getParams (req, res, next) {
     next();
 }
 
+function checkData (req, res, next) {
+    let itemData = req.body.menuItem;
+    if (!itemData.name || !itemData.inventory || !itemData.price) {
+        res.status(400).send("Missing data");
+    }
+    next();
+}
+
 let getMenuItem = (menu, id = 0, allItems = false) => new Promise ((resolve, reject) => {
     let sql;
     let args;
@@ -63,7 +71,6 @@ menuItemRouter.use(getParams);
 
 // return menu items
 menuItemRouter.get("/", (req, res, next) => {
-    console.log("menu");
     // return all menu items
     getMenuCount(res.locals.menuID)
         .then((menuCount) => {
@@ -78,8 +85,39 @@ menuItemRouter.get("/", (req, res, next) => {
                     });
             }
         }).catch((err) => {
-            return res.status(404).send("Something went wrong");
+            return res.status(404).send("1 - Something went wrong");
         });
 });
 
 // create a new menu item
+menuItemRouter.post("/", checkData, (req, res, next) => {
+    getMenuCount(res.locals.menuID)
+        .then((menuCount) => {
+            console.log(menuCount)
+            if (menuCount.count === 0) {
+                throw new Error();
+            } else {
+                let sql = `insert into menuitem (name, description, inventory, 
+                    price, menu_id) values ($name, $desc, $inv, $price, $menu);`;
+                let args = {$name: req.body.menuItem.name,
+                    $desc: req.body.menuItem.description,
+                    $inv: req.body.menuItem.inventory,
+                    $price: req.body.menuItem.price,
+                    $menu: res.locals.menuID};
+                db.run(sql, args, function (err) {
+                    if (!err) {
+                        getMenuItem(res.locals.menuID, this.lastID)
+                            .then((menuItem) => {
+                                res.status(201).send({"menuItem": menuItem[0]});
+                            }, err => {
+                                throw new Error();
+                            }).catch ((err) => {
+                                console.error("400 - missing data");
+                            });
+                    }
+                });
+            }
+        }).catch((err) => {
+            return res.status(404).send("2 - Something went wrong");
+        });
+});

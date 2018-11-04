@@ -1007,74 +1007,74 @@ describe("GET /api/menus/:menuId/menu-items", function() {
     });
 });
 
-// describe("POST /api/menus/:menuId/menu-items", function() {
-//     let newMenuItem;
+describe("POST /api/menus/:menuId/menu-items", function() {
+    let newMenuItem;
 
-//     beforeEach(function(done) {
-//         newMenuItem = {
-//             name: "New Menu Item",
-//             description: "New Description",
-//             inventory: 20,
-//             price: 1.5
-//         };
+    beforeEach(function(done) {
+        newMenuItem = {
+            name: "New Menu Item",
+            description: "New Description",
+            inventory: 20,
+            price: 1.5
+        };
 
-//         seed.seedMenuItemDatabase(done);
-//     });
+        seed.seedMenuItemDatabase(done);
+    });
 
-//     it("should create a valid menuItem", function() {
-//         return request(app)
-//             .post("/api/menus/2/menu-items")
-//             .send({menuItem: newMenuItem})
-//             .then(function() {
-//                 testDb.all("SELECT * FROM menuItem", function(error, result) {
-//                     const menuItem = result.find(menuItem => menuItem.name === newMenuItem.name);
-//                     expect(menuItem).to.exist;
-//                     expect(menuItem.id).to.exist;
-//                     expect(menuItem.name).to.equal(newMenuItem.name);
-//                     expect(menuItem.description).to.equal(newMenuItem.description);
-//                     expect(menuItem.inventory).to.equal(newMenuItem.inventory);
-//                     expect(menuItem.price).to.equal(newMenuItem.price);
-//                     expect(menuItem.menu_id).to.equal(2);
-//                 });
-//             });
-//     });
+    it("should create a valid menuItem", function() {
+        return request(app)
+            .post("/api/menus/2/menu-items")
+            .send({menuItem: newMenuItem})
+            .then(function() {
+                testDb.all("SELECT * FROM menuItem", function(error, result) {
+                    const menuItem = result.find(menuItem => menuItem.name === newMenuItem.name);
+                    expect(menuItem).to.exist;
+                    expect(menuItem.id).to.exist;
+                    expect(menuItem.name).to.equal(newMenuItem.name);
+                    expect(menuItem.description).to.equal(newMenuItem.description);
+                    expect(menuItem.inventory).to.equal(newMenuItem.inventory);
+                    expect(menuItem.price).to.equal(newMenuItem.price);
+                    expect(menuItem.menu_id).to.equal(2);
+                });
+            });
+    });
 
-//     it("should return a 201 status code after menu item creation", function() {
-//         return request(app)
-//             .post("/api/menus/2/menu-items")
-//             .send({menuItem: newMenuItem})
-//             .expect(201);
-//     });
+    it("should return a 201 status code after menu item creation", function() {
+        return request(app)
+            .post("/api/menus/2/menu-items")
+            .send({menuItem: newMenuItem})
+            .expect(201);
+    });
 
-//     it("should return the newly-created menu item after menu item creation", function() {
-//         return request(app)
-//             .post("/api/menus/2/menu-items")
-//             .send({menuItem: newMenuItem})
-//             .then(function(response) {
-//                 const menuItem = response.body.menuItem;
-//                 expect(menuItem).to.exist;
-//                 expect(menuItem.id).to.exist;
-//                 expect(menuItem.name).to.equal(newMenuItem.name);
-//                 expect(menuItem.description).to.equal(newMenuItem.description);
-//                 expect(menuItem.inventory).to.equal(newMenuItem.inventory);
-//                 expect(menuItem.price).to.equal(newMenuItem.price);
-//                 expect(menuItem.menu_id).to.equal(2);
-//             });
-//     });
+    it("should return the newly-created menu item after menu item creation", function() {
+        return request(app)
+            .post("/api/menus/2/menu-items")
+            .send({menuItem: newMenuItem})
+            .then(function(response) {
+                const menuItem = response.body.menuItem;
+                expect(menuItem).to.exist;
+                expect(menuItem.id).to.exist;
+                expect(menuItem.name).to.equal(newMenuItem.name);
+                expect(menuItem.description).to.equal(newMenuItem.description);
+                expect(menuItem.inventory).to.equal(newMenuItem.inventory);
+                expect(menuItem.price).to.equal(newMenuItem.price);
+                expect(menuItem.menu_id).to.equal(2);
+            });
+    });
 
-//     it("should return a 400 status code for invalid menu items", function() {
-//         newMenuItem = {
-//             description: "New Description",
-//             inventory: 20,
-//             price: 1.5
-//         };
+    it("should return a 400 status code for invalid menu items", function() {
+        newMenuItem = {
+            description: "New Description",
+            inventory: 20,
+            price: 1.5
+        };
 
-//         return request(app)
-//             .post("/api/menus/2/menu-items")
-//             .send({menuItem: newMenuItem})
-//             .expect(400);
-//     });
-// });
+        return request(app)
+            .post("/api/menus/2/menu-items")
+            .send({menuItem: newMenuItem})
+            .expect(400);
+    });
+});
 
 // describe("PUT /api/menus/:menuId/menu-items/:menuItemId", function() {
 //     let updatedMenuItem;
