@@ -48,10 +48,8 @@ let getMenuItem = (menu, id = 0, allItems = false) => new Promise ((resolve, rej
     }
     db.all(sql, args, (err, row) => {
         if (err) {
-            console.log(err);
             reject(err);
         } else {
-            console.log("data", row);
             resolve(row);
         }
     });
@@ -164,5 +162,25 @@ menuItemRouter.put("/", (req, res, next) => {
             console.log(err);
         }).catch(err => {
             return res.status(404).send("3 PUT - Something went wrong");
+        });
+});
+
+// delete menu item
+menuItemRouter.delete("/", (req, res, next) => {
+    getMenuItem(res.locals.menuID, res.locals.menuItemID)
+        .then(menuItem => {
+            if (menuItem[0] !== undefined) {
+                db.run("delete from menuitem where id = $id;", {$id: res.locals.menuItemID},
+                    (err) => {
+                        if (err) {
+                            console.error(err);
+                        }
+                    });
+                return res.status(204).send();
+            } else {
+                throw new Error();
+            }
+        }).catch(err => {
+            return res.status(404).send("Wrong menu or item ID");
         });
 });

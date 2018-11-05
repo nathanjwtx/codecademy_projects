@@ -14,7 +14,6 @@ module.exports = employeeRouter;
 
 let validateEmployee = (req, res, next) => {
     let empData = req.body.employee;
-    console.log(req.baseUrl);
     if (req.method != "DELETE" && (!empData.name || !empData.position || !empData.wage)) {
         return res.sendStatus(400);
     } else {
@@ -42,6 +41,7 @@ employeeRouter.get("/", (req, res, next) => {
                 if (err) {
                     return res.sendStatus(400);
                 }
+                // console.log(rows);
                 return res.status(200).send({employees: rows});
             });
     } else {
