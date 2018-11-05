@@ -14,7 +14,6 @@ app.use(express.static("./public"));
 module.exports = timesheetRouter;
 
 let getParams = (req, res, next) => {
-    // console.log(req.baseUrl.split("/"));
     req.empID = req.baseUrl.split("/")[3];
     req.tsID = req.baseUrl.split("/")[5];
     next();
@@ -92,7 +91,6 @@ timesheetRouter.post("/", getParams, dataCheck, (req, res, next) => {
 // edit existing timesheet
 timesheetRouter.put("/", getParams, checkEmp, checkTS, dataCheck, (req, res, next) => {
     const tsData = req.body.timesheet;
-    console.log(tsData);
     db.run(`update Timesheet set hours = $hours, rate = $rate, date = $date 
     where id = $id`, {
         $hours: tsData.hours,

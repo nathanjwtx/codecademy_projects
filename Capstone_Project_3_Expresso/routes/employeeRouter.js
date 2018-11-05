@@ -41,7 +41,6 @@ employeeRouter.get("/", (req, res, next) => {
                 if (err) {
                     return res.sendStatus(400);
                 }
-                // console.log(rows);
                 return res.status(200).send({employees: rows});
             });
     } else {

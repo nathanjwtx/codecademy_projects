@@ -59,7 +59,6 @@ let getMenuCount = (menu) => new Promise ((resolve, reject) => {
     db.get("select count(*) as count from menu where id = $id", {$id: menu},
         (err, row) => {
             if (row) {
-                // console.log(row);
                 resolve(row);
             }
             reject(err);

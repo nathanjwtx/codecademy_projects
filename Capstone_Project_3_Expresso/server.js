@@ -1,6 +1,7 @@
 const express = require("express");
 const morgan = require("morgan");
 const sqlite3 = require("sqlite3");
+const cors = require("cors");
 
 const app = express();
 const db = new sqlite3.Database(process.env.TEST_DATABASE || "./database.sqlite");
@@ -10,6 +11,7 @@ app.use(express.json());
 app.use(express.urlencoded());
 app.use(morgan("tiny"));
 app.use(express.static("public"));
+app.use(cors());
 
 const employee = require("./routes/employeeRouter");
 const timesheet = require("./routes/timesheetRouter");
