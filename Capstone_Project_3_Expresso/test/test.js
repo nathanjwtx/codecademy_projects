@@ -969,224 +969,224 @@ const testDb = new sqlite3.Database(process.env.TEST_DATABASE);
 //     });
 // });
 
-describe("GET /api/menus/:menuId/menu-items", function() {
-    before(function(done) {
-        seed.seedMenuItemDatabase(done);
-    });
-
-    it("should return all menu items of an existing menu", function() {
-        return request(app)
-            .get("/api/menus/1/menu-items")
-            .then(function(response) {
-                const menuItems = response.body.menuItems;
-                expect(menuItems.length).to.equal(2);
-                expect(menuItems.find(menuItem => menuItem.id === 1)).to.exist;
-                expect(menuItems.find(menuItem => menuItem.id === 2)).to.exist;
-            });
-    });
-
-    it("should return an empty array for existing menus with no menu items", function() {
-        return request(app)
-            .get("/api/menus/3/menu-items")
-            .then(function(response) {
-                const menuItems = response.body.menuItems;
-                expect(menuItems.length).to.equal(0);
-            });
-    });
-
-    it("should return a status code of 200 for valid menus", function() {
-        return request(app)
-            .get("/api/menus/2/menu-items")
-            .expect(200);
-    });
-
-    it("should return a status code of 404 for invalid menus", function() {
-        return request(app)
-            .get("/api/menus/999/menu-items")
-            .expect(404);
-    });
-});
-
-describe("POST /api/menus/:menuId/menu-items", function() {
-    let newMenuItem;
-
-    beforeEach(function(done) {
-        newMenuItem = {
-            name: "New Menu Item",
-            description: "New Description",
-            inventory: 20,
-            price: 1.5
-        };
-
-        seed.seedMenuItemDatabase(done);
-    });
-
-    it("should create a valid menuItem", function() {
-        return request(app)
-            .post("/api/menus/2/menu-items")
-            .send({menuItem: newMenuItem})
-            .then(function() {
-                testDb.all("SELECT * FROM menuItem", function(error, result) {
-                    const menuItem = result.find(menuItem => menuItem.name === newMenuItem.name);
-                    expect(menuItem).to.exist;
-                    expect(menuItem.id).to.exist;
-                    expect(menuItem.name).to.equal(newMenuItem.name);
-                    expect(menuItem.description).to.equal(newMenuItem.description);
-                    expect(menuItem.inventory).to.equal(newMenuItem.inventory);
-                    expect(menuItem.price).to.equal(newMenuItem.price);
-                    expect(menuItem.menu_id).to.equal(2);
-                });
-            });
-    });
-
-    it("should return a 201 status code after menu item creation", function() {
-        return request(app)
-            .post("/api/menus/2/menu-items")
-            .send({menuItem: newMenuItem})
-            .expect(201);
-    });
-
-    it("should return the newly-created menu item after menu item creation", function() {
-        return request(app)
-            .post("/api/menus/2/menu-items")
-            .send({menuItem: newMenuItem})
-            .then(function(response) {
-                const menuItem = response.body.menuItem;
-                expect(menuItem).to.exist;
-                expect(menuItem.id).to.exist;
-                expect(menuItem.name).to.equal(newMenuItem.name);
-                expect(menuItem.description).to.equal(newMenuItem.description);
-                expect(menuItem.inventory).to.equal(newMenuItem.inventory);
-                expect(menuItem.price).to.equal(newMenuItem.price);
-                expect(menuItem.menu_id).to.equal(2);
-            });
-    });
-
-    it("should return a 400 status code for invalid menu items", function() {
-        newMenuItem = {
-            description: "New Description",
-            inventory: 20,
-            price: 1.5
-        };
-
-        return request(app)
-            .post("/api/menus/2/menu-items")
-            .send({menuItem: newMenuItem})
-            .expect(400);
-    });
-});
-
-describe("PUT /api/menus/:menuId/menu-items/:menuItemId", function() {
-    let updatedMenuItem;
-
-    beforeEach(function(done) {
-        updatedMenuItem = {
-            name: "Updated Menu Item",
-            description: "Updated Description",
-            inventory: 20,
-            price: 1.5
-        };
-
-        seed.seedMenuItemDatabase(done);
-    });
-
-    it("should update the menu item with the given ID", function(done) {
-        request(app)
-            .put("/api/menus/1/menu-items/2")
-            .send({menuItem: updatedMenuItem})
-            .then(function() {
-                testDb.get("SELECT * FROM MenuItem WHERE MenuItem.id = 2", function(error, menuItem) {
-                    if (error) {
-                        throw new Error(error);
-                    }
-                    expect(menuItem).to.exist;
-                    expect(menuItem.id).to.equal(2);
-                    expect(menuItem.name).to.equal(updatedMenuItem.name);
-                    expect(menuItem.description).to.equal(updatedMenuItem.description);
-                    expect(menuItem.inventory).to.equal(updatedMenuItem.inventory);
-                    expect(menuItem.price).to.equal(updatedMenuItem.price);
-                    done();
-                });
-            }).catch(done);
-    });
-
-    it("should return a 200 status code after menuItem update", function() {
-        return request(app)
-            .put("/api/menus/1/menu-items/2")
-            .send({menuItem: updatedMenuItem})
-            .expect(200);
-    });
-
-    it("should return the updated menu item after menu item update", function() {
-        return request(app)
-            .put("/api/menus/1/menu-items/2")
-            .send({menuItem: updatedMenuItem})
-            .then(function(response) {
-                const menuItem = response.body.menuItem;
-                expect(menuItem).to.exist;
-                expect(menuItem.id).to.equal(2);
-                expect(menuItem.name).to.equal(updatedMenuItem.name);
-                expect(menuItem.description).to.equal(updatedMenuItem.description);
-                expect(menuItem.inventory).to.equal(updatedMenuItem.inventory);
-                expect(menuItem.price).to.equal(updatedMenuItem.price);
-            });
-    });
-
-    it("should return a 404 status code for invalid menu item IDs", function() {
-        updatedMenuItem = {
-            description: "Updated Description",
-            inventory: 20,
-            price: 1.5
-        };
-
-        return request(app)
-            .put("/api/menus/1/menu-items/999")
-            .send({menuItem: updatedMenuItem})
-            .expect(404);
-    });
-
-    it("should return a 400 status code for invalid menu item updates", function() {
-        updatedMenuItem = {
-            description: "Updated Description",
-            inventory: 20,
-            price: 1.5
-        };
-
-        return request(app)
-            .put("/api/menus/1/menu-items/2")
-            .send({menuItem: updatedMenuItem})
-            .expect(400);
-    });
-});
-
-// describe("DELETE /api/menus/:menuId/menu-items/:menuItemId", function() {
-//     beforeEach(function(done) {
+// describe("GET /api/menus/:menuId/menu-items", function() {
+//     before(function(done) {
 //         seed.seedMenuItemDatabase(done);
 //     });
 
-//     it("should remove the menu item with the specified ID from the database", function(done) {
+//     it("should return all menu items of an existing menu", function() {
+//         return request(app)
+//             .get("/api/menus/1/menu-items")
+//             .then(function(response) {
+//                 const menuItems = response.body.menuItems;
+//                 expect(menuItems.length).to.equal(2);
+//                 expect(menuItems.find(menuItem => menuItem.id === 1)).to.exist;
+//                 expect(menuItems.find(menuItem => menuItem.id === 2)).to.exist;
+//             });
+//     });
+
+//     it("should return an empty array for existing menus with no menu items", function() {
+//         return request(app)
+//             .get("/api/menus/3/menu-items")
+//             .then(function(response) {
+//                 const menuItems = response.body.menuItems;
+//                 expect(menuItems.length).to.equal(0);
+//             });
+//     });
+
+//     it("should return a status code of 200 for valid menus", function() {
+//         return request(app)
+//             .get("/api/menus/2/menu-items")
+//             .expect(200);
+//     });
+
+//     it("should return a status code of 404 for invalid menus", function() {
+//         return request(app)
+//             .get("/api/menus/999/menu-items")
+//             .expect(404);
+//     });
+// });
+
+// describe("POST /api/menus/:menuId/menu-items", function() {
+//     let newMenuItem;
+
+//     beforeEach(function(done) {
+//         newMenuItem = {
+//             name: "New Menu Item",
+//             description: "New Description",
+//             inventory: 20,
+//             price: 1.5
+//         };
+
+//         seed.seedMenuItemDatabase(done);
+//     });
+
+//     it("should create a valid menuItem", function() {
+//         return request(app)
+//             .post("/api/menus/2/menu-items")
+//             .send({menuItem: newMenuItem})
+//             .then(function() {
+//                 testDb.all("SELECT * FROM menuItem", function(error, result) {
+//                     const menuItem = result.find(menuItem => menuItem.name === newMenuItem.name);
+//                     expect(menuItem).to.exist;
+//                     expect(menuItem.id).to.exist;
+//                     expect(menuItem.name).to.equal(newMenuItem.name);
+//                     expect(menuItem.description).to.equal(newMenuItem.description);
+//                     expect(menuItem.inventory).to.equal(newMenuItem.inventory);
+//                     expect(menuItem.price).to.equal(newMenuItem.price);
+//                     expect(menuItem.menu_id).to.equal(2);
+//                 });
+//             });
+//     });
+
+//     it("should return a 201 status code after menu item creation", function() {
+//         return request(app)
+//             .post("/api/menus/2/menu-items")
+//             .send({menuItem: newMenuItem})
+//             .expect(201);
+//     });
+
+//     it("should return the newly-created menu item after menu item creation", function() {
+//         return request(app)
+//             .post("/api/menus/2/menu-items")
+//             .send({menuItem: newMenuItem})
+//             .then(function(response) {
+//                 const menuItem = response.body.menuItem;
+//                 expect(menuItem).to.exist;
+//                 expect(menuItem.id).to.exist;
+//                 expect(menuItem.name).to.equal(newMenuItem.name);
+//                 expect(menuItem.description).to.equal(newMenuItem.description);
+//                 expect(menuItem.inventory).to.equal(newMenuItem.inventory);
+//                 expect(menuItem.price).to.equal(newMenuItem.price);
+//                 expect(menuItem.menu_id).to.equal(2);
+//             });
+//     });
+
+//     it("should return a 400 status code for invalid menu items", function() {
+//         newMenuItem = {
+//             description: "New Description",
+//             inventory: 20,
+//             price: 1.5
+//         };
+
+//         return request(app)
+//             .post("/api/menus/2/menu-items")
+//             .send({menuItem: newMenuItem})
+//             .expect(400);
+//     });
+// });
+
+// describe("PUT /api/menus/:menuId/menu-items/:menuItemId", function() {
+//     let updatedMenuItem;
+
+//     beforeEach(function(done) {
+//         updatedMenuItem = {
+//             name: "Updated Menu Item",
+//             description: "Updated Description",
+//             inventory: 20,
+//             price: 1.5
+//         };
+
+//         seed.seedMenuItemDatabase(done);
+//     });
+
+//     it("should update the menu item with the given ID", function(done) {
 //         request(app)
-//             .del("/api/menus/1/menu-items/2")
+//             .put("/api/menus/1/menu-items/2")
+//             .send({menuItem: updatedMenuItem})
 //             .then(function() {
 //                 testDb.get("SELECT * FROM MenuItem WHERE MenuItem.id = 2", function(error, menuItem) {
 //                     if (error) {
 //                         throw new Error(error);
 //                     }
-//                     expect(menuItem).not.to.exist;
+//                     expect(menuItem).to.exist;
+//                     expect(menuItem.id).to.equal(2);
+//                     expect(menuItem.name).to.equal(updatedMenuItem.name);
+//                     expect(menuItem.description).to.equal(updatedMenuItem.description);
+//                     expect(menuItem.inventory).to.equal(updatedMenuItem.inventory);
+//                     expect(menuItem.price).to.equal(updatedMenuItem.price);
 //                     done();
 //                 });
 //             }).catch(done);
 //     });
 
-//     it("should return a 204 status code after menu item delete", function() {
+//     it("should return a 200 status code after menuItem update", function() {
 //         return request(app)
-//             .del("/api/menus/1/menu-items/2")
-//             .expect(204);
+//             .put("/api/menus/1/menu-items/2")
+//             .send({menuItem: updatedMenuItem})
+//             .expect(200);
+//     });
+
+//     it("should return the updated menu item after menu item update", function() {
+//         return request(app)
+//             .put("/api/menus/1/menu-items/2")
+//             .send({menuItem: updatedMenuItem})
+//             .then(function(response) {
+//                 const menuItem = response.body.menuItem;
+//                 expect(menuItem).to.exist;
+//                 expect(menuItem.id).to.equal(2);
+//                 expect(menuItem.name).to.equal(updatedMenuItem.name);
+//                 expect(menuItem.description).to.equal(updatedMenuItem.description);
+//                 expect(menuItem.inventory).to.equal(updatedMenuItem.inventory);
+//                 expect(menuItem.price).to.equal(updatedMenuItem.price);
+//             });
 //     });
 
 //     it("should return a 404 status code for invalid menu item IDs", function() {
+//         updatedMenuItem = {
+//             description: "Updated Description",
+//             inventory: 20,
+//             price: 1.5
+//         };
+
 //         return request(app)
-//             .del("/api/menus/1/menu-items/999")
+//             .put("/api/menus/1/menu-items/999")
+//             .send({menuItem: updatedMenuItem})
 //             .expect(404);
 //     });
+
+//     it("should return a 400 status code for invalid menu item updates", function() {
+//         updatedMenuItem = {
+//             description: "Updated Description",
+//             inventory: 20,
+//             price: 1.5
+//         };
+
+//         return request(app)
+//             .put("/api/menus/1/menu-items/2")
+//             .send({menuItem: updatedMenuItem})
+//             .expect(400);
+//     });
 // });
+
+describe("DELETE /api/menus/:menuId/menu-items/:menuItemId", function() {
+    beforeEach(function(done) {
+        seed.seedMenuItemDatabase(done);
+    });
+
+    it("should remove the menu item with the specified ID from the database", function(done) {
+        request(app)
+            .del("/api/menus/1/menu-items/2")
+            .then(function() {
+                testDb.get("SELECT * FROM MenuItem WHERE MenuItem.id = 2", function(error, menuItem) {
+                    if (error) {
+                        throw new Error(error);
+                    }
+                    expect(menuItem).not.to.exist;
+                    done();
+                });
+            }).catch(done);
+    });
+
+    it("should return a 204 status code after menu item delete", function() {
+        return request(app)
+            .del("/api/menus/1/menu-items/2")
+            .expect(204);
+    });
+
+    it("should return a 404 status code for invalid menu item IDs", function() {
+        return request(app)
+            .del("/api/menus/1/menu-items/999")
+            .expect(404);
+    });
+});

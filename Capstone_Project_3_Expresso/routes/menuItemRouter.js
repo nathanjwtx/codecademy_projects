@@ -124,39 +124,45 @@ menuItemRouter.post("/", checkData, (req, res, next) => {
 });
 
 // edit an existing item
-menuItemRouter.put("/", checkData, (req, res, next) => {
+menuItemRouter.put("/", (req, res, next) => {
     getMenuItem(res.locals.menuID, res.locals.menuItemID)
         .then((menuItem) => {
+            console.log("Menu", menuItem[0]);
             if (menuItem[0] !== undefined) {
-                let sql = `update menuitem set name = $name, description = $desc,
-                 inventory = $inv, price = $price, menu_id = $menu where id = $id;`;
-                let args = {$name: req.body.menuItem.name,
-                    $desc: req.body.menuItem.description,
-                    $inv: req.body.menuItem.inventory,
-                    $price: req.body.menuItem.price,
-                    $menu: res.locals.menuID,
-                    $id: res.locals.menuItemID};
-                db.run(sql, args, function (err) {
-                    if (!err) {
-                        // console.log("no error");
-                        getMenuItem(res.locals.menuID, res.locals.menuItemID)
-                            .then((menuItem) => {
-                                res.status(200).send({"menuItem": menuItem[0]});
-                            }, err => {
-                                throw new Error();
-                            }).catch ((err) => {
-                                console.error("400 - missing data");
-                            });
-                    } else {
-                        console.log(err);
-                    }
-                });
+                let itemData = req.body.menuItem;
+                if (itemData.name && itemData.inventory && itemData.price) {
+                    let sql = `update menuitem set name = $name, description = $desc,
+                    inventory = $inv, price = $price, menu_id = $menu where id = $id;`;
+                    let args = {$name: req.body.menuItem.name,
+                        $desc: req.body.menuItem.description,
+                        $inv: req.body.menuItem.inventory,
+                        $price: req.body.menuItem.price,
+                        $menu: res.locals.menuID,
+                        $id: res.locals.menuItemID};
+                    db.run(sql, args, function (err) {
+                        if (!err) {
+                            // console.log("no error");
+                            getMenuItem(res.locals.menuID, res.locals.menuItemID)
+                                .then((menuItem) => {
+                                    return res.status(200).send({"menuItem": menuItem[0]});
+                                }, err => {
+                                    console.log(err);
+                                }).catch ((err) => {
+                                    return res.status(404).send("1 PUT - Something went wrong");
+                                });
+                        } else {
+                            console.log(err);
+                        }
+                    });
+                } else {
+                    return res.status(400).send("PUT - missing data");
+                }
             } else {
-                throw new Error("Ooops");
+                return res.status(404).send("2 PUT - Something went wrong");
             }
         }, err => {
-            throw new Error();
+            console.log(err);
         }).catch(err => {
-            return res.status(404).send("PUT - Something went wrong");
+            return res.status(404).send("3 PUT - Something went wrong");
         });
 });
